@@ -10,21 +10,14 @@ namespace Foldit3D
 {
     class Hole
     {
-        float ROTATION_DEGREE = 0.01f;
-        float rotAngle;
-        float angle;
-        bool reverse = false;
         Vector2 center = Vector2.Zero;
-        double radius;
-        bool dataWasCalced = false;
         bool moving = true;
         bool isDraw = true;
         bool drawInFold = false;
         float size = 3f;
-
         Texture2D texture;
         Vector2 worldPosition;
-        Rectangle worldRectangle;
+
 
         protected VertexPositionTexture[] vertices;
         protected Matrix worldMatrix = Matrix.Identity;
@@ -46,13 +39,6 @@ namespace Foldit3D
             set { worldPosition = value; }
         }
 
-        public Rectangle WorldRectangle
-        {
-            get
-            {
-                return worldRectangle;
-            }
-        }
         #endregion
 
         #region Draw
@@ -169,7 +155,9 @@ namespace Foldit3D
         #region Public Methods
         public void changePos()
         {
-            setVerts(new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22)));
+            Vector2 v = new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22));
+            center = v;
+            setVerts(v);
         }
 
         public void changeSize()
@@ -180,18 +168,6 @@ namespace Foldit3D
         #endregion
 
         #region 3D
-        private void setUpVertices(List<List<Vector3>> points)
-        {
-            vertices = new VertexPositionTexture[6];
-
-            for (int i = 0; i < 6; i++)
-            {
-                vertices[i].Position = points.ElementAt(i).ElementAt(0);
-                vertices[i].TextureCoordinate.X = points.ElementAt(i).ElementAt(1).X;
-                vertices[i].TextureCoordinate.Y = points.ElementAt(i).ElementAt(1).Y;
-            }
-
-        }
 
         private void setVerts(Vector2 center)
         {
@@ -227,9 +203,7 @@ namespace Foldit3D
 
         public Vector3 getCenter()
         {
-            float x = (vertices[2].Position.X + vertices[5].Position.X) / 2;
-            float z = (vertices[2].Position.Z + vertices[5].Position.Z) / 2;
-            return new Vector3(x, 0, z);
+            return new Vector3(center.X, 0, center.Y);
         }
         #endregion
     }

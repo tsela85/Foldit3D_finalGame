@@ -28,7 +28,7 @@ namespace Foldit3D
         protected Effect effect;
         protected bool isDraw = true;
         protected bool dataSet = false;
-        protected float size = 3f;
+        protected float size = 2f;
 
         #region Properties
 
@@ -154,17 +154,6 @@ namespace Foldit3D
         #endregion
 
         #region 3D 
-        private void setUpVertices(List<List<Vector3>> points)
-        {
-            vertices = new VertexPositionTexture[6];
-
-            for (int i = 0; i < 6; i++)
-            {
-                vertices[i].Position = points.ElementAt(i).ElementAt(0);
-                vertices[i].TextureCoordinate.X = points.ElementAt(i).ElementAt(1).X;
-                vertices[i].TextureCoordinate.Y = points.ElementAt(i).ElementAt(1).Y;
-            }
-        }
 
         private void setVerts(Vector2 center)
         {
@@ -188,6 +177,8 @@ namespace Foldit3D
 
             vertices[5].Position = point4;
             vertices[5].TextureCoordinate = new Vector2(0, 1);
+
+           // Trace.WriteLine("\n 0: " + point3 + "\n 1: " + point1 + "\n 2: " + point2 + "\n 3: " + point1 + "\n 4: " + point3 + "\n 5: " + point4);
         }
 
         public BoundingBox getBox()
@@ -208,7 +199,7 @@ namespace Foldit3D
 
         public Vector3 getCenter()
         {
-            float x;
+          /*  float x;
             float z;
             if (isPointsSwitched)
             {
@@ -219,8 +210,8 @@ namespace Foldit3D
             {
                 x = (vertices[2].Position.X + vertices[5].Position.X) / 2;
                 z = (vertices[2].Position.Z + vertices[5].Position.Z) / 2;
-            }
-            return new Vector3(x, 0, z);
+            }*/
+            return new Vector3(center.X, 0, center.Y);
         }
         #endregion
     }
