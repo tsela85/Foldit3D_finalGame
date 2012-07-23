@@ -134,7 +134,9 @@ namespace Foldit3D
         {
             Game1.device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
             RasterizerState rs = new RasterizerState();
-   
+            // rs.CullMode = CullMode.None;
+
+            // rs.FillMode = FillMode.WireFrame;    
             Game1.device.RasterizerState = rs;
 
             board.Draw();

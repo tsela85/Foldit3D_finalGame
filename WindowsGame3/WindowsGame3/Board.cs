@@ -504,8 +504,12 @@ namespace Foldit3D
 
             float xSize = Math.Abs(bigX - smallX);
             float zSize = Math.Abs(bigZ - smallZ);
-            float xRel = (xSize != 0 ? Math.Abs(Math.Min(smallX, bigX) - vertX) / xSize : smallX);
-            float zRel = (zSize != 0 ? Math.Abs(Math.Min(smallZ, bigZ) - vertZ) / zSize : smallZ);
+
+            float relativeX = (bigCordX < smallCordX ? bigX : smallX);
+            float relativeZ = (bigCordZ < smallCordZ ? bigZ : smallZ);
+
+            float xRel = (xSize != 0 ? Math.Abs(relativeX - vertX) / xSize : smallX);
+            float zRel = (zSize != 0 ? Math.Abs(relativeZ - vertZ) / zSize : smallZ);
             float xCsize = Math.Abs(bigCordX - smallCordX);
             float zCsize = Math.Abs(bigCordZ - smallCordZ);
             float xCrel = (xCsize != 0 ? xRel * xCsize : smallCordX);
