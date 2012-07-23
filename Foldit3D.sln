@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoldIt3D", "WindowsGame3\WindowsGame3\FoldIt3D.csproj", "{5316FD2D-243D-482A-8DB8-714364DC6108}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoldIt3DContent", "WindowsGame3\WindowsGame3Content\FoldIt3DContent.contentproj", "{853DACAC-7ABD-4794-8903-58D4697B8538}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5316FD2D-243D-482A-8DB8-714364DC6108}.Debug|x86.ActiveCfg = Debug|x86
+		{5316FD2D-243D-482A-8DB8-714364DC6108}.Debug|x86.Build.0 = Debug|x86
+		{5316FD2D-243D-482A-8DB8-714364DC6108}.Release|x86.ActiveCfg = Release|x86
+		{5316FD2D-243D-482A-8DB8-714364DC6108}.Release|x86.Build.0 = Release|x86
+		{853DACAC-7ABD-4794-8903-58D4697B8538}.Debug|x86.ActiveCfg = Debug|x86
+		{853DACAC-7ABD-4794-8903-58D4697B8538}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
