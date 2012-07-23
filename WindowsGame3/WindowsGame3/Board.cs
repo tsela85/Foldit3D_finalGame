@@ -504,7 +504,7 @@ namespace Foldit3D
 
             float xSize = Math.Abs(bigX - smallX);
             float zSize = Math.Abs(bigZ - smallZ);
-
+            //the point from wich you maser the distance
             float relativeX = (bigCordX < smallCordX ? bigX : smallX);
             float relativeZ = (bigCordZ < smallCordZ ? bigZ : smallZ);
 
@@ -515,21 +515,6 @@ namespace Foldit3D
             float xCrel = (xCsize != 0 ? xRel * xCsize : smallCordX);
             float zCrel = (zCsize != 0 ? zRel * zCsize : smallCordZ);
             return new Vector2(xCrel, zCrel);
-
-            //Vector2 distFromSmall = new Vector2(Math.Abs(divVert.position.X - vertices[divVert.small].Position.X),
-            //                       Math.Abs(divVert.position.Z - vertices[divVert.small].Position.Z));
-            //Vector2 sizeOfLine = new Vector2(Math.Abs(vertices[divVert.small].Position.X - vertices[divVert.big].Position.X),
-            //                Math.Abs(vertices[divVert.small].Position.Z - vertices[divVert.big].Position.Z));
-            //distFromSmall /= new Vector2((sizeOfLine.X != 0 ? sizeOfLine.X : 1), (sizeOfLine.Y != 0 ? sizeOfLine.Y : 1));
-            //sizeOfLine = new Vector2(Math.Abs(vertices[divVert.small].TextureCoordinate.X - 
-            //    vertices[divVert.big].TextureCoordinate.X),
-            //    Math.Abs(vertices[divVert.small].TextureCoordinate.Y - vertices[divVert.big].TextureCoordinate.Y));
-            //distFromSmall *= sizeOfLine;
-            //if (divVert.position.X == vertices[divVert.small].TextureCoordinate.X)
-            //    distFromSmall.X = vertices[divVert.small].TextureCoordinate.X;
-            //if (vertices[divVert.small].TextureCoordinate.Y == vertices[divVert.big].TextureCoordinate.Y)
-            //    distFromSmall.Y = vertices[divVert.small].TextureCoordinate.Y;
-            //return distFromSmall;
         }
 
         #endregion
