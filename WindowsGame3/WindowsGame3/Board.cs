@@ -74,14 +74,18 @@ namespace Foldit3D
 
         public Vector3 getAxis()
         {
-            Vector3 axis = p[0].position - p[1].position;
+            Vector3 axis;
+            if (p[0].position.X > p[1].position.X)
+                axis = p[0].position - p[1].position;
+            else
+                axis = p[1].position - p[0].position;
             axis.Normalize();
             return axis;
         }
 
         public Vector3 getAxisPoint()
         {
-            return p[0].position;
+            return new Vector3((p[0].position.X + p[1].position.X) / 2, 0, (p[0].position.Z + p[1].position.Z) / 2);
         }
 
 
