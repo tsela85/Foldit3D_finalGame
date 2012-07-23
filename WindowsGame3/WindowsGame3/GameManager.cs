@@ -55,22 +55,22 @@ namespace Foldit3D
             holeManager.initLevel(XMLReader.Get(level, "holes"));
             powerupManager.restartLevel();
             powerupManager.initLevel(XMLReader.Get(level, "powerups"));
-            Vector3[] points = new Vector3[5] {
+            Vector3[] points = new Vector3[4] {
                 new Vector3(-40f, 0f, 25f),
                 new Vector3(40f, 0f, 25f),
                 new Vector3(40f, 0f, -25f),
-                new Vector3(0f, 0f, -40f),
+               // new Vector3(0f, 0f, -40f),
                 new Vector3(-40f, 0f, -25f)
              };
-            Vector2[] texCords = new Vector2[5] {
+            Vector2[] texCords = new Vector2[4] {
                 new Vector2(0,0),
                 new Vector2(1,0),
                 new Vector2(1,1),
-                new Vector2(1,1),
+               // new Vector2(1,1),
                 new Vector2(0,1)  
              };
             Game1.camera.Initialize();
-            board.Initialize(5, points, texCords);
+            board.Initialize(4, points, texCords);
         } 
 
         #region Update
@@ -137,17 +137,17 @@ namespace Foldit3D
             RasterizerState rs = new RasterizerState();
             // rs.CullMode = CullMode.None;
 
-             rs.FillMode = FillMode.WireFrame;    
+          //   rs.FillMode = FillMode.WireFrame;    
             Game1.device.RasterizerState = rs;
 
             board.Draw();
-        //    holeManager.Draw();                        
-         //   powerupManager.Draw();
-          //  playerManager.Draw();
+            holeManager.Draw();                        
+            powerupManager.Draw();
+            playerManager.Draw();
             board.DrawfoldPart();
-           // holeManager.DrawInFold();
-           // powerupManager.DrawInFold();
-           // playerManager.Draw();
+            holeManager.DrawInFold();
+            powerupManager.DrawInFold();
+            playerManager.Draw();
 
             if (gamestate == GameState.scored)
             {
