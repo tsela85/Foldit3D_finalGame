@@ -59,7 +59,6 @@ namespace Foldit3D
                     worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
                     worldMatrix *= Matrix.CreateTranslation(point);
                     switchPoints();
-                    calcCenter();
                 }
             }
 
@@ -81,6 +80,7 @@ namespace Foldit3D
                    // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
 
                     checkXZ(axis,point);
+                    
 
                     worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a); 
                     worldMatrix *= Matrix.CreateTranslation(point);
@@ -100,21 +100,23 @@ namespace Foldit3D
                     
                     worldMatrix *= Matrix.CreateTranslation(point);
                     switchPoints();
-                    calcCenter();
-                } 
+                    
+                }
             }
+            calcCenter();
         }
 
 
         public override void switchPoints()
         {
-            for (int j = 0; j < Math.Floor((double)vertices.Length / 2); j++)
-            {
-                VertexPositionTexture temp = new VertexPositionTexture();
-                temp = vertices[j];
-                vertices[j] = vertices[vertices.Length - j - 1];
-                vertices[vertices.Length - j - 1] = temp;
-            }
+            VertexPositionTexture temp;
+            temp = vertices[0];
+            vertices[0] = vertices[1];
+            vertices[1] = temp;
+            temp = vertices[3];
+            vertices[3] = vertices[4];
+            vertices[4] = temp;
+
             isPointsSwitched = !isPointsSwitched;
         }
 
@@ -162,8 +164,8 @@ namespace Foldit3D
 
         public void calcCenter()
         {
-            center.X = vertices[0].Position.X - size;
-            center.Y = vertices[0].Position.Z + size;
+            center.X = Vector3.Transform(vertices[2].Position, worldMatrix).X - size;
+            center.Y = Vector3.Transform(vertices[2].Position, worldMatrix).Z - size;
         }
 
         #endregion

@@ -31,7 +31,6 @@ namespace Foldit3D
         ///////////////////////////
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
-        // XXX need to recieve all the instances: bordMan, playerMan, holeMan etc.
         public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
             Board bo)
         {
@@ -134,7 +133,8 @@ namespace Foldit3D
         {
             Game1.device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
             RasterizerState rs = new RasterizerState();
-   
+            
+           // rs.FillMode = FillMode.WireFrame;
             Game1.device.RasterizerState = rs;
 
             board.Draw();
