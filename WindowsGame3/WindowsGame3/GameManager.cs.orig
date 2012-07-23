@@ -31,7 +31,6 @@ namespace Foldit3D
         ///////////////////////////
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
-        // XXX need to recieve all the instances: bordMan, playerMan, holeMan etc.
         public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
             Board bo)
         {
@@ -138,11 +137,13 @@ namespace Foldit3D
             RasterizerState rs = new RasterizerState();
             // rs.CullMode = CullMode.None;
 
-             rs.FillMode = FillMode.WireFrame;    
+            // rs.FillMode = FillMode.WireFrame;    
+
+
             Game1.device.RasterizerState = rs;
 
             board.Draw();
-<<<<<<< HEAD
+
             holeManager.Draw();                        
             powerupManager.Draw();
             playerManager.Draw();
@@ -150,15 +151,6 @@ namespace Foldit3D
             holeManager.DrawInFold();
             powerupManager.DrawInFold();
             playerManager.Draw();
-=======
-        //    holeManager.Draw();                        
-         //   powerupManager.Draw();
-          //  playerManager.Draw();
-            board.DrawfoldPart();
-           // holeManager.DrawInFold();
-           // powerupManager.DrawInFold();
-           // playerManager.Draw();
->>>>>>> dina
 
             if (gamestate == GameState.scored)
             {

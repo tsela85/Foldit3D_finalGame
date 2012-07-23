@@ -63,7 +63,6 @@ namespace Foldit3D
                 //    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
                 //    worldMatrix *= Matrix.CreateTranslation(point);
                     switchPoints();
-                    calcCenter();
                 }
             }
 
@@ -89,8 +88,8 @@ namespace Foldit3D
                    // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
 
                    // checkXZ(axis,point);
+                    
 
-                   // worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a); 
                    // worldMatrix *= Matrix.CreateTranslation(point);
                 }
 
@@ -112,9 +111,10 @@ namespace Foldit3D
                     worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
                     worldMatrix *= Matrix.CreateTranslation(point);   
                     switchPoints();
-                    calcCenter();
-                } 
+                    
+                }
             }
+            calcCenter();
         }
 
 
@@ -175,8 +175,8 @@ namespace Foldit3D
 
         public void calcCenter()
         {
-            center.X = vertices[0].Position.X - size;
-            center.Y = vertices[0].Position.Z + size;
+            center.X = Vector3.Transform(vertices[2].Position, worldMatrix).X - size;
+            center.Y = Vector3.Transform(vertices[2].Position, worldMatrix).Z - size;
         }
 
         #endregion

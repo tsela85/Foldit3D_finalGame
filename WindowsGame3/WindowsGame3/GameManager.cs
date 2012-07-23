@@ -31,7 +31,6 @@ namespace Foldit3D
         ///////////////////////////
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
-        // XXX need to recieve all the instances: bordMan, playerMan, holeMan etc.
         public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
             Board bo)
         {
