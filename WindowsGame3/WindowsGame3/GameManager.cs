@@ -142,13 +142,13 @@ namespace Foldit3D
             Game1.device.RasterizerState = rs;
 
             board.Draw();
-            holeManager.Draw();                        
-            powerupManager.Draw();
-            playerManager.Draw();
+        //    holeManager.Draw();                        
+         //   powerupManager.Draw();
+          //  playerManager.Draw();
             board.DrawfoldPart();
-            holeManager.DrawInFold();
-            powerupManager.DrawInFold();
-            playerManager.Draw();
+           // holeManager.DrawInFold();
+           // powerupManager.DrawInFold();
+           // playerManager.Draw();
 
             if (gamestate == GameState.scored)
             {

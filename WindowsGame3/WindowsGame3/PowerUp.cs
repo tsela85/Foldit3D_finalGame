@@ -116,58 +116,62 @@ namespace Foldit3D
 
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
+                worldMatrix = Matrix.Identity;
+                worldMatrix *= Matrix.CreateTranslation(-point);
+                worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                worldMatrix *= Matrix.CreateTranslation(point);   
                // Trace.WriteLine("POWERUP: axis: " + axis + "   point: " + point + "   a: " + a + "   center: "+center);
               //  if (angle < -90) isDraw = false;
               //  else isDraw = true;
-                worldMatrix = Matrix.Identity;
-                worldMatrix *= Matrix.CreateTranslation(-point);
+              //  worldMatrix = Matrix.Identity;
+                //worldMatrix *= Matrix.CreateTranslation(-point);
                 // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
 
                 #region change x and z
                 // powerup: right+down
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
+                /*     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
+                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
 
-                // powerup: right+up
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
+                     // powerup: right+up
+                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
+                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
+                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
+                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
+                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
+                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
+                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
 
-                // powerup: left+down
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
+                     // powerup: left+down
+                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
+                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
 
-                // powerup: left+up
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; } 
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
+                     // powerup: left+up
+                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
+                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
+                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; } 
+                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
                
                
-                //if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-
+                     //if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
+                */
                 #endregion
 
-                worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
+       //         worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
                
-                worldMatrix *= Matrix.CreateTranslation(point);
+           //     worldMatrix *= Matrix.CreateTranslation(point);
             }
         }
 

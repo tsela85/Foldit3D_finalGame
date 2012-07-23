@@ -39,12 +39,12 @@ namespace Foldit3D
                    // isDraw = false;
                     worldMatrix = Matrix.Identity;
                     worldMatrix *= Matrix.CreateTranslation(-point);
-                  //  worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                    worldMatrix *= Matrix.CreateTranslation(point);   
+                  //  checkXZ(axis,point);
 
-                    checkXZ(axis,point);
-
-                    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
-                    worldMatrix *= Matrix.CreateTranslation(point);
+               //     worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
+                //    worldMatrix *= Matrix.CreateTranslation(point);
                 }
                 if (moving && a < -MathHelper.Pi + (2 * Game1.closeRate))
                 {
@@ -52,12 +52,16 @@ namespace Foldit3D
                    // isDraw = true;
                     worldMatrix = Matrix.Identity;
                     worldMatrix *= Matrix.CreateTranslation(-point);
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                    worldMatrix *= Matrix.CreateTranslation(point);
+                //    worldMatrix = Matrix.Identity;
+                //    worldMatrix *= Matrix.CreateTranslation(-point);
 
-                    checkXZ(axis, point);
+                //    checkXZ(axis, point);
 
                    // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
-                    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
-                    worldMatrix *= Matrix.CreateTranslation(point);
+                //    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
+                //    worldMatrix *= Matrix.CreateTranslation(point);
                     switchPoints();
                     calcCenter();
                 }
@@ -75,30 +79,38 @@ namespace Foldit3D
 
                 if (a > -MathHelper.Pi + Game1.closeRate && (moving))
                 {
-                  //  isDraw = false;
                     worldMatrix = Matrix.Identity;
                     worldMatrix *= Matrix.CreateTranslation(-point);
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                    worldMatrix *= Matrix.CreateTranslation(point);   
+                  //  isDraw = false;
+                  //  worldMatrix = Matrix.Identity;
+                   // worldMatrix *= Matrix.CreateTranslation(-point);
                    // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
 
-                    checkXZ(axis,point);
+                   // checkXZ(axis,point);
 
-                    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a); 
-                    worldMatrix *= Matrix.CreateTranslation(point);
+                   // worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a); 
+                   // worldMatrix *= Matrix.CreateTranslation(point);
                 }
 
                 if (moving && a > -2*Game1.closeRate)
                 {
                     moving = false;
                   //  isDraw = true;
-                    worldMatrix = Matrix.Identity;
-                    worldMatrix *= Matrix.CreateTranslation(-point);
+                 //   worldMatrix = Matrix.Identity;
+                  //  worldMatrix *= Matrix.CreateTranslation(-point);
                   //  worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
                     
-                    checkXZ(axis,point);
+                  //  checkXZ(axis,point);
 
-                    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -MathHelper.Pi);
+                //    worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -MathHelper.Pi);
                     
-                    worldMatrix *= Matrix.CreateTranslation(point);
+                   // worldMatrix *= Matrix.CreateTranslation(point);
+                    worldMatrix = Matrix.Identity;
+                    worldMatrix *= Matrix.CreateTranslation(-point);
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                    worldMatrix *= Matrix.CreateTranslation(point);   
                     switchPoints();
                     calcCenter();
                 } 
@@ -108,13 +120,14 @@ namespace Foldit3D
 
         public override void switchPoints()
         {
-            for (int j = 0; j < Math.Floor((double)vertices.Length / 2); j++)
-            {
-                VertexPositionTexture temp = new VertexPositionTexture();
-                temp = vertices[j];
-                vertices[j] = vertices[vertices.Length - j - 1];
-                vertices[vertices.Length - j - 1] = temp;
-            }
+            VertexPositionTexture temp;
+            temp = vertices[0];
+            vertices[0] = vertices[1];
+            vertices[1] = temp;
+            temp = vertices[3];
+            vertices[3] = vertices[4];
+            vertices[4] = temp;
+
             isPointsSwitched = !isPointsSwitched;
         }
 
