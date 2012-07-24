@@ -95,6 +95,27 @@ namespace Foldit3D
         }
         #endregion
 
+        #region Levels
+
+        public void initLevel(List<IDictionary<string, string>> data)
+        {
+            List<Vector3> points = new List<Vector3>();
+            List<Vector2> texCords = new List<Vector2>();
+            int numOfVertix = 0;
+            foreach (IDictionary<string, string> item in data)
+            {
+                Vector3 point = new Vector3((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]), (float)Convert.ToDouble(item["z"]));
+                Vector2 cord = new Vector2((float)Convert.ToDouble(item["texX"]), (float)Convert.ToDouble(item["texY"]));
+                points.Add(point);
+                texCords.Add(cord);
+                numOfVertix++;
+            }
+            
+            Initialize(numOfVertix,points.ToArray(),texCords.ToArray());
+        }
+
+        #endregion
+
         public void Initialize(int vNum, Vector3[] points, Vector2[] texCords)
         {
             pointOnEdge = Vector3.Zero;

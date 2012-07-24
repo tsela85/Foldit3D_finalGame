@@ -9,12 +9,10 @@ using Microsoft.Xna.Framework.Input;
 namespace Foldit3D
 {
     enum GameState { normal, folding, scored };
-    //public enum BoardState { chooseEdge1, onEdge1, chooseEdge2, onEdge2, preFold, folding1, folding2 };
 
     class GameManager
     {
         SpriteFont font, scoreFont;
-        //Board board;
         static GameState gamestate;
         Board.BoardState boardstate;
         HoleManager holeManager;
@@ -43,7 +41,7 @@ namespace Foldit3D
             gamestate = GameState.normal;
             folds = 0;
             level = 1;
-            endLevel = 1;
+            endLevel = 2;
         }
 
         public void loadCurrLevel() 
@@ -55,22 +53,9 @@ namespace Foldit3D
             holeManager.initLevel(XMLReader.Get(level, "holes"));
             powerupManager.restartLevel();
             powerupManager.initLevel(XMLReader.Get(level, "powerups"));
-            Vector3[] points = new Vector3[4] {
-                new Vector3(-40f, 0f, 25f),
-                new Vector3(40f, 0f, 25f),
-                new Vector3(40f, 0f, -25f),
-               // new Vector3(0f, 0f, -40f),
-                new Vector3(-40f, 0f, -25f)
-             };
-            Vector2[] texCords = new Vector2[4] {
-                new Vector2(0,0),
-                new Vector2(1,0),
-                new Vector2(1,1),
-               // new Vector2(1,1),
-                new Vector2(0,1)  
-             };
+            board.initLevel(XMLReader.Get(level, "board"));
             Game1.camera.Initialize();
-            board.Initialize(4, points, texCords);
+            
         } 
 
         #region Update
@@ -79,7 +64,6 @@ namespace Foldit3D
             if (gamestate != GameState.scored)
             {
                 playerManager.Update(gameTime, gamestate);
-                //gamestate = board.update();
                 boardstate = board.update();
                 if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
                     gamestate = GameState.folding;
@@ -98,10 +82,7 @@ namespace Foldit3D
                     Vector3 v = board.getAxis();
                     Vector3 p = board.getAxisPoint();
                     float a = board.getAngle();
-                    // if (boardstate == Board.BoardState.folding1)
                     playerManager.foldData(v, p, a, board);
-                    //  if (boardstate == Board.BoardState.folding2)
-                    //      playerManager.foldDataAfter(v, p, a, board);
 
                     holeManager.foldData(v, p, a, board);
                     powerupManager.foldData(v, p, a, board);
@@ -173,10 +154,10 @@ namespace Foldit3D
         #endregion
 
         #region Win
+
         public static void winLevel()
         {
             gamestate = GameState.scored;
-            // print to screen 
         }
         #endregion
     }
