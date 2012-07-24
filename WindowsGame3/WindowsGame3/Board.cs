@@ -613,7 +613,7 @@ namespace Foldit3D
                         state = BoardState.chooseEdge2;
             } else
             if (state == BoardState.preFold)
-            {                
+            {
                 Divide(p[0], p[1], out one, out two);
                 state = BoardState.folding1;
                 //if (PointInBeforeFold(new Vector3(-9, 0, -9)))
