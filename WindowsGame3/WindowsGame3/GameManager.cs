@@ -22,7 +22,7 @@ namespace Foldit3D
         PlayerManager playerManager;
         PowerUpManager powerupManager;
         Board board;
-        ScreenState screen = ScreenState.levels;
+        ScreenState screen = ScreenState.start;
         Texture2D startScreen;
         Texture2D helpScreen;
         Texture2D levelScreen;
@@ -181,14 +181,14 @@ namespace Foldit3D
                 var rect = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect.SetData(new[] { Color.Transparent });
                 spriteBatch.Draw(rect, newGameBtn, Color.White);
-                
+
 
                 //Levels btn
                 spriteBatch.DrawString(font, "Levels", new Vector2(levelsBtn.X + 127, levelsBtn.Y), Color.Black);
                 var rect1 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect1.SetData(new[] { Color.Transparent });
                 spriteBatch.Draw(rect1, levelsBtn, Color.White);
-                
+
                 //Help btn
                 spriteBatch.DrawString(font, "Help", new Vector2(helpBtn.X + 150, helpBtn.Y), Color.Black);
                 var rect2 = new Texture2D(graphics.GraphicsDevice, 1, 1);
@@ -204,7 +204,7 @@ namespace Foldit3D
                 //back btn
                 var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect3.SetData(new[] { Color.Transparent });
-                spriteBatch.Draw(rect3, helpBackBtn, Color.White);  
+                spriteBatch.Draw(rect3, helpBackBtn, Color.White);
             }
             else if (screen == ScreenState.levels)
             {
@@ -221,30 +221,34 @@ namespace Foldit3D
                 powerupManager.DrawInFold();
                 playerManager.Draw();
 
-            spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
-            spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 40), Color.LightGray);
-            if (gamestate != GameState.lose)
-            { spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(60 - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); }
+                spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 40), Color.LightGray);
+                if (gamestate != GameState.lose)
+                { spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(60 - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); }
 
                 if (gamestate == GameState.scored)
                 {
-                if (folds < 3) score += 100;
-                else if (folds < 5) score += 75;
-                else if (folds < 7) score += 50;
-                else if (folds < 9) score += 25;
+                    if (folds < 3) score += 100;
+                    else if (folds < 5) score += 75;
+                    else if (folds < 7) score += 50;
+                    else if (folds < 9) score += 25;
                     spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
                 }
-            else if (gamestate == GameState.lose)
-            {
-                spriteBatch.DrawString(font, "Ooooops! you ran out of time...", new Vector2(250, 250), Color.Black);
-                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); 
-                if (time > 65) { loadCurrLevel(); }
-            }
+                else if (gamestate == GameState.lose)
+                {
+                    spriteBatch.DrawString(font, "Ooooops! you ran out of time...", new Vector2(250, 250), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
+                    if (time > 65) { loadCurrLevel(); }
+                }
 
-            if (level==1)
-            {
-                showPopUps(spriteBatch);
-                if (folds == 1) { spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.Black); }
+                if (level == 1)
+                {
+                    showPopUps(spriteBatch);
+                    if (folds == 1)
+                    {
+                        spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.Black);
+                    }
+                }
             }
         }
         #endregion
