@@ -75,7 +75,7 @@ namespace Foldit3D
         public Vector3 getAxis()
         {
             Vector3 axis;
-            if (p[0].position.X > p[1].position.X)
+            if (((p[0].small + p[0].big) > (p[1].small + p[1].big)) || (p[0].big == 0))
                 axis = p[0].position - p[1].position;
             else
                 axis = p[1].position - p[0].position;
@@ -86,7 +86,23 @@ namespace Foldit3D
         public Vector3 getAxisPoint()
         {
             return new Vector3((p[0].position.X + p[1].position.X) / 2, 0, (p[0].position.Z + p[1].position.Z) / 2);
+            //return p[0].position;
         }
+
+        public void getfoldPoints(out Vector3 p1, out Vector3 p2)
+        {
+            if (((p[0].small + p[0].big) > (p[1].small + p[1].big)) || (p[0].big == 0))
+            {
+                p1 = p[0].position;
+                p2 = p[1].position;
+            }
+            else
+            {
+                p1 = p[1].position;
+                p2 = p[0].position;
+            }            
+        }
+
 
 
         public float getAngle()

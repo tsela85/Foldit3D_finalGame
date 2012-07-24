@@ -76,14 +76,78 @@ namespace Foldit3D
 
         #region Public Methods
 
-        public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
         {
             foreach (PowerUp p in powerups)
             {
                 if (b.PointInBeforeFold(p.getCenter()))
-                    p.foldData(vec, point, angle);
+                {
+                    if (calcBeforeFolding(foldp1, foldp2, p.getCenter()))
+                        p.preFoldData(axis,(foldp1+foldp2)/2);
+                    else
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2);
+                }
             }
         }
+        // I changed it so the axis and the point will be relevent to the closest point - Tom
+        public void tomfoldData(float angle, Board b)
+        {            
+            foreach (PowerUp p in powerups)
+            {
+                if (b.PointInBeforeFold(p.getCenter()))
+                {
+                    p.tomfoldData(angle);
+                }
+            }
+        }
+
+        public bool calcBeforeFolding(Vector3 p1, Vector3 p2,Vector3 obj)
+        {
+            Vector2 foldLine, perpendicular;
+            Vector2 first = new Vector2(p1.X, p1.Z);
+            Vector2 second = new Vector2(p2.X, p2.Z);
+            Vector2 ballRec = new Vector2(obj.X, obj.Z);
+            Vector3 center = Vector3.Zero;
+            Vector3 refr = new Vector3(-200,0,200);
+
+
+            foldLine.X = (float)((float)(second.Y - (float)first.Y) / ((float)second.X - (float)first.X));
+            perpendicular.X = -1 / foldLine.X;
+
+            if (foldLine.X == 0) //fold line is horizontal
+            {
+                center.X = ballRec.X;
+                center.Z = first.Y;
+            }
+            else
+            {
+                if (perpendicular.X == 0) //fold line is vertical
+                {
+                    center.X = first.X;
+                    center.Z = ballRec.Y;
+                }
+                else
+                {
+                    foldLine.Y = (float)((float)first.Y - (float)first.X * foldLine.X);
+                    perpendicular.Y = ballRec.Y - ballRec.X * perpendicular.X;
+
+                    center.X = -(foldLine.Y - perpendicular.Y) / (foldLine.X - perpendicular.X);
+                    center.Z = perpendicular.X * center.X + perpendicular.Y;
+                }
+            }
+            if (Vector3.Distance(refr,center) > Vector3.Distance(refr,obj))
+                        return true;
+            return false;
+        }
+
+        //public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        //{
+        //    foreach (PowerUp p in powerups)
+        //    {
+        //        if (b.PointInBeforeFold(p.getCenter()))
+        //            p.foldData(vec, point, angle);
+        //    }
+        //}
         #endregion
 
         #region Collision

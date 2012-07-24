@@ -21,6 +21,7 @@ namespace Foldit3D
         PlayerManager playerManager;
         PowerUpManager powerupManager;
         Board board;
+        bool prefold;
 
         string win = "      EXCELLENT!!!\n you did it with: ";
         int level;
@@ -82,9 +83,13 @@ namespace Foldit3D
                 //gamestate = board.update();
                 boardstate = board.update();
                 if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
-                    gamestate = GameState.folding;
+                {
+                    gamestate = GameState.folding;                    
+                }
                 else if (gamestate != GameState.scored)
                     gamestate = GameState.normal;
+                if (boardstate == Board.BoardState.preFold)
+                    prefold = true;
                 Game1.input.Update(gameTime);
                 Game1.camera.UpdateCamera(gameTime);
                 if (Keyboard.GetState().IsKeyDown(Keys.R))
@@ -98,13 +103,26 @@ namespace Foldit3D
                     Vector3 v = board.getAxis();
                     Vector3 p = board.getAxisPoint();
                     float a = board.getAngle();
+                    
+                    //Tom -  gets the folding points
+                    Vector3 foldPoint1, foldPoint2;
+                    board.getfoldPoints(out foldPoint1,out  foldPoint2);
+                    
+                    if (prefold)
+                    {
+                        powerupManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        prefold = false;
+                    }
+
                     // if (boardstate == Board.BoardState.folding1)
                     playerManager.foldData(v, p, a, board);
                     //  if (boardstate == Board.BoardState.folding2)
                     //      playerManager.foldDataAfter(v, p, a, board);
 
                     holeManager.foldData(v, p, a, board);
-                    powerupManager.foldData(v, p, a, board);
+                    //powerupManager.tom2TryfoldData(v, p, a, board);
+                    powerupManager.tomfoldData(a,board);
+                   // powerupManager.foldData(v, p, a, board);
                     if (first == 1)
                     {
                         folds++;
