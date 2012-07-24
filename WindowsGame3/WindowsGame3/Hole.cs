@@ -18,7 +18,6 @@ namespace Foldit3D
         Texture2D texture;
         Vector2 worldPosition;
 
-
         protected VertexPositionTexture[] vertices;
         protected Matrix worldMatrix = Matrix.Identity;
         protected Effect effect;
@@ -26,7 +25,6 @@ namespace Foldit3D
         public Hole(Texture2D texture, Vector2 c, Effect e)
         {
             this.texture = texture;
-           // worldRectangle = new Rectangle((int)WorldPosition.X, (int)WorldPosition.Y, texture.Width, texture.Height);
             effect = e;
             center = c;
             setVerts(c);
