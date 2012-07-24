@@ -143,20 +143,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="inTheHole.wav">
-      <Name>inTheHole</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+    <Compile Include="startScreen.png">
+      <Name>startScreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="folding.wav">
-      <Name>folding</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="help.jpg">
+      <Name>help</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="tookPopup.wav">
-      <Name>tookPopup</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levelsScreen.jpg">
+      <Name>levelsScreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

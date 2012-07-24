@@ -97,7 +97,7 @@ namespace Foldit3D
 
         public void foldData(Vector3 axis, Vector3 point, float a)
         {
-            int x = 1 , z = 1;
+            //int x = 1 , z = 1;
 
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {

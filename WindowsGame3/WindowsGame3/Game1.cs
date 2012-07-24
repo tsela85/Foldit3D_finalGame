@@ -26,7 +26,6 @@ namespace Foldit3D
 
         public static Camera camera;
         public static InputHandler input;
-        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -74,7 +73,7 @@ namespace Foldit3D
 
             camera = new Camera(this);
             input = new InputHandler(this);
-            ourGame = new GameManager(font, scoreFont, holeManager, playerManager, powerupManager, board);
+            ourGame = new GameManager(font, scoreFont, holeManager, playerManager, powerupManager, board, Content.Load<Texture2D>("startScreen"), Content.Load<Texture2D>("help"), Content.Load<Texture2D>("levelsScreen"));
             ourGame.loadCurrLevel();
             
         }
