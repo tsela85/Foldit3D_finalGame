@@ -37,7 +37,9 @@ namespace Foldit3D
         int folds;
         int first = 1;
         int score = 0;
+        static bool changeScore = false;
         float time;
+        int firstfold = 0;
 
         ///////////////////////////
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
@@ -53,7 +55,7 @@ namespace Foldit3D
             board = bo;
             gamestate = GameState.normal;
             folds = 0;
-            level = 1;
+            level = 0;
 
             startScreen = st;
             helpScreen = help;
@@ -110,8 +112,8 @@ namespace Foldit3D
             else
             {
                float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            time += elapsed;
-            if (time >= 60)
+               time += elapsed;
+            if (time >= 60 && level != 0)
             {
                 loseLevel();
             }
@@ -222,17 +224,23 @@ namespace Foldit3D
                 playerManager.Draw();
 
                 spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
-                spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 40), Color.LightGray);
-                if (gamestate != GameState.lose)
+                spriteBatch.DrawString(scoreFont, "level: " + level, new Vector2(20, 40), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.LightGray);
+                if (gamestate != GameState.lose && gamestate != GameState.scored && level != 0)
                 { spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(60 - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); }
 
                 if (gamestate == GameState.scored)
                 {
-                    if (folds < 3) score += 100;
-                    else if (folds < 5) score += 75;
-                    else if (folds < 7) score += 50;
-                    else if (folds < 9) score += 25;
+                    if (!changeScore)
+                    {
+                        if (folds < 3) score += 100;
+                        else if (folds < 5) score += 75;
+                        else if (folds < 7) score += 50;
+                        else if (folds < 9) score += 25;
+                        changeScore = true;
+                    }
                     spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); 
                 }
                 else if (gamestate == GameState.lose)
                 {
@@ -241,14 +249,27 @@ namespace Foldit3D
                     if (time > 65) { loadCurrLevel(); }
                 }
 
-                if (level == 1)
+                if (level == 0)
                 {
                     showPopUps(spriteBatch);
                     if (folds == 1)
                     {
                         spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.Black);
+                        firstfold = 1;
+                    }
+                    if (folds == 2)
+                    {
+                        spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.Black);
+                        firstfold = 2;
+                        spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.Black);
                     }
                 }
+                else if (level == 1 && time < 5)
+                    spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(865, 490), Color.Black);
+                if (folds > 9 && folds <13)
+                    spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.Black);
+                else if (folds > 13)
+                    spriteBatch.DrawString(scoreFont, "You can push 'R' to restart...", new Vector2(400, 20), Color.Black);
             }
         }
         #endregion
@@ -258,6 +279,7 @@ namespace Foldit3D
         public static void winLevel()
         {
             gamestate = GameState.scored;
+            changeScore = false;
         }
 
         public static void loseLevel()
@@ -273,13 +295,18 @@ namespace Foldit3D
             {
                 spriteBatch.DrawString(scoreFont, "This is you... -> \n Put yourself in the hole!", new Vector2(160, 470), Color.Black);
                 spriteBatch.DrawString(scoreFont, "<- Hole", new Vector2(760, 210), Color.Black);
-                spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(865, 490), Color.Black);
             }
-            else if (time >= 5 && time < 10)
+            else if (time >= 5 && firstfold==0)
             {
                 spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here", new Vector2(400, 600), Color.Black);
                 spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here too", new Vector2(430, 80), Color.Black);
             }
+            else if (firstfold==1)
+            {
+                spriteBatch.DrawString(scoreFont, "Click here   >", new Vector2(830, 400), Color.Black);
+                spriteBatch.DrawString(scoreFont, "<   Click here", new Vector2(200, 330), Color.Black);
+            }
+                
                 
         }
         #endregion
