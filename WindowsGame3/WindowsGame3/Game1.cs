@@ -26,10 +26,12 @@ namespace Foldit3D
 
         public static Camera camera;
         public static InputHandler input;
+        public static ContentManager content;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            content = Content;
             XMLReader.Load("data.xml");
             
         }
