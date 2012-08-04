@@ -39,7 +39,8 @@ namespace Foldit3D
         private BoardState state;
         //private List<VertexPositionColor> lineList;
         VertexPositionColor[] lineList;
-        private List<short> lineIndices;        
+        private List<short> lineIndices;
+        private Vector3 testp1, testp2; //Tom - made for testing
 
         public Board(Texture2D tex, Effect eff)
         {
@@ -155,6 +156,9 @@ namespace Foldit3D
             verOnEdge[1].Color = Color.Black;
             verOnEdge[2].Color = Color.Black;
             p = new DividingVert[2];
+            //Tom - made for testing
+            testp1 = points[0];
+            testp2 = points[1];
 
         }
 
@@ -560,6 +564,14 @@ namespace Foldit3D
             lineList[1].Position = mouse;
             lineList[0].Color = Color.OrangeRed;
             lineList[1].Color = Color.OrangeRed;
+            ////Tom - running a test folding
+            //if (input.MouseHandler.WasLeftButtonClicked())
+            //{                
+            //    p[0].position = testp1 + new Vector3(0,0,0);
+            //    p[1].position = testp1 + new Vector3(0,0,0);
+            //    state = BoardState.preFold;
+            //}
+
             if ((state == BoardState.chooseEdge1) && (onEdge))
             {               
                     if (input.MouseHandler.WasLeftButtonClicked())

@@ -37,9 +37,17 @@ namespace Foldit3D
                     pointsData.Add(texLoc);
                     lst.Add(pointsData);
                 }*/
+
                 Vector2 center = new Vector2((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]));
                 powerups.Add(new PowerUp(texture, ConvertType(Convert.ToInt32(item["type"])), center, effect));
             }
+        }
+
+        public void tomInitLevel()
+        {
+            for (int i = -37; i < 40; i+=10)
+                for(int j = -27; j < 30; j += 10)
+                    powerups.Add(new PowerUp(texture, 0, new Vector2(i,j), effect));
         }
 
         public void restartLevel()
@@ -78,14 +86,19 @@ namespace Foldit3D
 
         public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
         {
+            Matrix worldMatrix;
+            Vector3 check;
             foreach (PowerUp p in powerups)
             {
                 if (b.PointInBeforeFold(p.getCenter()))
                 {
-                    if (calcBeforeFolding(foldp1, foldp2, p.getCenter()))
+                    worldMatrix = Matrix.Identity;
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    check = Vector3.Transform(p.getCenter(),worldMatrix);
+                    if (check.Y > 0.0f)
                         p.preFoldData(axis,(foldp1+foldp2)/2);
                     else
-                        p.preFoldData(-axis, (foldp1 + foldp2) / 2);
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2);                
                 }
             }
         }
@@ -101,44 +114,44 @@ namespace Foldit3D
             }
         }
 
-        public bool calcBeforeFolding(Vector3 p1, Vector3 p2,Vector3 obj)
-        {
-            Vector2 foldLine, perpendicular;
-            Vector2 first = new Vector2(p1.X, p1.Z);
-            Vector2 second = new Vector2(p2.X, p2.Z);
-            Vector2 ballRec = new Vector2(obj.X, obj.Z);
-            Vector3 center = Vector3.Zero;
-            Vector3 refr = new Vector3(-200,0,200);
+        //public bool calcBeforeFolding(Vector3 p1, Vector3 p2,Vector3 obj)
+        //{
+        //    Vector2 foldLine, perpendicular;
+        //    Vector2 first = new Vector2(p1.X, p1.Z);
+        //    Vector2 second = new Vector2(p2.X, p2.Z);
+        //    Vector2 ballRec = new Vector2(obj.X, obj.Z);
+        //    Vector3 center = Vector3.Zero;
+        //    Vector3 refr = new Vector3(-10000,-10000,-10000);
 
 
-            foldLine.X = (float)((float)(second.Y - (float)first.Y) / ((float)second.X - (float)first.X));
-            perpendicular.X = -1 / foldLine.X;
+        //    foldLine.X = (float)((float)(second.Y - (float)first.Y) / ((float)second.X - (float)first.X));
+        //    perpendicular.X = -1 / foldLine.X;
 
-            if (foldLine.X == 0) //fold line is horizontal
-            {
-                center.X = ballRec.X;
-                center.Z = first.Y;
-            }
-            else
-            {
-                if (perpendicular.X == 0) //fold line is vertical
-                {
-                    center.X = first.X;
-                    center.Z = ballRec.Y;
-                }
-                else
-                {
-                    foldLine.Y = (float)((float)first.Y - (float)first.X * foldLine.X);
-                    perpendicular.Y = ballRec.Y - ballRec.X * perpendicular.X;
+        //    if (foldLine.X == 0) //fold line is horizontal
+        //    {
+        //        center.X = ballRec.X;
+        //        center.Z = first.Y;
+        //    }
+        //    else
+        //    {
+        //        if (perpendicular.X == 0) //fold line is vertical
+        //        {
+        //            center.X = first.X;
+        //            center.Z = ballRec.Y;
+        //        }
+        //        else
+        //        {
+        //            foldLine.Y = (float)((float)first.Y - (float)first.X * foldLine.X);
+        //            perpendicular.Y = ballRec.Y - ballRec.X * perpendicular.X;
 
-                    center.X = -(foldLine.Y - perpendicular.Y) / (foldLine.X - perpendicular.X);
-                    center.Z = perpendicular.X * center.X + perpendicular.Y;
-                }
-            }
-            if (Vector3.Distance(refr,center) > Vector3.Distance(refr,obj))
-                        return true;
-            return false;
-        }
+        //            center.X = -(foldLine.Y - perpendicular.Y) / (foldLine.X - perpendicular.X);
+        //            center.Z = perpendicular.X * center.X + perpendicular.Y;
+        //        }
+        //    }            
+        //    if (Vector3.Distance(refr,center) > Vector3.Distance(refr,obj))
+        //                return true;
+        //    return false;
+        //}
 
         //public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
         //{

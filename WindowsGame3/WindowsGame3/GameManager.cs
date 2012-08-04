@@ -55,13 +55,14 @@ namespace Foldit3D
             holeManager.restartLevel();
             holeManager.initLevel(XMLReader.Get(level, "holes"));
             powerupManager.restartLevel();
-            powerupManager.initLevel(XMLReader.Get(level, "powerups"));
+            //Tom - powerupManager.initLevel(XMLReader.Get(level, "powerups"));
+            powerupManager.tomInitLevel();
             Vector3[] points = new Vector3[4] {
-                new Vector3(-40f, 0f, 25f),
-                new Vector3(40f, 0f, 25f),
-                new Vector3(40f, 0f, -25f),
+                new Vector3(-40f, 0f, 30f),
+                new Vector3(40f, 0f, 30f),
+                new Vector3(40f, 0f, -30f),
                // new Vector3(0f, 0f, -40f),
-                new Vector3(-40f, 0f, -25f)
+                new Vector3(-40f, 0f, -30f)
              };
             Vector2[] texCords = new Vector2[4] {
                 new Vector2(0,0),
@@ -159,13 +160,13 @@ namespace Foldit3D
             Game1.device.RasterizerState = rs;
 
             board.Draw();
-            holeManager.Draw();                        
+        //    holeManager.Draw();                        
             powerupManager.Draw();
-            playerManager.Draw();
+       //     playerManager.Draw();
             board.DrawfoldPart();
-            holeManager.DrawInFold();
+       //     holeManager.DrawInFold();
             powerupManager.DrawInFold();
-            playerManager.Draw();
+       //     playerManager.Draw();
 
             if (gamestate == GameState.scored)
             {
