@@ -157,11 +157,11 @@ namespace Foldit3D
 
         private void setVerts(Vector2 center)
         {
-            vertices = new VertexPositionTexture[6];           
-            Vector3 point1 = new Vector3(center.X - size, 0, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, 0, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, 0, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, 0, center.Y - size);
+            vertices = new VertexPositionTexture[6];
+            Vector3 point1 = new Vector3(center.X - size, -0.03f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.03f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.03f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.03f, center.Y - size);
 
             vertices[0].Position = point3;
             vertices[0].TextureCoordinate = new Vector2(1, 1);

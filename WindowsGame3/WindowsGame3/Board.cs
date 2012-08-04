@@ -40,7 +40,6 @@ namespace Foldit3D
         //private List<VertexPositionColor> lineList;
         VertexPositionColor[] lineList;
         private List<short> lineIndices;
-        private Vector3 testp1, testp2; //Tom - made for testing
 
         public Board(Texture2D tex, Effect eff)
         {
@@ -156,10 +155,6 @@ namespace Foldit3D
             verOnEdge[1].Color = Color.Black;
             verOnEdge[2].Color = Color.Black;
             p = new DividingVert[2];
-            //Tom - made for testing
-            testp1 = points[0];
-            testp2 = points[1];
-
         }
 
         //public void initLevel(List<IDictionary<string, string>> data)

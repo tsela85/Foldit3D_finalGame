@@ -20,7 +20,7 @@ namespace Foldit3D
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameManager ourGame;
-        public static float closeRate = 0.07f;
+        public static float closeRate = 0.09f;
         public static float openRate = 0.04f;
         public static GraphicsDevice device;
 
@@ -110,9 +110,9 @@ namespace Foldit3D
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            //spriteBatch.Begin(); TOM - moved to gmaeManager
             ourGame.Draw(gameTime, spriteBatch, graphics);
-            spriteBatch.End();
+            //spriteBatch.End();
 
             base.Draw(gameTime);
         }

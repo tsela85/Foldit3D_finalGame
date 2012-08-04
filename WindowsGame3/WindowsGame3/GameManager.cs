@@ -112,6 +112,7 @@ namespace Foldit3D
                     if (prefold)
                     {
                         powerupManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        holeManager.preFoldData(foldPoint1, foldPoint2, v, board);
                         prefold = false;
                     }
 
@@ -120,9 +121,9 @@ namespace Foldit3D
                     //  if (boardstate == Board.BoardState.folding2)
                     //      playerManager.foldDataAfter(v, p, a, board);
 
-                    holeManager.foldData(v, p, a, board);
+                    holeManager.foldData(a, board);
                     //powerupManager.tom2TryfoldData(v, p, a, board);
-                    powerupManager.tomfoldData(a,board);
+                    powerupManager.foldData(a,board);
                    // powerupManager.foldData(v, p, a, board);
                     if (first == 1)
                     {
@@ -159,19 +160,25 @@ namespace Foldit3D
           //   rs.FillMode = FillMode.WireFrame;    
             Game1.device.RasterizerState = rs;
 
-            board.Draw();
-        //    holeManager.Draw();                        
-            powerupManager.Draw();
-       //     playerManager.Draw();
-            board.DrawfoldPart();
-       //     holeManager.DrawInFold();
-            powerupManager.DrawInFold();
-       //     playerManager.Draw();
-
+            spriteBatch.Begin();
             if (gamestate == GameState.scored)
             {
-                spriteBatch.DrawString(font,win + folds.ToString() +" folds!", new Vector2(350, 250), Color.Black);
+                spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
             }
+            spriteBatch.End();            
+            Game1.device.DepthStencilState = DepthStencilState.Default; //TOM - makes 3d 
+
+            board.Draw();
+            board.DrawfoldPart();
+            holeManager.Draw();                        
+            powerupManager.Draw();
+            powerupManager.DrawInFold();
+            playerManager.Draw();            
+            holeManager.DrawInFold();
+
+            playerManager.Draw();
+
+
 
             //spriteBatch.DrawString(font, "Fold the page, till the ink-stain is in the hole", new Vector2(50, 15), Color.Black);
             //spriteBatch.DrawString(font, "Mouse Left Button - choose, Mouse Right Button - cancel", new Vector2(50, graphics.PreferredBackBufferHeight - 50), Color.Black);

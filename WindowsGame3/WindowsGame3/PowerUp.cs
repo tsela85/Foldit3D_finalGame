@@ -106,7 +106,7 @@ namespace Foldit3D
             point = point_1;
         }
 
-        public void tomfoldData(float a)
+        public void foldData(float a)
         {
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
@@ -116,71 +116,6 @@ namespace Foldit3D
                 worldMatrix *= Matrix.CreateTranslation(point);
             } 
         }
-
-       // public void foldData(Vector3 axis1, Vector3 point1, float a)
-       // {
-       //     int x = 1 , z = 1;
-
-       //     if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
-       //     {
-       //         worldMatrix = Matrix.Identity;
-       //         worldMatrix *= Matrix.CreateTranslation(-point);
-       //         worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
-       //         worldMatrix *= Matrix.CreateTranslation(point);   
-       //        // Trace.WriteLine("POWERUP: axis: " + axis + "   point: " + point + "   a: " + a + "   center: "+center);
-       //       //  if (angle < -90) isDraw = false;
-       //       //  else isDraw = true;
-       //       //  worldMatrix = Matrix.Identity;
-       //         //worldMatrix *= Matrix.CreateTranslation(-point);
-       //         // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
-
-       //         #region change x and z
-       //         // powerup: right+down
-       //         /*     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-       //              if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-
-       //              // powerup: right+up
-       //              if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-       //              if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
-       //              if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-       //              if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
-       //              if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
-       //              if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-       //              if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-
-       //              // powerup: left+down
-       //              if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-       //              if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-
-       //              // powerup: left+up
-       //              if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-       //              if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-       //              if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; } 
-       //              if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-               
-               
-       //              //if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-       //         */
-       //         #endregion
-
-       ////         worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
-               
-       //    //     worldMatrix *= Matrix.CreateTranslation(point);
-       //     }
-       // }
 
         #endregion
 
@@ -219,14 +154,14 @@ namespace Foldit3D
         #endregion
 
         #region 3D
-
+        
         private void setVerts(Vector2 center)
         {
             vertices = new VertexPositionTexture[6];
-            Vector3 point1 = new Vector3(center.X - size, 0, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, 0, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, 0, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, 0, center.Y - size);
+            Vector3 point1 = new Vector3(center.X - size, -0.02f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.02f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.02f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.02f, center.Y - size);
 
             vertices[0].Position = point3;
             vertices[0].TextureCoordinate = new Vector2(1,1);

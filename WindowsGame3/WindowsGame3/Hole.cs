@@ -17,6 +17,11 @@ namespace Foldit3D
         float size = 3f;
         Texture2D texture;
         Vector2 worldPosition;
+        //Tom - added to the
+        Vector3 axis;
+        Vector3 point;
+        // Tom -end
+
 
 
         protected VertexPositionTexture[] vertices;
@@ -91,64 +96,23 @@ namespace Foldit3D
 
         #region Fold
 
-        public void foldData(Vector3 axis, Vector3 point, float a)
+        public void preFoldData(Vector3 axis_1, Vector3 point_1)
         {
-            int x = 1, z = 1;
-            float angle = MathHelper.ToDegrees(a);
-            drawInFold = true;
+            axis = axis_1;
+            point = point_1;
+        }
 
-            //Trace.WriteLine("HOLE:  axis: " + axis + "   point: " + point + "   a: " + a + "   center: " + center);
+        public void foldData(float a)
+        {
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
-                //if (angle < -90) isDraw = false;
-                //else isDraw = true;
                 worldMatrix = Matrix.Identity;
                 worldMatrix *= Matrix.CreateTranslation(-point);
-
-                #region change x and z
-                // powerup: right+down
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-
-                // powerup: right+up
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-                if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-
-                // powerup: left+down
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-
-                // powerup: left+up
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-                if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-
-                #endregion
-
-                worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
-
+                worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
                 worldMatrix *= Matrix.CreateTranslation(point);
             }
         }
+
          
         #endregion
 
@@ -172,10 +136,10 @@ namespace Foldit3D
         private void setVerts(Vector2 center)
         {
             vertices = new VertexPositionTexture[6];
-            Vector3 point1 = new Vector3(center.X - size, 0, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, 0, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, 0, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, 0, center.Y - size);
+            Vector3 point1 = new Vector3(center.X - size, -0.01f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.01f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.01f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.01f, center.Y - size);
 
             vertices[0].Position = point3;
             vertices[0].TextureCoordinate = new Vector2(1, 1);
