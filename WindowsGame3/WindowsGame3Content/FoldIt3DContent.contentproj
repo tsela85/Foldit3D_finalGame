@@ -80,13 +80,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="paper1.jpg">
-      <Name>paper1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="paper.png">
       <Name>paper</Name>
       <Importer>TextureImporter</Importer>
@@ -110,13 +103,6 @@
   <ItemGroup>
     <Compile Include="gummy2.png">
       <Name>gummy2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="hole.jpg">
-      <Name>hole</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
