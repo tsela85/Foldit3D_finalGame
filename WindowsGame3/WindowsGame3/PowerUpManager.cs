@@ -100,7 +100,7 @@ namespace Foldit3D
                 BoundingBox b2 = player.getBox();
                 if (b1.Intersects(b2))
                 {
-                    GameManager.tookPopupSound.Play();
+                  //  GameManager.tookPopupSound.Play();
                     p.doYourThing(player);
                     pToRemove = p;
                     break;
