@@ -113,7 +113,7 @@ namespace Foldit3D
                 {
                     pass.Apply();
 
-                    Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2, VertexPositionTexture.VertexDeclaration);
+                    Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 4, VertexPositionTexture.VertexDeclaration);
                 }
             }
         }
@@ -157,33 +157,40 @@ namespace Foldit3D
 
         private void setVerts(Vector2 center)
         {
-            vertices = new VertexPositionTexture[9];
-            Vector3 point1 = new Vector3(center.X - size, -0.03f, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, -0.03f, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, -0.03f, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, -0.03f, center.Y - size);
-            Vector3 centerpoint = new Vector3(center.X - size, -3f, center.Y - size);
+            vertices = new VertexPositionTexture[12];
+            Vector3 point1 = new Vector3(center.X - size, -0.0f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.0f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.0f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.0f, center.Y - size);
+            Vector3 centerpoint = new Vector3(center.X, -size, center.Y);
 
-            vertices[0].Position = point1;
-            vertices[0].TextureCoordinate = new Vector2(0, 0);
+            vertices[0].Position = point4;
+            vertices[0].TextureCoordinate = new Vector2(0.75f, 0);            
 
             vertices[1].Position = centerpoint;
             vertices[1].TextureCoordinate = new Vector2(0.5f, 0.5f);
 
-            vertices[2].Position = point2;
-            vertices[2].TextureCoordinate = new Vector2(1, 0);
+            vertices[2].Position = point3;
+            vertices[2].TextureCoordinate = new Vector2(1f, 0.85f);
 
-            vertices[3] = vertices[2];
-            vertices[4] = vertices[1];
 
-            vertices[5].Position = point3;
-            vertices[5].TextureCoordinate = new Vector2(1, 1);
+            vertices[3].Position = point2;
+            vertices[3].TextureCoordinate = new Vector2(0, 1);
 
-            vertices[6] = vertices[5];
-            vertices[7] = vertices[1];
+            vertices[4] = vertices[2];
+            vertices[5] = vertices[1];
+
+            vertices[6].Position = point1;
+            vertices[6].TextureCoordinate = new Vector2(0, 0);
+
+            vertices[7] = vertices[3];
+            vertices[8] = vertices[1];
+
+            vertices[9] = vertices[0];
+            vertices[10] = vertices[6];
+            vertices[11] = vertices[1];            
                                               
-            vertices[8].Position = point4;
-            vertices[8].TextureCoordinate = new Vector2(0, 1);
+
 
            // Trace.WriteLine("\n 0: " + point3 + "\n 1: " + point1 + "\n 2: " + point2 + "\n 3: " + point1 + "\n 4: " + point3 + "\n 5: " + point4);
         }
