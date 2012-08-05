@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
+using WindowsGame3;
 
 namespace Foldit3D
 {
@@ -20,12 +21,13 @@ namespace Foldit3D
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameManager ourGame;
-        public static float closeRate = 0.09f;
+        public static float closeRate = 0.08f;
         public static float openRate = 0.04f;
         public static GraphicsDevice device;
 
         public static Camera camera;
         public static InputHandler input;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -70,9 +72,10 @@ namespace Foldit3D
             PlayerManager playerManager = new PlayerManager(Content.Load<Texture2D>("gummy2"), Content.Load<Effect>("effects"));
             PowerUpManager powerupManager = new PowerUpManager(Content.Load<Texture2D>("inkspot"), Content.Load<Effect>("effects"));
             Board board = new Board(Content.Load<Texture2D>("paper"), Content.Load<Effect>("effects"));
+            Table table = new Table(Content.Load<Model>("Table"));
             camera = new Camera(this);
             input = new InputHandler(this);
-            ourGame = new GameManager(font, scoreFont, holeManager, playerManager, powerupManager,board);
+            ourGame = new GameManager(font, scoreFont, holeManager, playerManager, powerupManager,board,table);
             ourGame.loadCurrLevel();
             
         }
@@ -110,7 +113,7 @@ namespace Foldit3D
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //spriteBatch.Begin(); TOM - moved to gmaeManager
+            //spriteBatch.Begin(); TOM - moved to gmaeManager          
             ourGame.Draw(gameTime, spriteBatch, graphics);
             //spriteBatch.End();
 

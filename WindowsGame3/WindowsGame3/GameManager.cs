@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using WindowsGame3;
 
 namespace Foldit3D
 {
@@ -21,6 +22,7 @@ namespace Foldit3D
         PlayerManager playerManager;
         PowerUpManager powerupManager;
         Board board;
+        Table table;
         bool prefold;
 
         string win = "      EXCELLENT!!!\n you did it with: ";
@@ -33,7 +35,7 @@ namespace Foldit3D
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
         public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
-            Board bo)
+            Board bo,Table tab)
         {
             font = f;
             scoreFont = sf;
@@ -41,6 +43,7 @@ namespace Foldit3D
             playerManager = p;
             powerupManager = pu;
             board = bo;
+            table = tab;
             gamestate = GameState.normal;
             folds = 0;
             level = 1;
@@ -166,9 +169,10 @@ namespace Foldit3D
             {
                 spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
             }
-          
-        //    Game1.device.DepthStencilState = DepthStencilState.Default; //TOM - makes 3d 
+            spriteBatch.End();
+            Game1.device.DepthStencilState = DepthStencilState.Default; //TOM - makes 3d 
 
+            table.Draw();
             board.Draw();
             board.DrawfoldPart();
             holeManager.Draw();                        
@@ -179,7 +183,7 @@ namespace Foldit3D
 
             playerManager.Draw();
 
-            spriteBatch.End();            
+                        
 
             //spriteBatch.DrawString(font, "Fold the page, till the ink-stain is in the hole", new Vector2(50, 15), Color.Black);
             //spriteBatch.DrawString(font, "Mouse Left Button - choose, Mouse Right Button - cancel", new Vector2(50, graphics.PreferredBackBufferHeight - 50), Color.Black);

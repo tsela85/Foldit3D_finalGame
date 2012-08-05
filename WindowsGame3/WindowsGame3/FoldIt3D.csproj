@@ -127,6 +127,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="RoundLine.cs" />
     <Compile Include="StaticPlayer.cs" />
+    <Compile Include="Table.cs" />
     <Compile Include="XMLReader.cs" />
   </ItemGroup>
   <ItemGroup>

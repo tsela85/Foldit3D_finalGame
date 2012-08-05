@@ -19,7 +19,7 @@ namespace Foldit3D
         // how fast does the camera zoom in and out?
         const float CameraZoomSpeed = .03f;
         // the camera can't be further away than this distance
-        const float CameraMaxDistance = 120.0f;
+        const float CameraMaxDistance = 200.0f;
         // and it can't be closer than this
         const float CameraMinDistance = 15f;
 
@@ -145,7 +145,7 @@ namespace Foldit3D
             //    CameraRotateSpeed;
 
             // Limit the arc movement.
-            cameraArc = MathHelper.Clamp(cameraArc,-90.0f, -10.0f);
+            cameraArc = MathHelper.Clamp(cameraArc,-90.0f, 10.0f);
 
             // Check for input to rotate the camera around the model.
             if (input.KeyboardHandler.IsKeyDown(Keys.Right) ||
