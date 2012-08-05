@@ -25,7 +25,6 @@ namespace Foldit3D
 
 
         protected VertexPositionTexture[] vertices;
-        protected VertexPositionTexture[] backVertices; //Tom - back side verts
         protected Matrix worldMatrix = Matrix.Identity;
         protected Effect effect;
 
@@ -75,8 +74,6 @@ namespace Foldit3D
                     pass.Apply();
 
                     Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2, VertexPositionTexture.VertexDeclaration);
-                    //Tom - drawing the back side 
-                    Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, backVertices, 0, 2, VertexPositionTexture.VertexDeclaration);
                 }
             }
         }
@@ -139,12 +136,10 @@ namespace Foldit3D
         private void setVerts(Vector2 center)
         {
             vertices = new VertexPositionTexture[6];
-            backVertices = new VertexPositionTexture[6];
-            float y = -0.01f;
-            Vector3 point1 = new Vector3(center.X - size, y, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, y, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, y, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, y, center.Y - size);
+            Vector3 point1 = new Vector3(center.X - size, -0.01f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.01f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.01f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.01f, center.Y - size);
 
             vertices[0].Position = point3;
             vertices[0].TextureCoordinate = new Vector2(1, 1);
@@ -160,13 +155,6 @@ namespace Foldit3D
 
             vertices[5].Position = point4;
             vertices[5].TextureCoordinate = new Vector2(0, 1);
-
-            //Tom - the back side of the hole
-            for (int i = 0; i < 6; i++)
-            {
-                backVertices[i] = vertices[5-i];
-                backVertices[i].Position.Y = -y;
-            }
         }
 
         public BoundingBox getBox()

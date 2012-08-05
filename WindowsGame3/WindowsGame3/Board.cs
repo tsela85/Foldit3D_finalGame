@@ -37,7 +37,8 @@ namespace Foldit3D
         private GraphicsDevice device;
         private InputHandler input;
         private BoardState state;
-        //private List<VertexPositionColor> lineList;
+        private List<VertexPositionColor> oldLineList;
+        private List<short> oldLineindices;
         VertexPositionColor[] lineList;
         private List<short> lineIndices;
 
@@ -122,7 +123,8 @@ namespace Foldit3D
             vertNum = vNum;
             
             vertices = new VertexPositionNormalTexture[vNum];
-            //lineList = new List<VertexPositionColor>();
+            oldLineList = new List<VertexPositionColor>();
+            oldLineindices = new List<short>();
             lineList = new VertexPositionColor[2];
             lineList[0].Color = Color.Orange;
             lineList[1].Color = Color.Orange;
@@ -234,7 +236,15 @@ namespace Foldit3D
                         if ((state == BoardState.onEdge1) || (state == BoardState.onEdge2))
                         {
                             device.DrawUserPrimitives(PrimitiveType.TriangleList, verOnEdge, 0, 1,        VertexPositionColor.VertexDeclaration);
-                        }                                                    
+                        }
+                        if ((state != BoardState.folding1) && (state != BoardState.folding1) && (oldLineList.Count > 0))
+                        {
+                      
+                            device.DrawUserIndexedPrimitives<VertexPositionColor>(PrimitiveType.LineList,
+                            oldLineList.ToArray(), 0, oldLineList.Count, oldLineindices.ToArray(), 0
+                            , oldLineList.Count/2, VertexPositionColor.VertexDeclaration);
+
+                        }
                     }
                 }
         }
@@ -617,6 +627,14 @@ namespace Foldit3D
             if (state == BoardState.preFold)
             {                
                 Divide(p[0], p[1], out one, out two);
+                //Tom -- array of all the old fold lines
+                lineList[0].Color = Color.YellowGreen;
+                lineList[1].Color = Color.YellowGreen;
+                oldLineindices.Add((short)oldLineindices.Count);
+                oldLineList.Add(lineList[0]);
+                oldLineindices.Add((short)oldLineindices.Count);
+                oldLineList.Add(lineList[1]);                
+
                 state = BoardState.folding1;
                 //if (PointInBeforeFold(new Vector3(-9, 0, -9)))
                 //    Trace.WriteLine("before fold");
