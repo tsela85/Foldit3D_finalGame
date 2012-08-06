@@ -22,7 +22,7 @@ namespace Foldit3D
         PlayerManager playerManager;
         PowerUpManager powerupManager;
         Board board;
-        ScreenState screen = ScreenState.start;
+        ScreenState screen = ScreenState.game;
         Texture2D startScreen;
         Texture2D helpScreen;
         Texture2D levelScreen;
