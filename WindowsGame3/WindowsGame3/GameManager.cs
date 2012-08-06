@@ -30,7 +30,9 @@ namespace Foldit3D
         Rectangle levelsBtn = new Rectangle(400, 300, 400, 70);
         Rectangle helpBtn = new Rectangle(400, 400, 400, 70);
         Rectangle helpBackBtn = new Rectangle(800, 570, 200, 70);
-
+        List<Texture2D> levelsPics = new List<Texture2D>();
+        List<Rectangle> levelsPicsBtn = new List<Rectangle>();
+        double levelScreenTime = 0;
         string win = "      EXCELLENT!!!\n you did it with: ";
         int level;
         int endLevel = 2;
@@ -60,6 +62,12 @@ namespace Foldit3D
             startScreen = st;
             helpScreen = help;
             levelScreen = ls;
+            for (int i = 1; i <= endLevel; i++)
+            {
+                levelsPics.Add(Game1.content.Load<Texture2D>("level" + i));
+                levelsPicsBtn.Add(new Rectangle(80 + ((levelsPics.ElementAt(i - 1).Width+30) * i), (i < 4) ? 220 : 400, levelsPics.ElementAt(i - 1).Width, levelsPics.ElementAt(i - 1).Height));
+            }
+            
         }
 
         public void loadCurrLevel() 
@@ -80,7 +88,9 @@ namespace Foldit3D
         #region Update
         public void Update(GameTime gameTime)
         {
-            if (screen == ScreenState.start || screen == ScreenState.help)
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (screen == ScreenState.start || screen == ScreenState.help|| screen==ScreenState.levels)
             {
                 MouseState mouseState = Mouse.GetState();
                 if (mouseState.LeftButton == ButtonState.Pressed)
@@ -94,6 +104,7 @@ namespace Foldit3D
                         else if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(levelsBtn))
                         {
                             screen = ScreenState.levels;
+                            levelScreenTime = 0.1;
                         }
                         else if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(helpBtn))
                         {
@@ -107,11 +118,34 @@ namespace Foldit3D
                             screen = ScreenState.start;
                         }
                     }
+
+                    else if (screen == ScreenState.levels)
+                    {
+                        if (levelScreenTime > 0) Math.Max(levelScreenTime -= elapsed, 0);
+                        if (levelScreenTime > 0) return;
+                        if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(helpBackBtn))
+                        {
+                            screen = ScreenState.start;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < endLevel; i++)
+                            {
+                                if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(levelsPicsBtn.ElementAt(i)))
+                                {
+                                    level = i + 1;
+                                    screen = ScreenState.game;
+                                    loadCurrLevel();
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
             {
-               float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+               
                time += elapsed;
             if (time >= 60 && level != 0)
             {
@@ -171,7 +205,7 @@ namespace Foldit3D
         {
             Game1.device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
             RasterizerState rs = new RasterizerState();
-             rs.CullMode = CullMode.None;
+            // rs.CullMode = CullMode.None;
             // rs.FillMode = FillMode.WireFrame;    
             Game1.device.RasterizerState = rs;
 
@@ -211,6 +245,17 @@ namespace Foldit3D
             else if (screen == ScreenState.levels)
             {
                 spriteBatch.Draw(levelScreen, new Rectangle(210, 60, levelScreen.Width, levelScreen.Height), Color.White);
+                for (int i = 1; i <= endLevel; i++)
+                {
+                    spriteBatch.Draw(levelsPics.ElementAt(i - 1),levelsPicsBtn.ElementAt(i-1), Color.White);
+                    var rect = new Texture2D(graphics.GraphicsDevice, 1, 1);
+                    rect.SetData(new[] { Color.Transparent });
+                    spriteBatch.Draw(rect, levelsPicsBtn.ElementAt(i - 1), Color.White);
+                    spriteBatch.DrawString(font, "Back", new Vector2(helpBackBtn.X + 50, helpBackBtn.Y), Color.Black);
+                    var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
+                    rect3.SetData(new[] { Color.Transparent });
+                    spriteBatch.Draw(rect3, helpBackBtn, Color.White);
+                }
             }
             else
             {
