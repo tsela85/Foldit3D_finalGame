@@ -13,8 +13,6 @@ Content\font.xnb
 Content\scoreFont.xnb
 Content\effects.xnb
 Content\gum.xnb
-Content\startScreen.xnb
 Content\help.xnb
 Content\levelsScreen.xnb
-Content\level1.xnb
-Content\level2.xnb
+Content\startScreen.xnb
