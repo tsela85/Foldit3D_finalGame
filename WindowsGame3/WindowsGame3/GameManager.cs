@@ -171,7 +171,7 @@ namespace Foldit3D
         {
             Game1.device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
             RasterizerState rs = new RasterizerState();
-            // rs.CullMode = CullMode.None;
+             rs.CullMode = CullMode.None;
             // rs.FillMode = FillMode.WireFrame;    
             Game1.device.RasterizerState = rs;
 
@@ -269,7 +269,7 @@ namespace Foldit3D
                 if (folds > 9 && folds <13)
                     spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.Black);
                 else if (folds > 13)
-                    spriteBatch.DrawString(scoreFont, "You can push 'R' to restart...", new Vector2(400, 20), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.Black);
             }
         }
         #endregion
