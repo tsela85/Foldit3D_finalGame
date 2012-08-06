@@ -10,14 +10,12 @@ namespace Foldit3D
 {
     class NormalPlayer : Player
     {       
-        private bool before = false;
-        private bool after = false;
-        int x = 1, z = 1;
+            
 
         public NormalPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) { }
 
         #region fold
-
+        /*
         public override void foldData(Vector3 axis, Vector3 point, float a, bool beforeFold, bool afterFold)
         {
            // Trace.WriteLine("folding beforeFold " + beforeFold + " afterFold " + afterFold);
@@ -116,67 +114,54 @@ namespace Foldit3D
             }
             calcCenter();
         }
-
-
-        public override void switchPoints()
+*/
+        public override void foldData(float a,Board.BoardState state)
         {
-            VertexPositionTexture temp;
-            temp = vertices[0];
-            vertices[0] = vertices[1];
-            vertices[1] = temp;
-            temp = vertices[3];
-            vertices[3] = vertices[4];
-            vertices[4] = temp;
-
-            isPointsSwitched = !isPointsSwitched;
-        }
-
-        public void checkXZ(Vector3 axis, Vector3 point)
-        {
-            #region change x and z
-            // powerup: right+down
-            if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-            if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-            if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-            if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-            if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-
-            // powerup: right+up
-            if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-            if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
-            if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-            if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
-            if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
-            if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-            if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-
-            // powerup: left+down
-            if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-            if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-            if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-            if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-            if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-
-            // powerup: left+up
-            if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-            if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-            if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-            if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-            if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-            if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-
-            #endregion
-        }
-
-        public void calcCenter()
-        {
-            center.X = Vector3.Transform(vertices[2].Position, worldMatrix).X - size;
-            center.Y = Vector3.Transform(vertices[2].Position, worldMatrix).Z - size;
+            if (beforFold)
+            {
+                if (state == Board.BoardState.folding1) {
+                    if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
+                    {
+                        worldMatrix = Matrix.Identity;
+                        worldMatrix *= Matrix.CreateTranslation(-point);
+                        worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                        worldMatrix *= Matrix.CreateTranslation(point);
+                    }
+                } else
+                    if ((state == Board.BoardState.folding2) && !(stuckOnPaper))
+                    {
+                        float oldy;
+                        stuckOnPaper = true;
+                        switchPoints();
+                        worldMatrix = Matrix.Identity;
+                        worldMatrix *= Matrix.CreateTranslation(-point);
+                        worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
+                        worldMatrix *= Matrix.CreateTranslation(point);
+                        for (int i = 0; i < vertices.Length; i++)
+                        {
+                            oldy = vertices[i].Position.Y;
+                            vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
+                            vertices[i].Position.Y = oldy;
+                        }
+                        calcCenter();
+                        worldMatrix = Matrix.Identity;
+                        checkCollision = true;
+                    }
+            } else if (afterFold && (state == Board.BoardState.folding2))
+            {
+               if (!stuckOnPaper)
+               {
+               //    switchPoints();                   
+                   stuckOnPaper = true;
+               }
+                worldMatrix = Matrix.Identity;
+                //worldMatrix *= Matrix.CreateTranslation(getCenter());     
+                //worldMatrix *= Matrix.CreateRotationY(MathHelper.Pi);
+                //worldMatrix *= Matrix.CreateTranslation(-getCenter()); 
+                worldMatrix *= Matrix.CreateTranslation(-point);                
+                worldMatrix *= Matrix.CreateFromAxisAngle(axis,a - MathHelper.Pi);
+                worldMatrix *= Matrix.CreateTranslation(point);
+            }
         }
 
         #endregion

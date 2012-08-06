@@ -101,11 +101,31 @@ namespace Foldit3D
             else Trace.WriteLine("changePlayerType Error!");
         }
 
-        public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
+        {
+            Matrix checkMatrix;
+            Vector3 check;
+            foreach (Player p in players)
+            {
+             //   if (b.PointInBeforeFold(p.getCenter()))
+              //  {
+                    checkMatrix = Matrix.Identity;
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    check = Vector3.Transform(p.getCenter(), checkMatrix); // where the point will be after rotation
+                    if (check.Y > 0.0f) // if it is in the right deriction
+                        p.preFoldData(axis, (foldp1 + foldp2) / 2,b.PointInBeforeFold(p.getCenter()),b.PointInAfterFold(p.getCenter()));
+                    else // not in the right deriction
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2,b.PointInBeforeFold(p.getCenter()),b.PointInAfterFold(p.getCenter()));
+                }
+            //}
+        }
+
+        // I changed it so the axis and the point will be relevent to the closest point - Tom
+        public void foldData(float angle, Board b)
         {
             foreach (Player p in players)
             {
-                    p.foldData(vec, point, angle, b.PointInBeforeFold(p.getCenter()), b.PointInAfterFold(p.getCenter()));
+                p.foldData(angle,b.State);
             }
         }
         #endregion

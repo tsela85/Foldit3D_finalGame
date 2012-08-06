@@ -29,6 +29,14 @@ namespace Foldit3D
         protected bool isDraw = true;
         protected bool dataSet = false;
         protected float size = 2f;
+        //Tom - added to the
+        protected Vector3 axis;
+        protected Vector3 point;
+        protected bool beforFold,afterFold;
+        protected bool stuckOnPaper = false;
+        protected bool checkCollision = false;
+        // Tom -end
+
 
         #region Properties
 
@@ -80,22 +88,13 @@ namespace Foldit3D
         #region Update and Draw
         public void Update(GameTime gameTime, GameState state)
         {
-            if (state != GameState.folding)
-            {
+            if ((state != GameState.folding) && checkCollision)
+            {            
                 moving = true;
                 dataSet = false;
-                
-                if (!worldMatrix.Equals(Matrix.Identity))
-                {
-                    for (int i = 0; i < vertices.Length; i++)
-                    {
-                        vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
-                        vertices[i].Position.Y = 0;
-                    }
-                    worldMatrix = Matrix.Identity;
-                    HoleManager.checkCollision(this);
-                    PowerUpManager.checkCollision(this);
-                }
+                HoleManager.checkCollision(this);
+                PowerUpManager.checkCollision(this);
+                checkCollision = false;
             }
         }
 
@@ -122,11 +121,19 @@ namespace Foldit3D
 
         #region Fold
 
+        public void preFoldData(Vector3 axis_1, Vector3 point_1, bool beforeF, bool afterF)
+        {
+            axis = axis_1;
+            point = point_1;
+            beforFold = beforeF;
+            afterFold = afterF;
+            stuckOnPaper = false;
+        }
 
         #region Virtual Methods
 
-        public virtual void foldData(Vector3 axis, Vector3 point, float a,bool beforeFold,bool afterFold) { }
-        public virtual void switchPoints(){}
+        //public virtual void foldData(Vector3 axis, Vector3 point, float a,bool beforeFold,bool afterFold) { }
+        public virtual void foldData(float a,Board.BoardState state) { }
         #endregion
 
         #endregion
@@ -213,20 +220,37 @@ namespace Foldit3D
 
         public Vector3 getCenter()
         {
-          /*  float x;
-            float z;
-            if (isPointsSwitched)
-            {
-                x = (vertices[3].Position.X + vertices[0].Position.X) / 2;
-                z = (vertices[3].Position.Z + vertices[0].Position.Z) / 2;
-            }
-            else
-            {
-                x = (vertices[2].Position.X + vertices[5].Position.X) / 2;
-                z = (vertices[2].Position.Z + vertices[5].Position.Z) / 2;
-            }*/
             return new Vector3(center.X, 0, center.Y);
         }
+
+        protected void switchPoints()
+        {
+            VertexPositionTexture temp;
+            temp = vertices[0];
+            vertices[0] = vertices[2];
+            vertices[2] = temp;
+            //
+            temp = vertices[3];
+            vertices[3] = vertices[4];
+            vertices[4] = temp;
+            //
+            temp = vertices[7];
+            vertices[7] = vertices[6];
+            vertices[6] = temp;
+            //
+            temp = vertices[9];
+            vertices[9] = vertices[10];
+            vertices[10] = temp;
+            //
+            isPointsSwitched = !isPointsSwitched;
+        }
+
+        protected void calcCenter()
+        {
+            center.X = Vector3.Transform(getCenter(), worldMatrix).X;
+            center.Y = Vector3.Transform(getCenter(), worldMatrix).Z;
+        }
+
         #endregion
     }
 }
