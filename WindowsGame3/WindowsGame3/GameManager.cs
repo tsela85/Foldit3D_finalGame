@@ -58,8 +58,8 @@ namespace Foldit3D
             holeManager.restartLevel();
             holeManager.initLevel(XMLReader.Get(level, "holes"));
             powerupManager.restartLevel();
-            //Tom - powerupManager.initLevel(XMLReader.Get(level, "powerups"));
-            powerupManager.tomInitLevel();
+            powerupManager.initLevel(XMLReader.Get(level, "powerups"));
+            //powerupManager.tomInitLevel();
             Vector3[] points = new Vector3[4] {
                 new Vector3(-40f, 0f, 30f),
                 new Vector3(40f, 0f, 30f),

@@ -125,7 +125,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="RoundLine.cs" />
     <Compile Include="StaticPlayer.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="XMLReader.cs" />
