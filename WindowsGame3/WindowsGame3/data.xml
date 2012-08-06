@@ -201,6 +201,31 @@
       <x>-20</x>
       <y>-9</y>
     </powerupObj>
+    <powerupObj>
+      <type>0</type>
+      <x>0</x>
+      <y>0</y>
+    </powerupObj>
+    <powerupObj>
+      <type>0</type>
+      <x>10</x>
+      <y>10</y>
+    </powerupObj>
+    <powerupObj>
+      <type>0</type>
+      <x>-10</x>
+      <y>-10</y>
+    </powerupObj>
+    <powerupObj>
+      <type>0</type>
+      <x>20</x>
+      <y>20</y>
+    </powerupObj>
+    <powerupObj>
+      <type>0</type>
+      <x>-20</x>
+      <y>-20</y>
+    </powerupObj>
     </powerups>
   </level2>
 

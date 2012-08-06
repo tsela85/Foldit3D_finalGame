@@ -76,14 +76,37 @@ namespace Foldit3D
 
         #region Public Methods
 
-        public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
+        {
+            Matrix checkMatrix;
+            Vector3 check;
+            foreach (Hole h in holes)
+            {
+                if (b.PointInBeforeFold(h.getCenter()))
+                {
+                    checkMatrix = Matrix.Identity;
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    check = Vector3.Transform(h.getCenter(), checkMatrix); // where the point will be after rotation
+                    if (check.Y > 0.0f) // if it is in the right deriction
+                        h.preFoldData(axis, (foldp1 + foldp2) / 2);
+                    else // not in the right deriction
+                        h.preFoldData(-axis, (foldp1 + foldp2) / 2);
+                }
+            }
+        }
+        // I changed it so the axis and the point will be relevent to the closest point - Tom
+        public void foldData(float angle, Board b)
         {
             foreach (Hole h in holes)
             {
                 if (b.PointInBeforeFold(h.getCenter()))
-                    h.foldData(vec, point, angle);
+                {
+                    h.foldData(angle);
+                }
             }
         }
+
+  
         #endregion
 
         #region Collision

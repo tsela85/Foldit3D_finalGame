@@ -5,8 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Audio;
+using WindowsGame3;
 
 namespace Foldit3D
 {
@@ -16,12 +15,15 @@ namespace Foldit3D
     class GameManager
     {
         SpriteFont font, scoreFont;
+        //Board board;
         static GameState gamestate;
         Board.BoardState boardstate;
         HoleManager holeManager;
         PlayerManager playerManager;
         PowerUpManager powerupManager;
         Board board;
+        Table table;
+        bool prefold;
         ScreenState screen = ScreenState.start;
         Texture2D startScreen;
         Texture2D helpScreen;
@@ -46,8 +48,9 @@ namespace Foldit3D
         ///////////////////////////
         List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
-        public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
-            Board bo, Texture2D st, Texture2D help, Texture2D ls)
+
+       public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
+            Board bo,Table tab, Texture2D st, Texture2D help, Texture2D ls)
         {
             font = f;
             scoreFont = sf;
@@ -55,6 +58,7 @@ namespace Foldit3D
             playerManager = p;
             powerupManager = pu;
             board = bo;
+            table = tab;
             gamestate = GameState.normal;
             folds = 0;
             level = 0;
@@ -81,6 +85,7 @@ namespace Foldit3D
             holeManager.initLevel(XMLReader.Get(level, "holes"));
             powerupManager.restartLevel();
             powerupManager.initLevel(XMLReader.Get(level, "powerups"));
+            //powerupManager.tomInitLevel();
             board.initLevel(XMLReader.Get(level, "board"));
             Game1.camera.Initialize(); 
         } 
@@ -156,9 +161,13 @@ namespace Foldit3D
                     playerManager.Update(gameTime, gamestate);
                     boardstate = board.update();
                     if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
-                        gamestate = GameState.folding;
+                {
+                    gamestate = GameState.folding;                    
+                }
                     else if (gamestate != GameState.scored)
                         gamestate = GameState.normal;
+                if (boardstate == Board.BoardState.preFold)
+                    prefold = true;
                     Game1.input.Update(gameTime);
                     Game1.camera.UpdateCamera(gameTime);
                     if (Keyboard.GetState().IsKeyDown(Keys.R))
@@ -170,10 +179,24 @@ namespace Foldit3D
                         Vector3 v = board.getAxis();
                         Vector3 p = board.getAxisPoint();
                         float a = board.getAngle();
+                    
+                    //Tom -  gets the folding points
+                    Vector3 foldPoint1, foldPoint2;
+                    board.getfoldPoints(out foldPoint1,out  foldPoint2);
+                    
+                    if (prefold)
+                    {
+                        powerupManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        holeManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        prefold = false;
+                    }
+
                         playerManager.foldData(v, p, a, board);
 
-                        holeManager.foldData(v, p, a, board);
-                        powerupManager.foldData(v, p, a, board);
+                    holeManager.foldData(a, board);
+                    //powerupManager.tom2TryfoldData(v, p, a, board);
+                    powerupManager.foldData(a,board);
+                   // powerupManager.foldData(v, p, a, board);
                         if (first == 1)
                         {
                             folds++;
@@ -205,9 +228,12 @@ namespace Foldit3D
         {
             Game1.device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DarkSlateBlue, 1.0f, 0);
             RasterizerState rs = new RasterizerState();
-            // rs.CullMode = CullMode.None;
-            // rs.FillMode = FillMode.WireFrame;    
+           // rs.CullMode = CullMode.None;  // if enabled , drawing only facing objects
+             //rs.FillMode = FillMode.WireFrame;  
+            
             Game1.device.RasterizerState = rs;
+
+            spriteBatch.Begin();
 
             if (screen == ScreenState.start)
             {
@@ -230,6 +256,7 @@ namespace Foldit3D
                 var rect2 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect2.SetData(new[] { Color.Transparent });
                 spriteBatch.Draw(rect2, helpBtn, Color.White);
+             
 
             }
             else if (screen == ScreenState.help)
@@ -241,6 +268,7 @@ namespace Foldit3D
                 var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect3.SetData(new[] { Color.Transparent });
                 spriteBatch.Draw(rect3, helpBackBtn, Color.White);
+           
             }
             else if (screen == ScreenState.levels)
             {
@@ -255,19 +283,25 @@ namespace Foldit3D
                     var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                     rect3.SetData(new[] { Color.Transparent });
                     spriteBatch.Draw(rect3, helpBackBtn, Color.White);
+                
                 }
             }
             else
             {
+                spriteBatch.End(); //Tom 
+                Game1.device.DepthStencilState = DepthStencilState.Default; //TOM - makes 3d 
+
+                table.Draw();
                 board.Draw();
+                board.DrawfoldPart();
                 holeManager.Draw();
                 powerupManager.Draw();
-                playerManager.Draw();
-                board.DrawfoldPart();
-                holeManager.DrawInFold();
                 powerupManager.DrawInFold();
+                holeManager.DrawInFold();
                 playerManager.Draw();
 
+
+                spriteBatch.Begin(); //Tom 
                 spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
                 spriteBatch.DrawString(scoreFont, "level: " + level, new Vector2(20, 40), Color.LightGray);
                 spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.LightGray);
@@ -316,6 +350,7 @@ namespace Foldit3D
                 else if (folds > 13)
                     spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.Black);
             }
+            spriteBatch.End(); //Tom 
         }
         #endregion
 
