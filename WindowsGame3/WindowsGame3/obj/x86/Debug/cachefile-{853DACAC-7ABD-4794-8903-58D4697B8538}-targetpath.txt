@@ -9,10 +9,12 @@ Content\gummy2.xnb
 Content\hole.xnb
 Content\hole1.xnb
 Content\hole2.xnb
+Content\font.xnb
+Content\scoreFont.xnb
+Content\effects.xnb
 Content\gum.xnb
 Content\startScreen.xnb
 Content\help.xnb
 Content\levelsScreen.xnb
-Content\font.xnb
-Content\scoreFont.xnb
-Content\effects.xnb
+Content\level1.xnb
+Content\level2.xnb
