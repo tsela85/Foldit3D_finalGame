@@ -48,3 +48,5 @@ C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGam
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\WindowsGame3.pdb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb
