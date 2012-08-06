@@ -162,7 +162,7 @@ namespace Foldit3D
             Vector3 point2 = new Vector3(center.X + size, -0.0f, center.Y + size);
             Vector3 point3 = new Vector3(center.X + size, -0.0f, center.Y - size);
             Vector3 point4 = new Vector3(center.X - size, -0.0f, center.Y - size);
-            Vector3 centerpoint = new Vector3(center.X, -size, center.Y);
+            Vector3 centerpoint = new Vector3(center.X, -size/2, center.Y);
 
             vertices[0].Position = point4;
             vertices[0].TextureCoordinate = new Vector2(0.75f, 0);            

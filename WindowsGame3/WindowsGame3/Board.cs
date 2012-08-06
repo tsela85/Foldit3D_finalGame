@@ -153,12 +153,12 @@ namespace Foldit3D
                 j += 2;
             }
             verOnEdge = new VertexPositionColor[6];
-            verOnEdge[0].Color = Color.Black;
-            verOnEdge[1].Color = Color.Black;
-            verOnEdge[2].Color = Color.Black;
-            verOnEdge[3].Color = Color.Black;
-            verOnEdge[4].Color = Color.Black;
-            verOnEdge[5].Color = Color.Black;
+            verOnEdge[0].Color = Color.Purple;
+            verOnEdge[1].Color = Color.Purple;
+            verOnEdge[2].Color = Color.Purple;
+            verOnEdge[3].Color = Color.Purple;
+            verOnEdge[4].Color = Color.Purple;
+            verOnEdge[5].Color = Color.Purple;
             p = new DividingVert[2];
         }
 
