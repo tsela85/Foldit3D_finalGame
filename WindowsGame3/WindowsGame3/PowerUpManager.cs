@@ -117,18 +117,12 @@ namespace Foldit3D
         #endregion
 
         #region Collision
-        public static void checkCollision(Player player)
+        public static void checkCollision(Player player, Vector2 pCenter, float pSize)
         {
             PowerUp pToRemove = null;
             foreach (PowerUp p in powerups)
             {
-                BoundingBox b1 = p.getBox();
-                b1.Max.X -= 1.0f;
-                b1.Max.Z -= 1.0f;
-                b1.Min.X += 1.0f;
-                b1.Min.Z += 1.0f; 
-                BoundingBox b2 = player.getBox();
-                if (b1.Intersects(b2))
+                if (Vector2.Distance(pCenter, p.center) < (pSize + p.size + 0.1f))
                 {
                     p.doYourThing(player);
                     pToRemove = p;

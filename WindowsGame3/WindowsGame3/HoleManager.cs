@@ -110,17 +110,11 @@ namespace Foldit3D
         #endregion
 
         #region Collision
-        public static void checkCollision(Player player)
+        public static void checkCollision(Player player,Vector2 pCenter,float pSize)
         {
             foreach (Hole h in holes)
             {
-                BoundingBox b1 = h.getBox();
-                b1.Max.X -= 1.0f;
-                b1.Max.Z -= 1.0f;
-                b1.Min.X += 1.0f;
-                b1.Min.Z += 1.0f; 
-                BoundingBox b2 = player.getBox();
-                if (b1.Intersects(b2))
+                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
                 {
                     // WIN!!!
                     Trace.WriteLine("WIN!!!!!!");

@@ -12,11 +12,11 @@ namespace Foldit3D
 
     class PowerUp
     {
-        Vector2 center = Vector2.Zero;
+        public Vector2 center = Vector2.Zero;
         bool moving = true;
         bool isDraw = true;
         bool drawInFold = false;
-        float size = 2.5f;
+        public float size = 2.5f;
         Texture2D texture;
         Vector2 worldPosition;
         PowerUpType type;

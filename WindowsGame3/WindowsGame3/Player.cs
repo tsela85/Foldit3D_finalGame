@@ -105,15 +105,15 @@ namespace Foldit3D
 
                 moving = true;
                 dataSet = false;
-                HoleManager.checkCollision(this);
-                PowerUpManager.checkCollision(this);
+                HoleManager.checkCollision(this,center, size);
+                PowerUpManager.checkCollision(this,center, size);
                 checkCollision = 0;
             } else
                 if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
                 {
                     dataSet = false;
-                    HoleManager.checkCollision(this);
-                    PowerUpManager.checkCollision(this);
+                    HoleManager.checkCollision(this,center,size);
+                    PowerUpManager.checkCollision(this,center, size);
                     checkCollision = 0;
                 }
         }

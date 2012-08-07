@@ -10,11 +10,11 @@ namespace Foldit3D
 {
     class Hole
     {
-        Vector2 center = Vector2.Zero;
+        public Vector2 center = Vector2.Zero;
         bool moving = true;
         bool isDraw = true;
         bool drawInFold = false;
-        float size = 3f;
+        public float size = 3f;
         Texture2D texture;
         Vector2 worldPosition;
         //Tom - added to the
