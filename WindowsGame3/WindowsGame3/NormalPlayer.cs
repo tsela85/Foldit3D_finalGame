@@ -128,39 +128,43 @@ namespace Foldit3D
                         worldMatrix *= Matrix.CreateTranslation(point);
                     }
                 } else
-                    if ((state == Board.BoardState.folding2) && !(stuckOnPaper))
+                if ((state == Board.BoardState.folding2) && !(stuckOnPaper))
+                {
+                    float oldy;
+                    stuckOnPaper = true;
+                    switchPoints();
+                    worldMatrix = Matrix.Identity;
+                    worldMatrix *= Matrix.CreateTranslation(-point);
+                    worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
+                    worldMatrix *= Matrix.CreateTranslation(point);
+                    for (int i = 0; i < vertices.Length; i++)
                     {
-                        float oldy;
-                        stuckOnPaper = true;
-                        switchPoints();
-                        worldMatrix = Matrix.Identity;
-                        worldMatrix *= Matrix.CreateTranslation(-point);
-                        worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
-                        worldMatrix *= Matrix.CreateTranslation(point);
-                        for (int i = 0; i < vertices.Length; i++)
-                        {
-                            oldy = vertices[i].Position.Y;
-                            vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
-                            vertices[i].Position.Y = oldy;
-                        }
-                        calcCenter();
-                        worldMatrix = Matrix.Identity;
-                        checkCollision = true;
+                        oldy = vertices[i].Position.Y;
+                        vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
+                        vertices[i].Position.Y = oldy;
                     }
+                    calcCenter();
+                    worldMatrix = Matrix.Identity;
+                    checkCollision = 1;
+                }
             } else if (afterFold && (state == Board.BoardState.folding2))
             {
-               if (!stuckOnPaper)
-               {
-               //    switchPoints();                   
-                   stuckOnPaper = true;
-               }
+               //if (!stuckOnPaper)
+               //{                   
+               //    //turn the gum around
+               //    switchPoints();                                   
+               //    for (int i = 0; i < vertices.Length; i++)                                          
+               //        vertices[i].Position.Y *= -1;
+               //    stuckOnPaper = true;
+               //}
                 worldMatrix = Matrix.Identity;
-                //worldMatrix *= Matrix.CreateTranslation(getCenter());     
-                //worldMatrix *= Matrix.CreateRotationY(MathHelper.Pi);
-                //worldMatrix *= Matrix.CreateTranslation(-getCenter()); 
+                worldMatrix *= Matrix.CreateTranslation(-getCenter());
+                worldMatrix *= Matrix.CreateRotationZ(MathHelper.Pi);
+                worldMatrix *= Matrix.CreateTranslation(getCenter()); 
                 worldMatrix *= Matrix.CreateTranslation(-point);                
                 worldMatrix *= Matrix.CreateFromAxisAngle(axis,a - MathHelper.Pi);
                 worldMatrix *= Matrix.CreateTranslation(point);
+                checkCollision = -1;
             }
         }
 

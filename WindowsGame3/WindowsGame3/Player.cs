@@ -34,7 +34,7 @@ namespace Foldit3D
         protected Vector3 point;
         protected bool beforFold,afterFold;
         protected bool stuckOnPaper = false;
-        protected bool checkCollision = false;
+        protected int checkCollision = 0;
         // Tom -end
 
 
@@ -88,14 +88,34 @@ namespace Foldit3D
         #region Update and Draw
         public void Update(GameTime gameTime, GameState state)
         {
-            if ((state != GameState.folding) && checkCollision)
-            {            
+            if ((state != GameState.folding) && (checkCollision == -1)) // afterFold
+            {
+
+                float oldy;
+                stuckOnPaper = true;
+               // switchPoints();
+                for (int i = 0; i < vertices.Length; i++)
+                {
+                    oldy = vertices[i].Position.Y;
+                    vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
+                    vertices[i].Position.Y = oldy;
+                }
+                calcCenter();
+                worldMatrix = Matrix.Identity;
+
                 moving = true;
                 dataSet = false;
                 HoleManager.checkCollision(this);
                 PowerUpManager.checkCollision(this);
-                checkCollision = false;
-            }
+                checkCollision = 0;
+            } else
+                if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
+                {
+                    dataSet = false;
+                    HoleManager.checkCollision(this);
+                    PowerUpManager.checkCollision(this);
+                    checkCollision = 0;
+                }
         }
 
         public void Draw()
@@ -247,8 +267,8 @@ namespace Foldit3D
 
         protected void calcCenter()
         {
-            center.X = Vector3.Transform(getCenter(), worldMatrix).X;
-            center.Y = Vector3.Transform(getCenter(), worldMatrix).Z;
+            center.X = vertices[1].Position.X;
+            center.Y = vertices[1].Position.Z;
         }
 
         #endregion

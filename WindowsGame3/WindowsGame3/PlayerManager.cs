@@ -105,19 +105,37 @@ namespace Foldit3D
         {
             Matrix checkMatrix;
             Vector3 check;
+            float rotantionAngle;
             foreach (Player p in players)
             {
-             //   if (b.PointInBeforeFold(p.getCenter()))
-              //  {
+                if (b.PointInBeforeFold(p.getCenter()))
+                {
+                    rotantionAngle = MathHelper.PiOver2;
                     checkMatrix = Matrix.Identity;
-                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, rotantionAngle);
                     check = Vector3.Transform(p.getCenter(), checkMatrix); // where the point will be after rotation
                     if (check.Y > 0.0f) // if it is in the right deriction
-                        p.preFoldData(axis, (foldp1 + foldp2) / 2,b.PointInBeforeFold(p.getCenter()),b.PointInAfterFold(p.getCenter()));
+                        p.preFoldData(axis, (foldp1 + foldp2) / 2, true, false);
                     else // not in the right deriction
-                        p.preFoldData(-axis, (foldp1 + foldp2) / 2,b.PointInBeforeFold(p.getCenter()),b.PointInAfterFold(p.getCenter()));
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2, true, false);
                 }
-            //}
+                else if (b.PointInAfterFold(p.getCenter()))
+                {
+                    rotantionAngle = -1.5f * MathHelper.PiOver2;
+                    checkMatrix = Matrix.Identity;
+                    checkMatrix *= Matrix.CreateTranslation(-p.getCenter());
+                    checkMatrix *= Matrix.CreateRotationZ(MathHelper.Pi);
+                    checkMatrix *= Matrix.CreateTranslation(p.getCenter());
+                    checkMatrix *= Matrix.CreateTranslation(-(foldp1 + foldp2) / 2);
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, rotantionAngle);
+                    checkMatrix *= Matrix.CreateTranslation((foldp1 + foldp2) / 2);    
+                    check = Vector3.Transform(p.getCenter(), checkMatrix); // where the point will be after rotation
+                    if (check.Y > 0.0f) // if it is in the right deriction
+                        p.preFoldData(axis, (foldp1 + foldp2) / 2, false, true);
+                    else // not in the right deriction
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2, false, true);
+                }
+            }
         }
 
         // I changed it so the axis and the point will be relevent to the closest point - Tom
@@ -125,7 +143,8 @@ namespace Foldit3D
         {
             foreach (Player p in players)
             {
-                p.foldData(angle,b.State);
+                if (b.PointInAfterFold(p.getCenter()) || b.PointInBeforeFold(p.getCenter()))
+                    p.foldData(angle,b.State);
             }
         }
         #endregion
