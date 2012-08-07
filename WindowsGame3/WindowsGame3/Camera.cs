@@ -19,14 +19,16 @@ namespace Foldit3D
         // how fast does the camera zoom in and out?
         const float CameraZoomSpeed = .03f;
         // the camera can't be further away than this distance
-        const float CameraMaxDistance = 120.0f;
+        const float CameraMaxDistance = 200.0f;
         // and it can't be closer than this
         const float CameraMinDistance = 15f;
 
         // the following constants control how the camera's default position
         const float CameraDefaultArc = -30.0f;
-        const float CameraDefaultRotation = 225;
-        const float CameraDefaultDistance = 80f;
+        const float CameraDefaultRotation = 30;
+        const float CameraDefaultDistance = 90f;
+
+        private bool movment;
 
 
         private Matrix projection;
@@ -46,10 +48,7 @@ namespace Foldit3D
         private Vector3 cameraUpVector = new Vector3(0, 0, -1);
 
         private Vector3 cameraReference = new Vector3(0.0f, 0.0f, -1.0f);
-        private float cameraYaw = 0.0f;
-        private float cameraPitch = 0.0f;
 
-        private float spinRate = 120.00f;
 
         // The next set of variables are used to control the camera used in the sample. 
         // It is an arc ball camera, so it can rotate in a sphere around the target, and
@@ -65,6 +64,28 @@ namespace Foldit3D
         {
            // input = (IInputHandler)game.Services.GetService(typeof(IInputHandler));
         }
+        #region paramsetting
+        public void stopMovment()
+        {
+            movment = false;
+        }
+        public void resumeMovment()
+        {
+            movment = true;
+        }
+        public void setPosition(float arc,float rotation,float distance)
+        {
+            cameraArc = arc;
+            cameraRotation = rotation;
+            cameraDistance = distance;
+        }
+        public void setPositionToTop()
+        {
+            cameraArc = -90;
+            cameraRotation = 0;
+            cameraDistance = CameraDefaultDistance;
+        }
+        #endregion
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -89,7 +110,7 @@ namespace Foldit3D
             Matrix.CreateLookAt(ref cameraPosition, ref cameraTarget,
                 ref cameraUpVector, out view);
 
-          
+            movment = true;
         }
 
         /// <summary>
@@ -124,7 +145,7 @@ namespace Foldit3D
             //    CameraRotateSpeed;
 
             // Limit the arc movement.
-            cameraArc = MathHelper.Clamp(cameraArc,-90.0f, -10.0f);
+            cameraArc = MathHelper.Clamp(cameraArc,-90.0f, 10.0f);
 
             // Check for input to rotate the camera around the model.
             if (input.KeyboardHandler.IsKeyDown(Keys.Right) ||

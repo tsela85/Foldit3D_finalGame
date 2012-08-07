@@ -37,9 +37,10 @@ namespace Foldit3D
         private GraphicsDevice device;
         private InputHandler input;
         private BoardState state;
-        //private List<VertexPositionColor> lineList;
+        private List<VertexPositionNormalTexture> oldLineList;
+        private List<short> oldLineindices;
         VertexPositionColor[] lineList;
-        private List<short> lineIndices;        
+        private List<short> lineIndices;
 
         public Board(Texture2D tex, Effect eff)
         {
@@ -75,7 +76,7 @@ namespace Foldit3D
         public Vector3 getAxis()
         {
             Vector3 axis;
-            if (p[0].position.X > p[1].position.X)
+            if (((p[0].small + p[0].big) > (p[1].small + p[1].big)) || (p[0].big == 0))
                 axis = p[0].position - p[1].position;
             else
                 axis = p[1].position - p[0].position;
@@ -86,13 +87,50 @@ namespace Foldit3D
         public Vector3 getAxisPoint()
         {
             return new Vector3((p[0].position.X + p[1].position.X) / 2, 0, (p[0].position.Z + p[1].position.Z) / 2);
+            //return p[0].position;
         }
+
+        public void getfoldPoints(out Vector3 p1, out Vector3 p2)
+        {
+            if (((p[0].small + p[0].big) > (p[1].small + p[1].big)) || (p[0].big == 0))
+            {
+                p1 = p[0].position;
+                p2 = p[1].position;
+            }
+            else
+            {
+                p1 = p[1].position;
+                p2 = p[0].position;
+            }            
+        }
+
 
 
         public float getAngle()
         {
             return angle;
         }
+        #endregion
+
+        #region Levels
+
+        public void initLevel(List<IDictionary<string, string>> data)
+        {
+            List<Vector3> points = new List<Vector3>();
+            List<Vector2> texCords = new List<Vector2>();
+            int numOfVertix = 0;
+            foreach (IDictionary<string, string> item in data)
+            {
+                Vector3 point = new Vector3((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]), (float)Convert.ToDouble(item["z"]));
+                Vector2 cord = new Vector2((float)Convert.ToDouble(item["texX"]), (float)Convert.ToDouble(item["texY"]));
+                points.Add(point);
+                texCords.Add(cord);
+                numOfVertix++;
+            }
+            
+            Initialize(numOfVertix,points.ToArray(),texCords.ToArray());
+        }
+
         #endregion
 
         public void Initialize(int vNum, Vector3[] points, Vector2[] texCords)
@@ -106,7 +144,8 @@ namespace Foldit3D
             vertNum = vNum;
             
             vertices = new VertexPositionNormalTexture[vNum];
-            //lineList = new List<VertexPositionColor>();
+            oldLineList = new List<VertexPositionNormalTexture>();
+            oldLineindices = new List<short>();
             lineList = new VertexPositionColor[2];
             lineList[0].Color = Color.Orange;
             lineList[1].Color = Color.Orange;
@@ -134,12 +173,14 @@ namespace Foldit3D
                 invertIndices[iCount - (i + 1) - 2] = indices[i + 2] = (short)(((j != 4 ? j : 5) + 2) % vNum);
                 j += 2;
             }
-            verOnEdge = new VertexPositionColor[3];
-            verOnEdge[0].Color = Color.Black;
-            verOnEdge[1].Color = Color.Black;
-            verOnEdge[2].Color = Color.Black;
+            verOnEdge = new VertexPositionColor[6];
+            verOnEdge[0].Color = Color.Purple;
+            verOnEdge[1].Color = Color.Purple;
+            verOnEdge[2].Color = Color.Purple;
+            verOnEdge[3].Color = Color.Purple;
+            verOnEdge[4].Color = Color.Purple;
+            verOnEdge[5].Color = Color.Purple;
             p = new DividingVert[2];
-
         }
 
         //public void initLevel(List<IDictionary<string, string>> data)
@@ -162,7 +203,7 @@ namespace Foldit3D
                 one.foldShape(angle);                
                 one.Draw();
                 angle -= Game1.closeRate;
-                if (angle < -MathHelper.Pi + Game1.closeRate)
+                if (angle < -MathHelper.Pi + 1.8f * Game1.closeRate)
                     state = BoardState.folding2;
             }
             else
@@ -200,7 +241,16 @@ namespace Foldit3D
                             vertices.Length, indices, 0, indices.Length / 3, VertexPositionNormalTexture.VertexDeclaration);
                         //invert board
                         device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertices, 0,
-                           vertices.Length, invertIndices, 0, indices.Length / 3, VertexPositionNormalTexture.VertexDeclaration);                        
+                           vertices.Length, invertIndices, 0, indices.Length / 3, VertexPositionNormalTexture.VertexDeclaration);
+
+                        if ((state != BoardState.folding1) && (state != BoardState.folding1) && (oldLineList.Count > 0))
+                        {
+
+                            device.DrawUserIndexedPrimitives<VertexPositionNormalTexture>(PrimitiveType.LineList,
+                            oldLineList.ToArray(), 0, oldLineList.Count, oldLineindices.ToArray(), 0
+                            , oldLineList.Count / 2, VertexPositionNormalTexture.VertexDeclaration);
+
+                        }
                     }
                     effect.CurrentTechnique = effect.Techniques["ColoredNoShading"];
                     effect.Parameters["xWorld"].SetValue(worldMatrix);
@@ -218,8 +268,8 @@ namespace Foldit3D
                         }
                         if ((state == BoardState.onEdge1) || (state == BoardState.onEdge2))
                         {
-                            device.DrawUserPrimitives(PrimitiveType.TriangleList, verOnEdge, 0, 1,        VertexPositionColor.VertexDeclaration);
-                        }                                                    
+                            device.DrawUserPrimitives(PrimitiveType.TriangleList, verOnEdge, 0, 2,        VertexPositionColor.VertexDeclaration);
+                        }
                     }
                 }
         }
@@ -243,9 +293,9 @@ namespace Foldit3D
             if (minVert.distance < 2f)
             {
                 pointOnEdge = minVert.position;
-                verOnEdge[0].Position = new Vector3(pointOnEdge.X - 0.3f, 0, pointOnEdge.Z - 0.3f);                
-                verOnEdge[1].Position = new Vector3(pointOnEdge.X, 0f, pointOnEdge.Z + 0.3f);                
-                verOnEdge[2].Position = new Vector3(pointOnEdge.X + 0.3f, 0f, pointOnEdge.Z - 0.3f);                
+                verOnEdge[0].Position = new Vector3(pointOnEdge.X - 0.3f, -0.1f, pointOnEdge.Z - 0.3f);                
+                verOnEdge[1].Position = new Vector3(pointOnEdge.X, -0.1f, pointOnEdge.Z + 0.3f);                
+                verOnEdge[2].Position = new Vector3(pointOnEdge.X + 0.3f, -0.1f, pointOnEdge.Z - 0.3f);                
                 if ((state == BoardState.chooseEdge1) || (state == BoardState.onEdge1))
                     p[0] = minVert;
                 else
@@ -544,6 +594,14 @@ namespace Foldit3D
             lineList[1].Position = mouse;
             lineList[0].Color = Color.OrangeRed;
             lineList[1].Color = Color.OrangeRed;
+            ////Tom - running a test folding
+            //if (input.MouseHandler.WasLeftButtonClicked())
+            //{                
+            //    p[0].position = testp1 + new Vector3(0,0,0);
+            //    p[1].position = testp1 + new Vector3(0,0,0);
+            //    state = BoardState.preFold;
+            //}
+
             if ((state == BoardState.chooseEdge1) && (onEdge))
             {               
                     if (input.MouseHandler.WasLeftButtonClicked())
@@ -592,8 +650,14 @@ namespace Foldit3D
                         state = BoardState.chooseEdge2;
             } else
             if (state == BoardState.preFold)
-            {                
+            {
                 Divide(p[0], p[1], out one, out two);
+                //Tom -- array of all the old fold lines                
+                oldLineindices.Add((short)oldLineindices.Count);
+                oldLineList.Add(new VertexPositionNormalTexture(lineList[0].Position, new Vector3(0,0,0), new Vector2(0f, 0.5f)));
+                oldLineindices.Add((short)oldLineindices.Count);
+                oldLineList.Add(new VertexPositionNormalTexture(lineList[1].Position,new Vector3(0,0,0), new Vector2(1f, 0.5f))); 
+
                 state = BoardState.folding1;
                 //if (PointInBeforeFold(new Vector3(-9, 0, -9)))
                 //    Trace.WriteLine("before fold");

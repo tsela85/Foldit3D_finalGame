@@ -37,9 +37,17 @@ namespace Foldit3D
                     pointsData.Add(texLoc);
                     lst.Add(pointsData);
                 }*/
+
                 Vector2 center = new Vector2((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]));
                 powerups.Add(new PowerUp(texture, ConvertType(Convert.ToInt32(item["type"])), center, effect));
             }
+        }
+
+        public void tomInitLevel()
+        {
+            for (int i = -37; i < 40; i+=10)
+                for(int j = -27; j < 30; j += 10)
+                    powerups.Add(new PowerUp(texture, 0, new Vector2(i,j), effect));
         }
 
         public void restartLevel()
@@ -76,29 +84,45 @@ namespace Foldit3D
 
         #region Public Methods
 
-        public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
         {
+            Matrix checkMatrix;
+            Vector3 check;
             foreach (PowerUp p in powerups)
             {
                 if (b.PointInBeforeFold(p.getCenter()))
-                    p.foldData(vec, point, angle);
+                {
+                    checkMatrix = Matrix.Identity;
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    check = Vector3.Transform(p.getCenter(), checkMatrix); // where the point will be after rotation
+                    if (check.Y > 0.0f) // if it is in the right deriction
+                        p.preFoldData(axis,(foldp1+foldp2)/2);
+                    else // not in the right deriction
+                        p.preFoldData(-axis, (foldp1 + foldp2) / 2);                
+                }
             }
         }
+        // I changed it so the axis and the point will be relevent to the closest point - Tom
+        public void foldData(float angle, Board b)
+        {            
+            foreach (PowerUp p in powerups)
+            {
+                if (b.PointInBeforeFold(p.getCenter()))
+                {
+                    p.foldData(angle);
+                }
+            }
+        }
+
         #endregion
 
         #region Collision
-        public static void checkCollision(Player player)
+        public static void checkCollision(Player player, Vector2 pCenter, float pSize)
         {
             PowerUp pToRemove = null;
             foreach (PowerUp p in powerups)
             {
-                BoundingBox b1 = p.getBox();
-                b1.Max.X -= 1.0f;
-                b1.Max.Z -= 1.0f;
-                b1.Min.X += 1.0f;
-                b1.Min.Z += 1.0f; 
-                BoundingBox b2 = player.getBox();
-                if (b1.Intersects(b2))
+                if (Vector2.Distance(pCenter, p.center) < (pSize + p.size + 0.1f))
                 {
                     p.doYourThing(player);
                     pToRemove = p;
