@@ -67,7 +67,7 @@ namespace Foldit3D
             device = graphics.GraphicsDevice;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            SpriteFont font = Content.Load<SpriteFont>("font");
+            SpriteFont font = Content.Load<SpriteFont>(@"font");
             SpriteFont scoreFont = Content.Load<SpriteFont>("scoreFont");
             HoleManager holeManager = new HoleManager(Content.Load<Texture2D>("hole2"), Content.Load<Effect>("effects"));
             PlayerManager playerManager = new PlayerManager(Content.Load<Texture2D>("gummy2"), Content.Load<Effect>("effects"));
