@@ -203,7 +203,7 @@ namespace Foldit3D
                 one.foldShape(angle);                
                 one.Draw();
                 angle -= Game1.closeRate;
-                if (angle < -MathHelper.Pi + Game1.closeRate)
+                if (angle < -MathHelper.Pi + 1.8f * Game1.closeRate)
                     state = BoardState.folding2;
             }
             else
