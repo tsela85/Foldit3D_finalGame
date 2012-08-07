@@ -134,7 +134,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb</Output>
-      <Time>2012-08-07T19:38:01.5421196+03:00</Time>
+      <Time>2012-08-07T20:00:45.4351299+03:00</Time>
     </Item>
     <Item>
       <Source>font.spritefont</Source>
@@ -170,10 +170,10 @@
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb</Output>
-      <Time>2012-08-07T19:48:15.6502446+03:00</Time>
+      <Time>2012-08-07T20:00:45.4431303+03:00</Time>
       <Dependency>
         <Key>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\table_0.xml</Key>
-        <Value>2012-08-07T19:48:28.0479537+03:00</Value>
+        <Value>2012-08-07T20:00:58.8068947+03:00</Value>
       </Dependency>
       <Request>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb</Request>
     </Item>
@@ -182,7 +182,7 @@
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\table_0.xml</Output>
-      <Time>2012-08-07T19:48:15.6502446+03:00</Time>
+      <Time>2012-08-07T20:00:45.4431303+03:00</Time>
     </Item>
     <Item>
       <Source>wood.tga</Source>
@@ -198,7 +198,7 @@
       </Parameters>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb</Output>
-      <Time>2012-08-07T19:38:01.6111236+03:00</Time>
+      <Time>2012-08-07T20:00:45.9831612+03:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
