@@ -35,8 +35,8 @@
     <player>
       <playerObj>
         <type>normal</type>
-        <x>-20</x>
-        <y>-15</y>
+        <x>16</x>
+        <y>15</y>
       </playerObj>
     </player>
 
@@ -49,8 +49,8 @@
 
     <holes>
       <holeObj>
-        <x>12</x>
-        <y>10</y>
+        <x>-20</x>
+        <y>-11</y>
       </holeObj>
     </holes>
 
@@ -93,8 +93,8 @@
     <player>
       <playerObj>
         <type>normal</type>
-        <x>22</x>
-        <y>15</y>
+        <x>-23</x>
+        <y>-17</y>
       </playerObj>
     </player>
 
@@ -107,21 +107,21 @@
 
     <holes>
       <holeObj>
-        <x>-23</x>
-        <y>-7</y>
+        <x>22</x>
+        <y>5</y>
       </holeObj>
     </holes>
 
     <powerups>
       <powerupObj>
         <type>0</type>
-        <x>-10</x>
-        <y>10</y>
+        <x>10</x>
+        <y>-10</y>
       </powerupObj>
       <powerupObj>
         <type>1</type>
-        <x>22</x>
-        <y>-17</y>
+        <x>-22</x>
+        <y>17</y>
       </powerupObj>
     </powerups>
   </level1>

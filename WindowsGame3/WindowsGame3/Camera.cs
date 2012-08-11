@@ -83,7 +83,7 @@ namespace Foldit3D
         {
             cameraArc = -90;
             cameraRotation = 0;
-            cameraDistance = CameraDefaultDistance;
+            cameraDistance = CameraDefaultDistance-10;
         }
         #endregion
 

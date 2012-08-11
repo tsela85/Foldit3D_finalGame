@@ -87,7 +87,9 @@ class GameManager
         powerupManager.initLevel(XMLReader.Get(level, "powerups"));
         //powerupManager.tomInitLevel();
         board.initLevel(XMLReader.Get(level, "board"));
-        Game1.camera.Initialize(); 
+        Game1.camera.Initialize();
+        // TOM - make dawin move
+        Game1.camera.setPositionToTop();
     } 
 
     #region Update
@@ -334,22 +336,22 @@ class GameManager
                 showPopUps(spriteBatch);
                 if (folds == 1)
                 {
-                    spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.LightGray);
                     firstfold = 1;
                 }
                 if (folds == 2)
                 {
-                    spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.LightGray);
                     firstfold = 2;
-                    spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.LightGray);
                 }
             }
             else if (level == 1 && time < 5)
-                spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(865, 490), Color.Black);
+                spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(530, 220), Color.Black);
             if (folds > 9 && folds <13)
-                spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.Black);
+                spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
             else if (folds > 13)
-                spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.Black);
+                spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
         }
         spriteBatch.End(); //Tom 
     }
@@ -374,18 +376,18 @@ class GameManager
     {
         if (time < 5)
         {
-            spriteBatch.DrawString(scoreFont, "This is you... -> \n Put yourself in the hole!", new Vector2(160, 470), Color.Black);
-            spriteBatch.DrawString(scoreFont, "<- Hole", new Vector2(760, 210), Color.Black);
+            spriteBatch.DrawString(scoreFont, "This is you... ->\n Put yourself in the hole!", new Vector2(200, 470), Color.Black);
+            spriteBatch.DrawString(scoreFont, "<- Hole", new Vector2(840, 210), Color.Black);
         }
         else if (time >= 5 && firstfold==0)
         {
-            spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here", new Vector2(400, 600), Color.Black);
-            spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here too", new Vector2(430, 80), Color.Black);
+            spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here too", new Vector2(500, 600), Color.LightGray);
+            spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here", new Vector2(450, 80), Color.Black);
         }
         else if (firstfold==1)
         {
-            spriteBatch.DrawString(scoreFont, "Click here   >", new Vector2(830, 400), Color.Black);
-            spriteBatch.DrawString(scoreFont, "<   Click here", new Vector2(200, 330), Color.Black);
+            spriteBatch.DrawString(scoreFont, "Click here   >", new Vector2(830, 350), Color.Black);
+            spriteBatch.DrawString(scoreFont, "<   Click here", new Vector2(200, 270), Color.Black);
         }
                 
                 
