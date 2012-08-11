@@ -70,13 +70,13 @@ namespace Foldit3D
                     player.changePos();
                     break;
                 case PowerUpType.SplitPlayer:
-                    player.changePlayerType("duplicate", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changePlayerType("duplicate", center);
                     break;
                 case PowerUpType.DryPlayer:
-                    player.changePlayerType("static", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changePlayerType("static", center);
                     break;
                 case PowerUpType.NormalPlayer:
-                    player.changePlayerType("normal", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changePlayerType("normal", center);
                     break;
             }
         }

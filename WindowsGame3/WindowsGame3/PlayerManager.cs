@@ -26,17 +26,8 @@ namespace Foldit3D
         {
             foreach (IDictionary<string, string> item in data)
             {
-              /*  List<List<Vector3>> lst = new List<List<Vector3>>();
-                for(int i =1; i<7; i++){
-                    List<Vector3> pointsData = new List<Vector3>();
-                    Vector3 point = new Vector3((float)Convert.ToDouble(item["x" + i]), (float)Convert.ToDouble(item["y" + i]), (float)Convert.ToDouble(item["z" + i]));
-                    Vector3 texLoc = new Vector3(Convert.ToInt32(item["tX" + i]),Convert.ToInt32(item["tY" + i]),0);
-                    pointsData.Add(point);
-                    pointsData.Add(texLoc);
-                    lst.Add(pointsData);
-                }*/
                 Vector2 center = new Vector2((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]));
-                players.Add(makeNewPlayer(item["type"], center));
+                makeNewPlayer(item["type"], center);
             }
         }
 
@@ -55,9 +46,12 @@ namespace Foldit3D
             }
         }
         public void Update(GameTime gameTime, GameState state) {
-            foreach (Player p in players)
+           // foreach (Player p in players)
+            int i = 0;
+            while (i<players.Count())
             {
-                p.Update( gameTime, state);
+                players.ElementAt(i).Update( gameTime, state);
+                i++;
             }
         }
 
@@ -70,32 +64,24 @@ namespace Foldit3D
             Player newP = null;
             if (type.CompareTo("normal") == 0)
             {
-                newP = new NormalPlayer(texture, c,this, effect);
+                players.Add(new NormalPlayer(texture, c,this, effect));
             }
             else if (type.CompareTo("static") == 0)
             {
-                newP = new StaticPlayer(texture, c, this, effect);
+                players.Add(new StaticPlayer(texture, c, this, effect));
             }
             else if (type.CompareTo("duplicate") == 0)
             {
-                newP = new DuplicatePlayer(texture, c,this, effect);
+                players.Add(new DuplicatePlayer(texture, c,this, effect));
             }
             return newP;
         }
 
-       /* public void foldOver()
-        {
-            foreach (Player p in players)
-            {
-                p.foldOver();
-            }
-        }*/
-
-        public void changePlayerType(Player p,String type, int x, int y)
+        public void changePlayerType(Player p,String type, Vector2 center)
         {
             if (players.Contains(p))
             {
-                //players.Add(makeNewPlayer(type, x, y));
+                makeNewPlayer(type,center);
                 players.Remove(p);
             }
             else Trace.WriteLine("changePlayerType Error!");
@@ -141,11 +127,17 @@ namespace Foldit3D
         // I changed it so the axis and the point will be relevent to the closest point - Tom
         public void foldData(float angle, Board b)
         {
-            foreach (Player p in players)
+          //  foreach (Player p in players)
+           // {
+            int i = 0;
+            while (i<players.Count())
             {
-                if (b.PointInAfterFold(p.getCenter()) || b.PointInBeforeFold(p.getCenter()))
-                    p.foldData(angle,b.State);
+                if (b.PointInAfterFold(players.ElementAt(i).getCenter()) || b.PointInBeforeFold(players.ElementAt(i).getCenter()))
+                    players.ElementAt(i).foldData(angle, b.State);
+                i++;
+
             }
+          //  }
         }
         #endregion
 
