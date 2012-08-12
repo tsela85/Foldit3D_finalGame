@@ -13,6 +13,7 @@ namespace Foldit3D
         Texture2D texture;
         private static List<Hole> holes;
         private Effect effect;
+        static int holeCount = 0;
 
         public HoleManager(Texture2D texture, Effect e)
         {
@@ -39,6 +40,7 @@ namespace Foldit3D
                 }*/
                 Vector2 center = new Vector2((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]));
                 holes.Add(new Hole(texture, center, effect));
+                holeCount++;
             }
         }
 
@@ -116,10 +118,14 @@ namespace Foldit3D
             {
                 if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
                 {
-                    // WIN!!!
-                    Trace.WriteLine("WIN!!!!!!");
-                    GameManager.winLevel();
-                    break;
+                    holeCount--;
+                    if (holeCount == 0)
+                    {
+                        // WIN!!!
+                        Trace.WriteLine("WIN!!!!!!");
+                        GameManager.winLevel();
+                        break;
+                    }
                 }
             }
         }

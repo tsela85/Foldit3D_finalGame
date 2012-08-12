@@ -339,7 +339,7 @@ class GameManager
                     spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.LightGray);
                     firstfold = 1;
                 }
-                if (folds == 2)
+                if (folds == 2 && gamestate != GameState.scored)
                 {
                     spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.LightGray);
                     firstfold = 2;
