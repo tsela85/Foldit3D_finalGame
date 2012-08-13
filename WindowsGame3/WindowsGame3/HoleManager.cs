@@ -13,6 +13,7 @@ namespace Foldit3D
         Texture2D texture;
         private static List<Hole> holes;
         private Effect effect;
+        static int collisionCount = 0;
 
         public HoleManager(Texture2D texture, Effect e)
         {
@@ -76,35 +77,58 @@ namespace Foldit3D
 
         #region Public Methods
 
-        public void foldData(Vector3 vec, Vector3 point, float angle, Board b)
+        public void preFoldData(Vector3 foldp1, Vector3 foldp2, Vector3 axis, Board b)
+        {
+            Matrix checkMatrix;
+            Vector3 check;
+            foreach (Hole h in holes)
+            {
+                if (b.PointInBeforeFold(h.getCenter()))
+                {
+                    checkMatrix = Matrix.Identity;
+                    checkMatrix *= Matrix.CreateFromAxisAngle(axis, MathHelper.ToRadians(90));
+                    check = Vector3.Transform(h.getCenter(), checkMatrix); // where the point will be after rotation
+                    if (check.Y > 0.0f) // if it is in the right deriction
+                        h.preFoldData(axis, (foldp1 + foldp2) / 2);
+                    else // not in the right deriction
+                        h.preFoldData(-axis, (foldp1 + foldp2) / 2);
+                }
+            }
+        }
+        // I changed it so the axis and the point will be relevent to the closest point - Tom
+        public void foldData(float angle, Board b)
         {
             foreach (Hole h in holes)
             {
                 if (b.PointInBeforeFold(h.getCenter()))
-                    h.foldData(vec, point, angle);
+                {
+                    h.foldData(angle);
+                }
             }
         }
+
+  
         #endregion
 
         #region Collision
-        public static void checkCollision(Player player)
+        public static bool checkCollision(Player player,Vector2 pCenter,float pSize)//, int numOfPlayers)
         {
             foreach (Hole h in holes)
             {
-                BoundingBox b1 = h.getBox();
-                b1.Max.X -= 1.0f;
-                b1.Max.Z -= 1.0f;
-                b1.Min.X += 1.0f;
-                b1.Min.Z += 1.0f; 
-                BoundingBox b2 = player.getBox();
-                if (b1.Intersects(b2))
+                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
                 {
-                    // WIN!!!
-                    Trace.WriteLine("WIN!!!!!!");
-                    GameManager.winLevel();
-                    break;
+                    collisionCount++;
+                    GameManager.showHoleMsg = true;
+                    if (collisionCount >=2)//numOfPlayers)
+                    {
+                        // WIN!!!
+                        Trace.WriteLine("WIN!!!!!!");
+                        GameManager.winLevel();
+                    }
+                    return true;
                 }
             }
+            return false;
         }
         #endregion
 
