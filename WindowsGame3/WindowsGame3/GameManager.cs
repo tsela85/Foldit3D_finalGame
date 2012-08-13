@@ -100,7 +100,7 @@ class GameManager
         else
         {
             Game1.camera.resumeMovment();
-            //Game1.camera.setDefaultPosition();
+            Game1.camera.setDefaultPosition();
         }
     } 
 

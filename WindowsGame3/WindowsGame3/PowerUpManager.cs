@@ -122,7 +122,7 @@ namespace Foldit3D
             PowerUp pToRemove = null;
             foreach (PowerUp p in powerups)
             {
-                if (Vector2.Distance(pCenter, p.center) < (pSize + p.size + 0.1f))
+                if (Vector2.Distance(pCenter, p.center) < (pSize + p.size))
                 {
                     p.doYourThing(player);
                     pToRemove = p;

@@ -115,7 +115,7 @@ namespace Foldit3D
         {
             foreach (Hole h in holes)
             {
-                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
+                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size))
                 {
                     collisionCount++;
                     GameManager.showHoleMsg = true;
