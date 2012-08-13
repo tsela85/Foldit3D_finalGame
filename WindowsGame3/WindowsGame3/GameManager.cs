@@ -42,7 +42,10 @@ class GameManager
     int first = 1;
     int score = 0;
     static bool changeScore = false;
+    public static bool showHoleMsg = false;
+    public static bool showPuMsg = false;
     float time;
+    float countSec = 0;
     int firstfold = 0;
 
     ///////////////////////////
@@ -89,7 +92,16 @@ class GameManager
         board.initLevel(XMLReader.Get(level, "board"));
         Game1.camera.Initialize();
         // TOM - make dawin move
-        Game1.camera.setPositionToTop();
+        if (level == 0 || level == 1)
+        {
+            Game1.camera.setPositionToTop();
+            Game1.camera.stopMovment();
+        }
+        else
+        {
+            Game1.camera.resumeMovment();
+            //Game1.camera.setDefaultPosition();
+        }
     } 
 
     #region Update
@@ -154,6 +166,11 @@ class GameManager
         {
                
             time += elapsed;
+            if (showHoleMsg || showPuMsg)
+            {
+                countSec += elapsed;
+            }
+
         if (time >= 60 && level != 0)
         {
             loseLevel();
@@ -238,6 +255,7 @@ class GameManager
 
         spriteBatch.Begin();
 
+        #region Menu
         if (screen == ScreenState.start)
         {
             spriteBatch.Draw(startScreen, new Rectangle(210, 60, startScreen.Width, startScreen.Height), Color.White);
@@ -246,7 +264,6 @@ class GameManager
             var rect = new Texture2D(graphics.GraphicsDevice, 1, 1);
             rect.SetData(new[] { Color.Transparent });
             spriteBatch.Draw(rect, newGameBtn, Color.White);
-
 
             //Levels btn
             spriteBatch.DrawString(font, "Levels", new Vector2(levelsBtn.X + 127, levelsBtn.Y), Color.Black);
@@ -289,10 +306,14 @@ class GameManager
                 
             }
         }
+        #endregion
+
         else
         {
             spriteBatch.End(); //Tom 
             Game1.device.DepthStencilState = DepthStencilState.Default; //TOM - makes 3d 
+
+            #region DrawAllObjects
 
             table.Draw();
             board.Draw();
@@ -303,14 +324,16 @@ class GameManager
             holeManager.DrawInFold();
             playerManager.Draw();
 
+            #endregion
 
-            spriteBatch.Begin(); //Tom 
+            spriteBatch.Begin(); //Tom
             spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
             spriteBatch.DrawString(scoreFont, "level: " + level, new Vector2(20, 40), Color.LightGray);
             spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.LightGray);
             if (gamestate != GameState.lose && gamestate != GameState.scored && level != 0)
             { spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(60 - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); }
 
+            #region Win/Lose
             if (gamestate == GameState.scored)
             {
                 if (!changeScore)
@@ -330,6 +353,8 @@ class GameManager
                 spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
                 if (time > 65) { loadCurrLevel(); }
             }
+
+            #endregion
 
             if (level == 0)
             {
@@ -352,6 +377,16 @@ class GameManager
                 spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
             else if (folds > 13)
                 spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
+            else if (showHoleMsg && countSec>0)
+            {
+                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(430, 20), Color.LightGray);
+                if (countSec < 4) { showHoleMsg = false;  countSec = 0; }
+            }
+            else if (showPuMsg && countSec>0)
+            {
+                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(430, 20), Color.LightGray);
+                if (countSec < 4) { showPuMsg = false; countSec = 0; }
+            }
         }
         spriteBatch.End(); //Tom 
     }
