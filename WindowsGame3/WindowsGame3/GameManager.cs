@@ -87,7 +87,7 @@ class GameManager
         powerupManager.initLevel(XMLReader.Get(level, "powerups"));
         //powerupManager.tomInitLevel();
         board.initLevel(XMLReader.Get(level, "board"));
-        Game1.camera.Initialize(); 
+        Game1.camera.Initialize();
     } 
 
     #region Update
@@ -157,7 +157,7 @@ class GameManager
             loseLevel();
         }
         if (gamestate != GameState.scored && gamestate != GameState.lose)
-        {
+        {           
             playerManager.Update(gameTime, gamestate);
             boardstate = board.update();
             if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
@@ -174,6 +174,10 @@ class GameManager
             {
                 loadCurrLevel();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            {
+                Game1.camera.CameraMoveAround();
+            }            
             if (gamestate == GameState.folding)
             {
                 Vector3 v = board.getAxis();

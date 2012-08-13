@@ -85,6 +85,12 @@ namespace Foldit3D
             cameraRotation = 0;
             cameraDistance = CameraDefaultDistance;
         }
+        public void setDefaultPosition()
+        {
+            cameraArc = CameraDefaultArc;
+            cameraRotation = CameraDefaultRotation;
+            cameraDistance = CameraDefaultDistance;
+        }
         #endregion
 
         /// <summary>
@@ -119,6 +125,8 @@ namespace Foldit3D
         public void UpdateCamera(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (!movment)
+                return;
 
             // should we reset the camera?
             if (input.KeyboardHandler.IsKeyDown(Keys.R))
@@ -185,6 +193,31 @@ namespace Foldit3D
             view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
                           Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
                           unrotatedView;
+        }
+        /// <summary>
+        /// Handles input for moving the camera.
+        /// </summary>
+        public void CameraMoveAround()
+        {
+            //setPositionToTop();
+            //for (float i = cameraArc; cameraArc < 10; cameraArc += 0.001f)
+            //{
+            //    Matrix unrotatedView = Matrix.CreateLookAt(
+            //        new Vector3(0, 0, cameraDistance), Vector3.Zero, Vector3.Down);
+
+            //    view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
+            //                  Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
+            //                  unrotatedView;
+            //}
+            for (float i = cameraRotation; cameraRotation < i + 10; cameraRotation += 0.001f)
+            {
+                Matrix unrotatedView = Matrix.CreateLookAt(
+                    new Vector3(0, 0, cameraDistance), Vector3.Zero, Vector3.Down);
+
+                view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
+                              Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
+                              unrotatedView;                
+            }
         }
     }
 }

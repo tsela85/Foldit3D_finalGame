@@ -41,3 +41,29 @@ C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\WindowsGame3.exe
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\WindowsGame3.pdb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\edged.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\empty.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper2.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\inkspot.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gumball.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gummy2.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole1.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole2.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gum.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\help.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\levelsScreen.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\startScreen.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\font.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\scoreFont.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\effects.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\WindowsGame3.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\WindowsGame3.pdb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\WindowsGame3.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\FoldIt3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\WindowsGame3.pdb
