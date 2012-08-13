@@ -27,8 +27,16 @@ namespace Foldit3D
         protected Matrix worldMatrix = Matrix.Identity;
         protected Effect effect;
         protected bool isDraw = true;
-        protected bool dataSet = false;
         protected float size = 2f;
+        public string type;
+        //Tom - added to the
+        protected Vector3 axis;
+        protected Vector3 point;
+        protected bool beforFold,afterFold;
+        protected bool stuckOnPaper = false;
+        protected int checkCollision = 0;
+        // Tom -end
+
 
         #region Properties
 
@@ -80,23 +88,46 @@ namespace Foldit3D
         #region Update and Draw
         public void Update(GameTime gameTime, GameState state)
         {
-            if (state != GameState.folding)
+            if ((state != GameState.folding) && (checkCollision == -1)) // afterFold
             {
-                moving = true;
-                dataSet = false;
-                
-                if (!worldMatrix.Equals(Matrix.Identity))
+
+                float oldy;
+                stuckOnPaper = true;
+               // switchPoints();
+                for (int i = 0; i < vertices.Length; i++)
                 {
-                    for (int i = 0; i < vertices.Length; i++)
-                    {
-                        vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
-                        vertices[i].Position.Y = 0;
-                    }
-                    worldMatrix = Matrix.Identity;
-                    HoleManager.checkCollision(this);
-                    PowerUpManager.checkCollision(this);
+                    oldy = vertices[i].Position.Y;
+                    vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
+                    vertices[i].Position.Y = oldy;
                 }
-            }
+                calcCenter();
+                worldMatrix = Matrix.Identity;
+                if (type.CompareTo("duplicate") == 0)
+                {
+                    playerManager.makeNewPlayer("normal", center);
+                    playerManager.changePlayerType(this, "normal", center);
+                }
+                checkCollision = 0;
+                PowerUpManager.checkCollision(this, center, size);
+                if (HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers()))
+                {
+                    playerManager.changePlayerType(this, "static", center);
+                }
+            } else
+                if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
+                {
+                    checkCollision = 0;
+                    if (type.CompareTo("duplicate") == 0)
+                    {
+                        playerManager.changePlayerType(this, "normal", center);
+                    }
+                    PowerUpManager.checkCollision(this, center, size);
+                    if (HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers()))
+                    {
+                        playerManager.changePlayerType(this, "static", center);
+                    }
+
+                }
         }
 
         public void Draw()
@@ -113,7 +144,7 @@ namespace Foldit3D
                 {
                     pass.Apply();
 
-                    Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2, VertexPositionTexture.VertexDeclaration);
+                    Game1.device.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 4, VertexPositionTexture.VertexDeclaration);
                 }
             }
         }
@@ -122,11 +153,19 @@ namespace Foldit3D
 
         #region Fold
 
+        public void preFoldData(Vector3 axis_1, Vector3 point_1, bool beforeF, bool afterF)
+        {
+            axis = axis_1;
+            point = point_1;
+            beforFold = beforeF;
+            afterFold = afterF;
+            stuckOnPaper = false;
+        }
 
         #region Virtual Methods
 
-        public virtual void foldData(Vector3 axis, Vector3 point, float a,bool beforeFold,bool afterFold) { }
-        public virtual void switchPoints(){}
+        //public virtual void foldData(Vector3 axis, Vector3 point, float a,bool beforeFold,bool afterFold) { }
+        public virtual void foldData(float a,Board.BoardState state) { }
         #endregion
 
         #endregion
@@ -145,11 +184,14 @@ namespace Foldit3D
             setVerts(new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22)));
         }
 
-        //!!!! i think that posx and posy need to be the postion of the powerup that the player took
-        //newtype = normal/static/duplicate
-        public void changePlayerType(String newType, int posX, int posY)
+        public void changePlayerType(String newType, Vector2 center)
         {
-            playerManager.changePlayerType(this, newType, posX, posY);
+            playerManager.changePlayerType(this, newType, center);
+        }
+
+        public void changeAllStatic()
+        {
+            playerManager.changeAllStatic();
         }
         #endregion
 
@@ -157,26 +199,40 @@ namespace Foldit3D
 
         private void setVerts(Vector2 center)
         {
-            vertices = new VertexPositionTexture[6];           
-            Vector3 point1 = new Vector3(center.X - size, 0, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, 0, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, 0, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, 0, center.Y - size);
+            vertices = new VertexPositionTexture[12];
+            Vector3 point1 = new Vector3(center.X - size, -0.0f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.0f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.0f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.0f, center.Y - size);
+            Vector3 centerpoint = new Vector3(center.X, -size/2, center.Y);
 
-            vertices[0].Position = point3;
-            vertices[0].TextureCoordinate = new Vector2(1, 1);
+            vertices[0].Position = point4;
+            vertices[0].TextureCoordinate = new Vector2(0.75f, 0);            
 
-            vertices[1].Position = point1;
-            vertices[1].TextureCoordinate = new Vector2(0, 0);
+            vertices[1].Position = centerpoint;
+            vertices[1].TextureCoordinate = new Vector2(0.5f, 0.5f);
 
-            vertices[2].Position = point2;
-            vertices[2].TextureCoordinate = new Vector2(1, 0);
+            vertices[2].Position = point3;
+            vertices[2].TextureCoordinate = new Vector2(1f, 0.85f);
 
-            vertices[3] = vertices[1];
-            vertices[4] = vertices[0];
 
-            vertices[5].Position = point4;
-            vertices[5].TextureCoordinate = new Vector2(0, 1);
+            vertices[3].Position = point2;
+            vertices[3].TextureCoordinate = new Vector2(0, 1);
+
+            vertices[4] = vertices[2];
+            vertices[5] = vertices[1];
+
+            vertices[6].Position = point1;
+            vertices[6].TextureCoordinate = new Vector2(0, 0);
+
+            vertices[7] = vertices[3];
+            vertices[8] = vertices[1];
+
+            vertices[9] = vertices[0];
+            vertices[10] = vertices[6];
+            vertices[11] = vertices[1];            
+                                              
+
 
            // Trace.WriteLine("\n 0: " + point3 + "\n 1: " + point1 + "\n 2: " + point2 + "\n 3: " + point1 + "\n 4: " + point3 + "\n 5: " + point4);
         }
@@ -199,20 +255,37 @@ namespace Foldit3D
 
         public Vector3 getCenter()
         {
-          /*  float x;
-            float z;
-            if (isPointsSwitched)
-            {
-                x = (vertices[3].Position.X + vertices[0].Position.X) / 2;
-                z = (vertices[3].Position.Z + vertices[0].Position.Z) / 2;
-            }
-            else
-            {
-                x = (vertices[2].Position.X + vertices[5].Position.X) / 2;
-                z = (vertices[2].Position.Z + vertices[5].Position.Z) / 2;
-            }*/
             return new Vector3(center.X, 0, center.Y);
         }
+
+        protected void switchPoints()
+        {
+            VertexPositionTexture temp;
+            temp = vertices[0];
+            vertices[0] = vertices[2];
+            vertices[2] = temp;
+            //
+            temp = vertices[3];
+            vertices[3] = vertices[4];
+            vertices[4] = temp;
+            //
+            temp = vertices[7];
+            vertices[7] = vertices[6];
+            vertices[6] = temp;
+            //
+            temp = vertices[9];
+            vertices[9] = vertices[10];
+            vertices[10] = temp;
+            //
+            isPointsSwitched = !isPointsSwitched;
+        }
+
+        protected void calcCenter()
+        {
+            center.X = vertices[1].Position.X;
+            center.Y = vertices[1].Position.Z;
+        }
+
         #endregion
     }
 }

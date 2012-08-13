@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline" xmlns:Framework="Microsoft.Xna.Framework" xmlns:Processors="Microsoft.Xna.Framework.Content.Pipeline.Processors">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
       <Source>edged.png</Source>
@@ -27,15 +27,6 @@
       <Options>None</Options>
       <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper2.xnb</Output>
       <Time>2012-07-23T17:02:38.0107299+03:00</Time>
-    </Item>
-    <Item>
-      <Source>paper1.jpg</Source>
-      <Name>paper1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper1.xnb</Output>
-      <Time>2012-07-23T17:02:38.0097298+03:00</Time>
     </Item>
     <Item>
       <Source>paper.png</Source>
@@ -74,15 +65,6 @@
       <Time>2012-07-23T17:02:37.9857285+03:00</Time>
     </Item>
     <Item>
-      <Source>hole.jpg</Source>
-      <Name>hole</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole.xnb</Output>
-      <Time>2012-07-23T17:02:37.9867285+03:00</Time>
-    </Item>
-    <Item>
       <Source>hole1.png</Source>
       <Name>hole1</Name>
       <Importer>TextureImporter</Importer>
@@ -99,6 +81,60 @@
       <Options>None</Options>
       <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole2.xnb</Output>
       <Time>2012-07-23T17:02:37.9887286+03:00</Time>
+    </Item>
+    <Item>
+      <Source>gum.png</Source>
+      <Name>gum</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gum.xnb</Output>
+      <Time>2012-07-23T20:13:30.0278215+03:00</Time>
+    </Item>
+    <Item>
+      <Source>help.jpg</Source>
+      <Name>help</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\help.xnb</Output>
+      <Time>2012-07-24T21:52:49.9743828+03:00</Time>
+    </Item>
+    <Item>
+      <Source>levelsScreen.jpg</Source>
+      <Name>levelsScreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\levelsScreen.xnb</Output>
+      <Time>2012-07-24T21:52:49.978383+03:00</Time>
+    </Item>
+    <Item>
+      <Source>startScreen.png</Source>
+      <Name>startScreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\startScreen.xnb</Output>
+      <Time>2012-07-24T21:52:49.9943839+03:00</Time>
+    </Item>
+    <Item>
+      <Source>level1.jpg</Source>
+      <Name>level1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb</Output>
+      <Time>2012-07-24T21:52:49.9763829+03:00</Time>
+    </Item>
+    <Item>
+      <Source>level2.jpg</Source>
+      <Name>level2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb</Output>
+      <Time>2012-08-07T19:31:59.2500743+03:00</Time>
     </Item>
     <Item>
       <Source>font.spritefont</Source>
@@ -128,58 +164,59 @@
       <Time>2012-07-23T17:02:37.9567268+03:00</Time>
     </Item>
     <Item>
-      <Source>gum.png</Source>
-      <Name>gum</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Source>table.FBX</Source>
+      <Name>table</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gum.xnb</Output>
-      <Time>2012-07-23T20:13:30.0278215+03:00</Time>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb</Output>
+      <Time>2012-08-07T19:31:59.2656743+03:00</Time>
+      <Dependency>
+        <Key>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\table_0.xml</Key>
+        <Value>2012-08-07T19:32:17.5343065+03:00</Value>
+      </Dependency>
+      <Request>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb</Request>
     </Item>
     <Item>
-      <Source>startScreen.png</Source>
-      <Name>startScreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\startScreen.xnb</Output>
-      <Time>2012-07-24T21:52:49.9943839+03:00</Time>
+      <Source>table.FBX</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\table_0.xml</Output>
+      <Time>2012-08-07T19:31:59.2656743+03:00</Time>
     </Item>
     <Item>
-      <Source>help.jpg</Source>
-      <Name>help</Name>
+      <Source>wood.tga</Source>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Framework:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+        <Data Key="PremultiplyAlpha" Type="bool">true</Data>
+      </Parameters>
       <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\help.xnb</Output>
-      <Time>2012-07-24T21:52:49.9743828+03:00</Time>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb</Output>
+      <Time>2012-08-07T19:31:59.3124744+03:00</Time>
     </Item>
     <Item>
-      <Source>levelsScreen.jpg</Source>
-      <Name>levelsScreen</Name>
+      <Source>dupGum.png</Source>
+      <Name>dupGum</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\levelsScreen.xnb</Output>
-      <Time>2012-07-24T21:52:49.978383+03:00</Time>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\dupGum.xnb</Output>
+      <Time>2012-08-12T18:39:36.0696091+03:00</Time>
     </Item>
     <Item>
-      <Source>level1.jpg</Source>
-      <Name>level1</Name>
+      <Source>staticGum.png</Source>
+      <Name>staticGum</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb</Output>
-      <Time>2012-07-24T21:52:49.9763829+03:00</Time>
-    </Item>
-    <Item>
-      <Source>level2.jpg</Source>
-      <Name>level2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb</Output>
-      <Time>2012-07-24T21:52:49.9763829+03:00</Time>
+      <Output>C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\staticGum.xnb</Output>
+      <Time>2012-08-12T18:40:09.4078677+03:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

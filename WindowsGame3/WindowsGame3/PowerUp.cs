@@ -12,14 +12,19 @@ namespace Foldit3D
 
     class PowerUp
     {
-        Vector2 center = Vector2.Zero;
+        public Vector2 center = Vector2.Zero;
         bool moving = true;
         bool isDraw = true;
         bool drawInFold = false;
-        float size = 2.5f;
+        public float size = 2.5f;
         Texture2D texture;
         Vector2 worldPosition;
         PowerUpType type;
+
+        //Tom - added to the
+        Vector3 axis;
+        Vector3 point;
+        // Tom -end
 
         protected VertexPositionTexture[] vertices;
         protected Matrix worldMatrix = Matrix.Identity;
@@ -65,13 +70,13 @@ namespace Foldit3D
                     player.changePos();
                     break;
                 case PowerUpType.SplitPlayer:
-                    player.changePlayerType("duplicate", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changePlayerType("duplicate", center);
                     break;
                 case PowerUpType.DryPlayer:
-                    player.changePlayerType("static", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changePlayerType("static", center);
                     break;
                 case PowerUpType.NormalPlayer:
-                    player.changePlayerType("normal", (int)worldPosition.X, (int)worldPosition.Y);
+                    player.changeAllStatic();
                     break;
             }
         }
@@ -95,69 +100,21 @@ namespace Foldit3D
         #region fold
 
 
-        public void foldData(Vector3 axis, Vector3 point, float a)
+        public void preFoldData(Vector3 axis_1, Vector3 point_1)
         {
-            //int x = 1 , z = 1;
+            axis = axis_1;
+            point = point_1;
+        }
 
+        public void foldData(float a)
+        {
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
                 worldMatrix = Matrix.Identity;
                 worldMatrix *= Matrix.CreateTranslation(-point);
                 worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
-                worldMatrix *= Matrix.CreateTranslation(point);   
-               // Trace.WriteLine("POWERUP: axis: " + axis + "   point: " + point + "   a: " + a + "   center: "+center);
-              //  if (angle < -90) isDraw = false;
-              //  else isDraw = true;
-              //  worldMatrix = Matrix.Identity;
-                //worldMatrix *= Matrix.CreateTranslation(-point);
-                // worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
-
-                #region change x and z
-                // powerup: right+down
-                /*     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = 1; z = -1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0) { x = -1; z = 1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-                     if (center.X > 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-
-                     // powerup: right+up
-                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = -1; z = -1; }
-                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0 && point.X > 0 && point.Z > 0) { x = -1; z = -1; } //
-                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = -1; }
-                     if (center.X > 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = 1; } //
-                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = 1; z = -1; }
-                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = -1; }
-                     if (center.X > 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = -1; }
-
-                     // powerup: left+down
-                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y < 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y < 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = 1; z = 1; }
-
-                     // powerup: left+up
-                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z > 0 && point.X < 0 && point.Z > 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z > 0) { x = 1; z = 1; }
-                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z > 0) { x = 1; z = -1; } 
-                     if (center.X < 0 && center.Y > 0 && axis.X > 0 && axis.Z < 0 && point.X > 0 && point.Z < 0) { x = -1; z = 1; }
-               
-               
-                     //if (center.X < 0 && center.Y > 0 && axis.X < 0 && axis.Z < 0 && point.X < 0 && point.Z < 0) { x = -1; z = 1; }
-                */
-                #endregion
-
-       //         worldMatrix *= Matrix.CreateFromAxisAngle(new Vector3(x * Math.Abs(axis.X), axis.Y, z * Math.Abs(axis.Z)), -a);
-               
-           //     worldMatrix *= Matrix.CreateTranslation(point);
-            }
+                worldMatrix *= Matrix.CreateTranslation(point);
+            } 
         }
 
         #endregion
@@ -197,14 +154,14 @@ namespace Foldit3D
         #endregion
 
         #region 3D
-
+        
         private void setVerts(Vector2 center)
         {
             vertices = new VertexPositionTexture[6];
-            Vector3 point1 = new Vector3(center.X - size, 0, center.Y + size);
-            Vector3 point2 = new Vector3(center.X + size, 0, center.Y + size);
-            Vector3 point3 = new Vector3(center.X + size, 0, center.Y - size);
-            Vector3 point4 = new Vector3(center.X - size, 0, center.Y - size);
+            Vector3 point1 = new Vector3(center.X - size, -0.02f, center.Y + size);
+            Vector3 point2 = new Vector3(center.X + size, -0.02f, center.Y + size);
+            Vector3 point3 = new Vector3(center.X + size, -0.02f, center.Y - size);
+            Vector3 point4 = new Vector3(center.X - size, -0.02f, center.Y - size);
 
             vertices[0].Position = point3;
             vertices[0].TextureCoordinate = new Vector2(1,1);
