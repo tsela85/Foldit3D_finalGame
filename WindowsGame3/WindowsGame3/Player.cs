@@ -27,8 +27,8 @@ namespace Foldit3D
         protected Matrix worldMatrix = Matrix.Identity;
         protected Effect effect;
         protected bool isDraw = true;
-        protected bool dataSet = false;
         protected float size = 2f;
+        public string type;
         //Tom - added to the
         protected Vector3 axis;
         protected Vector3 point;
@@ -102,19 +102,31 @@ namespace Foldit3D
                 }
                 calcCenter();
                 worldMatrix = Matrix.Identity;
-
-                moving = true;
-                dataSet = false;
-                HoleManager.checkCollision(this,center, size);
-                PowerUpManager.checkCollision(this,center, size);
+                if (type.CompareTo("duplicate") == 0)
+                {
+                    playerManager.makeNewPlayer("normal", center);
+                    playerManager.changePlayerType(this, "normal", center);
+                }
                 checkCollision = 0;
+                PowerUpManager.checkCollision(this, center, size);
+                if (HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers()))
+                {
+                    playerManager.changePlayerType(this, "static", center);
+                }
             } else
                 if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
                 {
-                    dataSet = false;
-                    HoleManager.checkCollision(this,center,size);
-                    PowerUpManager.checkCollision(this,center, size);
                     checkCollision = 0;
+                    if (type.CompareTo("duplicate") == 0)
+                    {
+                        playerManager.changePlayerType(this, "normal", center);
+                    }
+                    PowerUpManager.checkCollision(this, center, size);
+                    if (HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers()))
+                    {
+                        playerManager.changePlayerType(this, "static", center);
+                    }
+
                 }
         }
 
@@ -172,11 +184,14 @@ namespace Foldit3D
             setVerts(new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22)));
         }
 
-        //!!!! i think that posx and posy need to be the postion of the powerup that the player took
-        //newtype = normal/static/duplicate
-        public void changePlayerType(String newType, int posX, int posY)
+        public void changePlayerType(String newType, Vector2 center)
         {
-            playerManager.changePlayerType(this, newType, posX, posY);
+            playerManager.changePlayerType(this, newType, center);
+        }
+
+        public void changeAllStatic()
+        {
+            playerManager.changeAllStatic();
         }
         #endregion
 

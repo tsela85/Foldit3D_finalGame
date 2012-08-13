@@ -287,7 +287,7 @@ class GameManager
         {
             spriteBatch.Draw(helpScreen, new Rectangle(210, 60, helpScreen.Width, helpScreen.Height), Color.White);
             spriteBatch.DrawString(font, "Back", new Vector2(helpBackBtn.X + 50, helpBackBtn.Y), Color.Black);
-            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n X to zoom in and Z to zoom out.", new Vector2(260, 160), Color.Black);
+            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n R - restart \n Esc - exit to start screen \n X - zoom in , Z - zoom out", new Vector2(260, 170), Color.Black);
             //back btn
             var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
             rect3.SetData(new[] { Color.Transparent });

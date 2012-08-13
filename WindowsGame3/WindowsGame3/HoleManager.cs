@@ -111,7 +111,7 @@ namespace Foldit3D
         #endregion
 
         #region Collision
-        public static bool checkCollision(Player player,Vector2 pCenter,float pSize)//, int numOfPlayers)
+        public static bool checkCollision(Player player,Vector2 pCenter,float pSize, int numOfPlayers)
         {
             foreach (Hole h in holes)
             {
@@ -119,7 +119,7 @@ namespace Foldit3D
                 {
                     collisionCount++;
                     GameManager.showHoleMsg = true;
-                    if (collisionCount >=2)//numOfPlayers)
+                    if (collisionCount >= numOfPlayers)
                     {
                         // WIN!!!
                         Trace.WriteLine("WIN!!!!!!");

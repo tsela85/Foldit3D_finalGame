@@ -83,7 +83,7 @@ namespace Foldit3D
         {
             cameraArc = -90;
             cameraRotation = 0;
-            cameraDistance = CameraDefaultDistance+10;
+            cameraDistance = CameraDefaultDistance-10;
         }
         public void setDefaultPosition()
         {
@@ -125,8 +125,8 @@ namespace Foldit3D
         public void UpdateCamera(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (!movment)
-                return;
+            //if (!movment)
+            //    return;
 
             // should we reset the camera?
             if (input.KeyboardHandler.IsKeyDown(Keys.R))
