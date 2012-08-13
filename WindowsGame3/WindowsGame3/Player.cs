@@ -28,7 +28,7 @@ namespace Foldit3D
         protected Effect effect;
         protected bool isDraw = true;
         protected float size = 2f;
-        protected string type;
+        public string type;
         //Tom - added to the
         protected Vector3 axis;
         protected Vector3 point;
@@ -102,23 +102,29 @@ namespace Foldit3D
                 }
                 calcCenter();
                 worldMatrix = Matrix.Identity;
-                HoleManager.checkCollision(this,center, size);
-                PowerUpManager.checkCollision(this,center, size);
                 if (type.CompareTo("duplicate") == 0)
                 {
                     playerManager.makeNewPlayer("normal", center);
                     playerManager.changePlayerType(this, "normal", center);
                 }
                 checkCollision = 0;
+                PowerUpManager.checkCollision(this, center, size);
+                if (HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers()))
+                {
+                    playerManager.changePlayerType(this, "static", center);
+                }
             } else
                 if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
                 {
-                    HoleManager.checkCollision(this,center,size);
-                    PowerUpManager.checkCollision(this,center, size);
                     checkCollision = 0;
                     if (type.CompareTo("duplicate") == 0)
                     {
                         playerManager.changePlayerType(this, "normal", center);
+                    }
+                    PowerUpManager.checkCollision(this, center, size);
+                    if (HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers()))
+                    {
+                        playerManager.changePlayerType(this, "static", center);
                     }
 
                 }
@@ -181,6 +187,11 @@ namespace Foldit3D
         public void changePlayerType(String newType, Vector2 center)
         {
             playerManager.changePlayerType(this, newType, center);
+        }
+
+        public void changeAllStatic()
+        {
+            playerManager.changeAllStatic();
         }
         #endregion
 

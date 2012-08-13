@@ -76,7 +76,7 @@ namespace Foldit3D
                     player.changePlayerType("static", center);
                     break;
                 case PowerUpType.NormalPlayer:
-                    player.changePlayerType("normal", center);
+                    player.changeAllStatic();
                     break;
             }
         }

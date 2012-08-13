@@ -11,13 +11,17 @@ namespace Foldit3D
     class PlayerManager
     {
         private Texture2D texture;
+        private Texture2D dupTexture;
+        private Texture2D staticTexture;
         private List<Player> players;
         private Effect effect;
-        public PlayerManager(Texture2D texture, Effect effect)
+        public PlayerManager(Texture2D texture, Effect effect, Texture2D texture1, Texture2D texture2)
         {
             this.texture = texture;
             players = new List<Player>();
             this.effect = effect;
+            dupTexture = texture1;
+            staticTexture = texture2;
         }
 
         #region Levels
@@ -59,6 +63,20 @@ namespace Foldit3D
 
         #region Public Methods
 
+        public void changeAllStatic()
+        {
+             int i = 0;
+             while (i < players.Count())
+             {
+                 if (players.ElementAt(i).type.CompareTo("static") == 0)
+                 {
+                     Vector3 cent = players.ElementAt(i).getCenter();
+                     changePlayerType(players.ElementAt(i), "normal", new Vector2(cent.X, cent.Z));
+                 }
+                 i++;
+             }
+        }
+
         public Player makeNewPlayer(String type, Vector2 c)
         {
             Player newP = null;
@@ -68,11 +86,11 @@ namespace Foldit3D
             }
             else if (type.CompareTo("static") == 0)
             {
-                players.Add(new StaticPlayer(texture, c, this, effect));
+                players.Add(new StaticPlayer(staticTexture, c, this, effect));
             }
             else if (type.CompareTo("duplicate") == 0)
             {
-                players.Add(new DuplicatePlayer(texture, c,this, effect));
+                players.Add(new DuplicatePlayer(dupTexture, c,this, effect));
             }
             return newP;
         }
@@ -127,8 +145,6 @@ namespace Foldit3D
         // I changed it so the axis and the point will be relevent to the closest point - Tom
         public void foldData(float angle, Board b)
         {
-          //  foreach (Player p in players)
-           // {
             int i = 0;
             while (i<players.Count())
             {
@@ -137,7 +153,11 @@ namespace Foldit3D
                 i++;
 
             }
-          //  }
+        }
+
+        public int getNumOfPlayers()
+        {
+            return players.Count();
         }
         #endregion
 

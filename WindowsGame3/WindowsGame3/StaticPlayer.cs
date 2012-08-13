@@ -18,6 +18,7 @@ namespace Foldit3D
 
         public override void foldData(float a, Board.BoardState state)
         {
+            if (!beforFold) return;
             if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
                 worldMatrix = Matrix.Identity;

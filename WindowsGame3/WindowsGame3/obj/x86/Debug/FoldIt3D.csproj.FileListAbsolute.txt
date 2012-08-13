@@ -43,3 +43,5 @@ C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\effects.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\dupGum.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\staticGum.xnb
