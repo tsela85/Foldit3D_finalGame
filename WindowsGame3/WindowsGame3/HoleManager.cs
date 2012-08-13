@@ -13,6 +13,7 @@ namespace Foldit3D
         Texture2D texture;
         private static List<Hole> holes;
         private Effect effect;
+        static int collisionCount = 0;
 
         public HoleManager(Texture2D texture, Effect e)
         {
@@ -110,18 +111,24 @@ namespace Foldit3D
         #endregion
 
         #region Collision
-        public static void checkCollision(Player player,Vector2 pCenter,float pSize)
+        public static bool checkCollision(Player player,Vector2 pCenter,float pSize)//, int numOfPlayers)
         {
             foreach (Hole h in holes)
             {
                 if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
                 {
-                    // WIN!!!
-                    Trace.WriteLine("WIN!!!!!!");
-                    GameManager.winLevel();
-                    break;
+                    collisionCount++;
+                    GameManager.showHoleMsg = true;
+                    if (collisionCount >=2)//numOfPlayers)
+                    {
+                        // WIN!!!
+                        Trace.WriteLine("WIN!!!!!!");
+                        GameManager.winLevel();
+                    }
+                    return true;
                 }
             }
+            return false;
         }
         #endregion
 
