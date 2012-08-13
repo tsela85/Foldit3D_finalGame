@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using WindowsGame3;
+using System.Diagnostics;
 
 namespace Foldit3D
 {
@@ -24,7 +25,7 @@ class GameManager
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.start;
+    ScreenState screen = ScreenState.game;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;
@@ -36,9 +37,9 @@ class GameManager
     List<Rectangle> levelsPicsBtn = new List<Rectangle>();
     double levelScreenTime = 0;
     string win = "      EXCELLENT!!!\n you did it with: ";
-    int level;
-    int endLevel = 2;
-    int folds;
+    public static int level;
+    int endLevel = 3;
+    public static int folds;
     int first = 1;
     int score = 0;
     static bool changeScore = false;
@@ -64,7 +65,7 @@ class GameManager
         table = tab;
         gamestate = GameState.normal;
         folds = 0;
-        level = 0;
+        level = 3;
 
         startScreen = st;
         helpScreen = help;
@@ -81,7 +82,6 @@ class GameManager
     {
         folds = 0;
         time = 0;
-        gamestate = GameState.normal;
         playerManager.restartLevel();
         playerManager.initLevel(XMLReader.Get(level, "player"));
         holeManager.restartLevel();
@@ -92,7 +92,7 @@ class GameManager
         board.initLevel(XMLReader.Get(level, "board"));
         Game1.camera.Initialize();
         // TOM - make dawin move
-        if (level == 0 || level == 1)
+        if (level <= 2)
         {
             Game1.camera.setPositionToTop();
             Game1.camera.stopMovment();
@@ -102,6 +102,7 @@ class GameManager
             Game1.camera.resumeMovment();
             //Game1.camera.setDefaultPosition();
         }
+        gamestate = GameState.normal;
     } 
 
     #region Update
@@ -193,6 +194,10 @@ class GameManager
             {
                 loadCurrLevel();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                screen = ScreenState.start;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 Game1.camera.CameraMoveAround();
@@ -235,9 +240,8 @@ class GameManager
                 }
 
             }
-            if ((gamestate == GameState.scored) && (Mouse.GetState().LeftButton == ButtonState.Pressed))
+        if ((gamestate == GameState.scored) && (Mouse.GetState().LeftButton == ButtonState.Pressed))
             {
-                gamestate = GameState.normal;
                 folds = 0;
                 level++;
                 if (level <= endLevel)
@@ -287,7 +291,7 @@ class GameManager
         {
             spriteBatch.Draw(helpScreen, new Rectangle(210, 60, helpScreen.Width, helpScreen.Height), Color.White);
             spriteBatch.DrawString(font, "Back", new Vector2(helpBackBtn.X + 50, helpBackBtn.Y), Color.Black);
-            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n R - restart \n Esc - exit to start screen \n X - zoom in , Z - zoom out", new Vector2(260, 170), Color.Black);
+            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n R - restart \n Q - exit to start screen \n X - zoom in , Z - zoom out", new Vector2(260, 170), Color.Black);
             //back btn
             var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
             rect3.SetData(new[] { Color.Transparent });
@@ -357,6 +361,11 @@ class GameManager
                 spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
                 if (time > 65) { loadCurrLevel(); }
             }
+            else if (playerManager.areAllStatic())
+            {
+                spriteBatch.DrawString(font, "You are stuck...\n Press 'R' to try again", new Vector2(290, 250), Color.Black);
+            }
+
 
             #endregion
 
@@ -377,19 +386,22 @@ class GameManager
             }
             else if (level == 1 && time < 5)
                 spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(530, 220), Color.Black);
+            else if(level == 2 && time < 5)
+                spriteBatch.DrawString(scoreFont, "<- This is a dry gum\nit can't be moved...\ntry to make it sticky!", new Vector2(460, 420), Color.Black);
             if (folds > 9 && folds <13)
                 spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
             else if (folds > 13)
                 spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
-            else if (showHoleMsg && countSec>0)
+
+            if (showHoleMsg && countSec>0)
             {
-                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(430, 20), Color.LightGray);
-                if (countSec < 4) { showHoleMsg = false;  countSec = 0; }
+                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(470, 20), Color.LightGray);
+                if (countSec > 3 || gamestate==GameState.scored) { showHoleMsg = false;  countSec = 0; }
             }
             else if (showPuMsg && countSec>0)
             {
-                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(430, 20), Color.LightGray);
-                if (countSec < 4) { showPuMsg = false; countSec = 0; }
+                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(470, 20), Color.LightGray);
+                if (countSec > 3 || gamestate==GameState.scored) { showPuMsg = false; countSec = 0; }
             }
         }
         spriteBatch.End(); //Tom 

@@ -14,6 +14,7 @@ namespace Foldit3D
         private static List<Hole> holes;
         private Effect effect;
         static int collisionCount = 0;
+        static int temp=0;
 
         public HoleManager(Texture2D texture, Effect e)
         {
@@ -45,6 +46,7 @@ namespace Foldit3D
 
         public void restartLevel()
         {
+            collisionCount = 0;
             holes.Clear();
         }
         #endregion
@@ -113,22 +115,47 @@ namespace Foldit3D
         #region Collision
         public static bool checkCollision(Player player,Vector2 pCenter,float pSize, int numOfPlayers)
         {
-            foreach (Hole h in holes)
+            if (GameManager.level != 3)
             {
-                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
+                foreach (Hole h in holes)
                 {
-                    collisionCount++;
-                    GameManager.showHoleMsg = true;
-                    if (collisionCount >= numOfPlayers)
+                    if (Vector2.Distance(pCenter, h.center) < (pSize + h.size + 0.1f))
                     {
-                        // WIN!!!
-                        Trace.WriteLine("WIN!!!!!!");
-                        GameManager.winLevel();
+                        collisionCount++;
+                        GameManager.showHoleMsg = true;
+                        if (collisionCount >= numOfPlayers)
+                        {
+                            // WIN!!!
+                            Trace.WriteLine("WIN!!!!!!");
+                            GameManager.winLevel();
+                        }
+                        return true;
                     }
-                    return true;
                 }
+                return false;
             }
-            return false;
+            else
+            {
+                temp++;
+                foreach (Hole h in holes)
+                {
+                    if (Vector2.Distance(pCenter, h.center) < (pSize + h.size + 0.1f))
+                    {
+                        collisionCount++;
+                        Debug.WriteLine("@@@ collisionCount: " + collisionCount);
+                        GameManager.showHoleMsg = true;
+                        if (collisionCount >= numOfPlayers)
+                        {
+                            // WIN!!!
+                            Trace.WriteLine("WIN!!!!!!");
+                            GameManager.winLevel();
+                            return true;
+                        }
+                    }
+                }
+                if (temp == 2) collisionCount = 0;
+                return false;
+            }
         }
         #endregion
 

@@ -159,6 +159,16 @@ namespace Foldit3D
         {
             return players.Count();
         }
+
+        public bool areAllStatic()
+        {
+            foreach (Player p in players)
+            {
+                if (p.type.CompareTo("static") != 0) return false;
+            }
+
+            return true;
+        }
         #endregion
 
     }

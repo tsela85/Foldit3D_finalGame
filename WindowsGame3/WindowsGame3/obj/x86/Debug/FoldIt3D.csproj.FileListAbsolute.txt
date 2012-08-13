@@ -1,12 +1,10 @@
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\edged.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\empty.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper2.xnb
-C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper1.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\paper.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\inkspot.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gumball.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\gummy2.xnb
-C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole1.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\hole2.xnb
 C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\font.xnb
@@ -48,3 +46,10 @@ C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\dupGum.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\staticGum.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\table.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb
+C:\Users\Dina\Desktop\fold it\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level3.xnb
