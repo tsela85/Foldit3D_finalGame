@@ -10,28 +10,75 @@ namespace Foldit3D
     class DuplicatePlayer : Player
     {
         private bool created = false;
-        public DuplicatePlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) { }
+        public DuplicatePlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect, bool fromDup)
+            : base(texture, c, pm, effect, fromDup)
+        {
+            type = "duplicate";
+        }
 
         #region fold
 
-      /*  public override void foldData(Vector3 axis, Vector3 point, float a)
+        public override void foldData(float a, Board.BoardState state)
         {
-            worldMatrix = Matrix.Identity;
-            float angle = MathHelper.ToDegrees(a);
-            if (angle < 167 && angle >= 0)
+            if (beforFold)
             {
-                worldMatrix *= Matrix.CreateTranslation(-point);
-                worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
-                worldMatrix *= Matrix.CreateTranslation(point);
+                if (state == Board.BoardState.folding1 || stuckOnPaper)
+                {
+                    if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
+                    {
+                        worldMatrix = Matrix.Identity;
+                        worldMatrix *= Matrix.CreateTranslation(-point);
+                        worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
+                        worldMatrix *= Matrix.CreateTranslation(point);
+                    }
+                }
+                else
+                    if ((state == Board.BoardState.folding2) && !(stuckOnPaper))
+                    {
+                      //  float oldy;
+                        stuckOnPaper = true;
+                        //switchPoints();
+                        worldMatrix = Matrix.Identity;
+                        worldMatrix *= Matrix.CreateTranslation(-point);
+                        worldMatrix *= Matrix.CreateFromAxisAngle(axis, -MathHelper.Pi);
+                        worldMatrix *= Matrix.CreateTranslation(point);
+                     /*   for (int i = 0; i < vertices.Length; i++)
+                        {
+                            oldy = vertices[i].Position.Y;
+                            vertices[i].Position = Vector3.Transform(vertices[i].Position, worldMatrix);
+                            vertices[i].Position.Y = oldy;
+                        }
+                        calcCenter();
+                        worldMatrix = Matrix.Identity;
+                    //    playerManager.makeNewPlayer("normal", center);
+                     //  playerManager.changePlayerType(this, "normal", center);*/
+                       checkCollision = 1;
+
+                        Vector3 temp = vertices[1].Position;
+                        temp = Vector3.Transform(temp, worldMatrix);
+                        playerManager.makeNewPlayer("normal", new Vector2(temp.X,temp.Z),true);
+                    }
             }
-            else if (angle > 167 && !created)
+            else if (afterFold && (state == Board.BoardState.folding2))
             {
-                moving = false;
-                created = true;
-               // playerManager.makeNewPlayer("normal", (int)worldPosition.X, (int)worldPosition.Y);
+
+                worldMatrix = Matrix.Identity;
+                worldMatrix *= Matrix.CreateTranslation(-getCenter());
+                worldMatrix *= Matrix.CreateRotationZ(MathHelper.Pi);
+                worldMatrix *= Matrix.CreateTranslation(getCenter());
+                worldMatrix *= Matrix.CreateTranslation(-point);
+                worldMatrix *= Matrix.CreateFromAxisAngle(axis, a - MathHelper.Pi);
+                worldMatrix *= Matrix.CreateTranslation(point);
+                checkCollision = -1;
+                if (!stuckOnPaper)
+                {
+                    stuckOnPaper = true;
+                    Vector3 temp = vertices[1].Position;
+                    temp = Vector3.Transform(temp, worldMatrix);
+                    playerManager.makeNewPlayer("normal", new Vector2(temp.X, temp.Z),true);
+                }
             }
         }
-        */
         #endregion
     }
 }

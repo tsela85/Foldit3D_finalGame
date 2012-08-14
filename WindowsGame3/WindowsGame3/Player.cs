@@ -27,8 +27,8 @@ namespace Foldit3D
         protected Matrix worldMatrix = Matrix.Identity;
         protected Effect effect;
         protected bool isDraw = true;
-        protected bool dataSet = false;
         protected float size = 2f;
+        public string type;
         //Tom - added to the
         protected Vector3 axis;
         protected Vector3 point;
@@ -36,7 +36,8 @@ namespace Foldit3D
         protected bool stuckOnPaper = false;
         protected int checkCollision = 0;
         // Tom -end
-
+        public bool isInHole = false;
+        private bool fromDup = false;
 
         #region Properties
 
@@ -73,7 +74,7 @@ namespace Foldit3D
 
         #endregion
 
-        public Player(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect)
+        public Player(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect,bool fromDup)
         {
             this.texture = texture;
             frameHeight = texture.Height;
@@ -83,6 +84,20 @@ namespace Foldit3D
             //setUpVertices(points);
             center = c;
             setVerts(c);
+            this.fromDup = fromDup;
+
+            if (fromDup)
+            {
+                PowerUpManager.checkCollision(this, center, size);
+                if ((isInHole = HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level != 3)
+                {
+                    playerManager.changePlayerType(this, "static", center, false);
+                }
+            }
+            else
+            {
+                isInHole = HoleManager.isStillInHole(this,center,size);
+            }
         }
 
         #region Update and Draw
@@ -102,20 +117,40 @@ namespace Foldit3D
                 }
                 calcCenter();
                 worldMatrix = Matrix.Identity;
-
-                moving = true;
-                dataSet = false;
-                HoleManager.checkCollision(this,center, size);
-                PowerUpManager.checkCollision(this,center, size);
+                if (type.CompareTo("duplicate") == 0)
+                {
+                    playerManager.changePlayerType(this, "normal", center,true);
+                }
                 checkCollision = 0;
+                
+                if ((isInHole =  HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers())) && GameManager.level!=3)
+                {
+                    playerManager.changePlayerType(this, "static", center,false);
+                }
+                PowerUpManager.checkCollision(this, center, size);
             } else
                 if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
                 {
-                    dataSet = false;
-                    HoleManager.checkCollision(this,center,size);
-                    PowerUpManager.checkCollision(this,center, size);
                     checkCollision = 0;
+                    if (type.CompareTo("duplicate") == 0)
+                    {
+                        playerManager.changePlayerType(this, "normal", center,true);
+                    }
+                    
+                    if ((isInHole =  HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level!=3)
+                    {
+                        playerManager.changePlayerType(this, "static", center, false);
+                    }
+                    PowerUpManager.checkCollision(this, center, size);
                 }
+
+            if (isInHole && GameManager.level!=3)
+            {
+                if (!(isInHole = HoleManager.isStillInHole(this,center,size)))
+                {
+                   playerManager.changePlayerType(this, "normal", center, false);
+                }
+            }
         }
 
         public void Draw()
@@ -172,11 +207,14 @@ namespace Foldit3D
             setVerts(new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22)));
         }
 
-        //!!!! i think that posx and posy need to be the postion of the powerup that the player took
-        //newtype = normal/static/duplicate
-        public void changePlayerType(String newType, int posX, int posY)
+        public void changePlayerType(String newType, Vector2 center)
         {
-            playerManager.changePlayerType(this, newType, posX, posY);
+            playerManager.changePlayerType(this, newType, center,false);
+        }
+
+        public void changeAllStatic()
+        {
+            playerManager.changeAllStatic();
         }
         #endregion
 

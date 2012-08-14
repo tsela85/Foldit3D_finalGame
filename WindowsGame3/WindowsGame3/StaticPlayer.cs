@@ -10,21 +10,25 @@ namespace Foldit3D
     class StaticPlayer : Player
     {
 
-        public StaticPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) { }
+        public StaticPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect, bool fromDup)
+            : base(texture, c, pm, effect, fromDup)
+        {
+            type = "static";
+        }
 
         #region fold
 
-       /* public override void foldData(Vector3 axis, Vector3 point, float a)
+        public override void foldData(float a, Board.BoardState state)
         {
-            worldMatrix = Matrix.Identity;
-            float angle = MathHelper.ToDegrees(a);
-            if (a > -MathHelper.Pi + Game1.closeRate)
+            if (!beforFold) return;
+            if ((a > -MathHelper.Pi + Game1.closeRate) && (moving))
             {
+                worldMatrix = Matrix.Identity;
                 worldMatrix *= Matrix.CreateTranslation(-point);
-                worldMatrix *= Matrix.CreateFromAxisAngle(axis, -a);
+                worldMatrix *= Matrix.CreateFromAxisAngle(axis, a);
                 worldMatrix *= Matrix.CreateTranslation(point);
             }
-        }*/
+        }
 
         #endregion
     }
