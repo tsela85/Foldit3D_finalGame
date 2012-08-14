@@ -31,7 +31,7 @@ namespace Foldit3D
             foreach (IDictionary<string, string> item in data)
             {
                 Vector2 center = new Vector2((float)Convert.ToDouble(item["x"]), (float)Convert.ToDouble(item["y"]));
-                makeNewPlayer(item["type"], center);
+                makeNewPlayer(item["type"], center,false);
             }
         }
 
@@ -50,6 +50,7 @@ namespace Foldit3D
             }
         }
         public void Update(GameTime gameTime, GameState state) {
+          
            // foreach (Player p in players)
             int i = 0;
             while (i<players.Count())
@@ -57,11 +58,21 @@ namespace Foldit3D
                 players.ElementAt(i).Update( gameTime, state);
                 i++;
             }
+
+            if (GameManager.level == 3) HoleManager.checkCollisionLevel3(isAllInHole());
         }
 
         #endregion
 
         #region Public Methods
+        public bool isAllInHole()
+        {
+            foreach (Player p in players)
+            {
+                if (!p.isInHole) return false;
+            }
+            return true;
+        }
 
         public void changeAllStatic()
         {
@@ -71,36 +82,36 @@ namespace Foldit3D
                  if (players.ElementAt(i).type.CompareTo("static") == 0)
                  {
                      Vector3 cent = players.ElementAt(i).getCenter();
-                     changePlayerType(players.ElementAt(i), "normal", new Vector2(cent.X, cent.Z));
+                     changePlayerType(players.ElementAt(i), "normal", new Vector2(cent.X, cent.Z),false);
                  }
                  i++;
              }
         }
 
-        public Player makeNewPlayer(String type, Vector2 c)
+        public Player makeNewPlayer(String type, Vector2 c,bool fromDup)
         {
             Player newP = null;
             if (type.CompareTo("normal") == 0)
             {
-                players.Add(new NormalPlayer(texture, c,this, effect));
+                players.Add(new NormalPlayer(texture, c, this, effect, fromDup));
             }
             else if (type.CompareTo("static") == 0)
             {
-                players.Add(new StaticPlayer(staticTexture, c, this, effect));
+                players.Add(new StaticPlayer(staticTexture, c, this, effect, fromDup));
             }
             else if (type.CompareTo("duplicate") == 0)
             {
-                players.Add(new DuplicatePlayer(dupTexture, c,this, effect));
+                players.Add(new DuplicatePlayer(dupTexture, c, this, effect, fromDup));
             }
             return newP;
         }
 
-        public void changePlayerType(Player p,String type, Vector2 center)
+        public void changePlayerType(Player p,String type, Vector2 center,bool fromDup)
         {
             if (players.Contains(p))
             {
-                makeNewPlayer(type,center);
                 players.Remove(p);
+                makeNewPlayer(type, center, fromDup);
             }
             else Trace.WriteLine("changePlayerType Error!");
         }
@@ -158,6 +169,16 @@ namespace Foldit3D
         public int getNumOfPlayers()
         {
             return players.Count();
+        }
+
+        public bool areAllStatic()
+        {
+            foreach (Player p in players)
+            {
+                if (p.type.CompareTo("static") != 0) return false;
+            }
+
+            return true;
         }
         #endregion
 

@@ -190,6 +190,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="level3.jpg">
+      <Name>level3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="staticGum.png">
       <Name>staticGum</Name>
       <Importer>TextureImporter</Importer>

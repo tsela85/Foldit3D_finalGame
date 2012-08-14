@@ -45,6 +45,7 @@ namespace Foldit3D
 
         public void restartLevel()
         {
+            collisionCount = 0;
             holes.Clear();
         }
         #endregion
@@ -111,37 +112,73 @@ namespace Foldit3D
         #endregion
 
         #region Collision
+        public static bool isStillInHole(Player player,Vector2 pCenter,float pSize)
+        {
+            foreach (Hole h in holes)
+            {
+                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static void checkCollisionLevel3(bool isWin)
+        {
+            if (isWin)
+            {
+                // WIN!!!
+                Trace.WriteLine("WIN!!!!!!");
+                GameManager.winLevel();
+            }
+        }
         public static bool checkCollision(Player player,Vector2 pCenter,float pSize, int numOfPlayers)
         {
             foreach (Hole h in holes)
             {
-                if (Vector2.Distance(pCenter,h.center) < (pSize + h.size + 0.1f))
+                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size))
                 {
-                    collisionCount++;
                     GameManager.showHoleMsg = true;
-                    if (collisionCount >= numOfPlayers)
+                    if (GameManager.level != 3)
                     {
-                        // WIN!!!
-                        Trace.WriteLine("WIN!!!!!!");
-                        GameManager.winLevel();
+                        collisionCount++;
+                        if (collisionCount >= numOfPlayers)
+                        {
+                            // WIN!!!
+                            Trace.WriteLine("WIN!!!!!!");
+                            GameManager.winLevel();
+                        }
                     }
                     return true;
                 }
             }
             return false;
+           
         }
         #endregion
 
         #region ChangeHoles
         public static void changeAllHolesPlace()
         {
-            foreach (Hole h in holes)
-                h.changePos();
+            int pos = new Random().Next(holes.Count);
+            holes[pos].changePos();
         }
         public static void cangeAllHolesSize()
         {
-            foreach (Hole h in holes)
-                h.changeSize();
+            int pos = new Random().Next(holes.Count);
+            holes[pos].changeSize();
+        }
+
+        public static bool collideWithHoles(Vector2 loc)
+        {
+            foreach (Hole h in HoleManager.holes)
+            {
+                if (Vector2.Distance(loc, h.center) < (h.size + h.size)) return true;
+            }
+
+            return false;
         }
         #endregion
     }

@@ -10,7 +10,9 @@ namespace Foldit3D
     class StaticPlayer : Player
     {
 
-        public StaticPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) {
+        public StaticPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect, bool fromDup)
+            : base(texture, c, pm, effect, fromDup)
+        {
             type = "static";
         }
 

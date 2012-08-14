@@ -10,7 +10,9 @@ namespace Foldit3D
     class DuplicatePlayer : Player
     {
         private bool created = false;
-        public DuplicatePlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) {
+        public DuplicatePlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect, bool fromDup)
+            : base(texture, c, pm, effect, fromDup)
+        {
             type = "duplicate";
         }
 
@@ -54,7 +56,7 @@ namespace Foldit3D
 
                         Vector3 temp = vertices[1].Position;
                         temp = Vector3.Transform(temp, worldMatrix);
-                        playerManager.makeNewPlayer("normal", new Vector2(temp.X,temp.Z));
+                        playerManager.makeNewPlayer("normal", new Vector2(temp.X,temp.Z),true);
                     }
             }
             else if (afterFold && (state == Board.BoardState.folding2))
@@ -73,7 +75,7 @@ namespace Foldit3D
                     stuckOnPaper = true;
                     Vector3 temp = vertices[1].Position;
                     temp = Vector3.Transform(temp, worldMatrix);
-                    playerManager.makeNewPlayer("normal", new Vector2(temp.X, temp.Z));
+                    playerManager.makeNewPlayer("normal", new Vector2(temp.X, temp.Z),true);
                 }
             }
         }
