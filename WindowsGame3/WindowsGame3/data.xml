@@ -56,6 +56,9 @@
 
     <powerups>
     </powerups>
+
+    <acids>
+    </acids>
   </level0>
   
   <level1>
@@ -129,6 +132,9 @@
         <y>15</y>
       </powerupObj>
     </powerups>
+
+    <acids>
+    </acids>
   </level1>
   
   <level2>
@@ -196,12 +202,14 @@
       <x>-18</x>
       <y>10</y>
     </powerupObj>
-    <powerupObj>
-      <type>1</type>
-      <x>25</x>
-      <y>10</y>
-    </powerupObj>
     </powerups>
+
+    <acids>
+      <acidObj>
+        <x>0</x>
+        <y>0</y>
+      </acidObj>
+    </acids>
   </level2>
 
   <level3>
@@ -289,7 +297,167 @@
         <y>-8</y>
       </powerupObj>
     </powerups>
+
+    <acids>
+    </acids>
   </level3>
+
+  <level4>
+    <board>
+      <point>
+        <x>-40</x>
+        <y>0</y>
+        <z>25</z>
+        <texX>0</texX>
+        <texY>0</texY>
+      </point>
+      <point>
+        <x>40</x>
+        <y>0</y>
+        <z>25</z>
+        <texX>1</texX>
+        <texY>0</texY>
+      </point>
+      <point>
+        <x>40</x>
+        <y>0</y>
+        <z>-25</z>
+        <texX>1</texX>
+        <texY>1</texY>
+      </point>
+      <point>
+        <x>-40</x>
+        <y>0</y>
+        <z>-25</z>
+        <texX>0</texX>
+        <texY>1</texY>
+      </point>
+    </board>
+
+    <player>
+      <playerObj>
+        <type>duplicate</type>
+        <x>-10</x>
+        <y>-22</y>
+      </playerObj>
+    </player>
+
+    <exit>
+      <exitObj>
+        <x>100</x>
+        <y>100</y>
+      </exitObj>
+    </exit>
+
+    <holes>
+      <holeObj>
+        <x>0</x>
+        <y>0</y>
+      </holeObj>
+    </holes>
+
+    <powerups>
+      <powerupObj>
+        <type>7</type>
+        <x>0</x>
+        <y>-15</y>
+      </powerupObj>
+      <powerupObj>
+        <type>7</type>
+        <x>0</x>
+        <y>15</y>
+      </powerupObj>
+      <powerupObj>
+        <type>3</type>
+        <x>20</x>
+        <y>0</y>
+      </powerupObj>
+      <powerupObj>
+        <type>2</type>
+        <x>-20</x>
+        <y>0</y>
+      </powerupObj>
+    </powerups>
+
+    <acids>
+      <acidObj>
+        <x>1</x>
+        <y>7</y>
+      </acidObj>
+      <acidObj>
+        <x>6</x>
+        <y>3</y>
+      </acidObj>
+      <acidObj>
+        <x>5</x>
+        <y>-3.5</y>
+      </acidObj>
+      <acidObj>
+        <x>-1.5</x>
+        <y>-6</y>
+      </acidObj>
+      <acidObj>
+        <x>-7</x>
+        <y>-2</y>
+      </acidObj>
+      <acidObj>
+        <x>-5.5</x>
+        <y>4.5</y>
+      </acidObj>
+      
+      <acidObj>
+        <x>-13</x>
+        <y>8</y>
+      </acidObj>
+      <acidObj>
+        <x>-22</x>
+        <y>14</y>
+      </acidObj>
+      <acidObj>
+        <x>-31</x>
+        <y>20</y>
+      </acidObj>
+
+      <acidObj>
+        <x>-13</x>
+        <y>-8</y>
+      </acidObj>
+      <acidObj>
+        <x>-22</x>
+        <y>-14</y>
+      </acidObj>
+      <acidObj>
+        <x>-31</x>
+        <y>-20</y>
+      </acidObj>
+
+      <acidObj>
+        <x>13</x>
+        <y>8</y>
+      </acidObj>
+      <acidObj>
+        <x>22</x>
+        <y>14</y>
+      </acidObj>
+      <acidObj>
+        <x>31</x>
+        <y>20</y>
+      </acidObj>
+
+      <acidObj>
+        <x>13</x>
+        <y>-8</y>
+      </acidObj>
+      <acidObj>
+        <x>22</x>
+        <y>-14</y>
+      </acidObj>
+      <acidObj>
+        <x>31</x>
+        <y>-20</y>
+      </acidObj>
+    </acids>
+  </level4>
 
   <level5>
     <board>
@@ -506,3 +674,4 @@
     </powerups>
   </level5>
 </data>
+    

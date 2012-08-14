@@ -107,6 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acid.cs" />
+    <Compile Include="AcidManager.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="DuplicatePlayer.cs" />

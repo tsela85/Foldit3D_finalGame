@@ -145,9 +145,9 @@ namespace Foldit3D
                 case 1:
                     return PowerUpType.HolePos;
                 case 2:
-                    return PowerUpType.PlayerSize;
+                    return PowerUpType.BiggerPlayerSize;
                 case 3:
-                    return PowerUpType.PlayerPos;
+                    return PowerUpType.SmallerPlayerSize;
                 case 4:
                     return PowerUpType.SplitPlayer;
                 case 5:

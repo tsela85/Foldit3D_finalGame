@@ -70,13 +70,14 @@ namespace Foldit3D
             SpriteFont font = Content.Load<SpriteFont>(@"font");
             SpriteFont scoreFont = Content.Load<SpriteFont>("scoreFont");
             HoleManager holeManager = new HoleManager(Content.Load<Texture2D>("hole2"), Content.Load<Effect>("effects"));
+            AcidManager acidManager = new AcidManager(Content.Load<Texture2D>("acid"), Content.Load<Effect>("effects"));
             PlayerManager playerManager = new PlayerManager(Content.Load<Texture2D>("gum"), Content.Load<Effect>("effects"), Content.Load<Texture2D>("dupGum"), Content.Load<Texture2D>("staticGum"));
             PowerUpManager powerupManager = new PowerUpManager(Content.Load<Texture2D>("inkspot"), Content.Load<Effect>("effects"));
             Board board = new Board(Content.Load<Texture2D>("paper"), Content.Load<Effect>("effects"));
             Table table = new Table(Content.Load<Model>("Table"));
             camera = new Camera(this);
             input = new InputHandler(this);
-            ourGame = new GameManager(font, scoreFont, holeManager, playerManager, powerupManager, board,table, Content.Load<Texture2D>("startScreen"), Content.Load<Texture2D>("help"), Content.Load<Texture2D>("levelsScreen"));
+            ourGame = new GameManager(font, scoreFont, holeManager, acidManager, playerManager, powerupManager, board,table, Content.Load<Texture2D>("startScreen"), Content.Load<Texture2D>("help"), Content.Load<Texture2D>("levelsScreen"));
             ourGame.loadCurrLevel();
             
         }
@@ -100,7 +101,7 @@ namespace Foldit3D
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            input.Update(gameTime);
             ourGame.Update(gameTime);
 
             base.Update(gameTime);

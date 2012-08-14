@@ -88,6 +88,7 @@ namespace Foldit3D
 
             if (fromDup)
             {
+                if (AcidManager.checkCollision(this, center, size)) return;
                 PowerUpManager.checkCollision(this, center, size);
                 if ((isInHole = HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level != 3)
                 {
@@ -122,7 +123,8 @@ namespace Foldit3D
                     playerManager.changePlayerType(this, "normal", center,true);
                 }
                 checkCollision = 0;
-                
+
+                if (AcidManager.checkCollision(this, center, size)) return;
                 if ((isInHole =  HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers())) && GameManager.level!=3)
                 {
                     playerManager.changePlayerType(this, "static", center,false);
@@ -136,7 +138,8 @@ namespace Foldit3D
                     {
                         playerManager.changePlayerType(this, "normal", center,true);
                     }
-                    
+
+                    if (AcidManager.checkCollision(this, center, size)) return;
                     if ((isInHole =  HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level!=3)
                     {
                         playerManager.changePlayerType(this, "static", center, false);
@@ -197,9 +200,14 @@ namespace Foldit3D
 
         //factor - by how much to inlarge (or to make smaller) the player
         //for example:  factor = 2 means that the player will be twice as big, factor = 0.5 half of the size 
-        public void changeSize()
+        public void changeSizeBig()
         {
-            size += 1f;
+            size += 1;
+            setVerts(center);
+        }
+        public void changeSizeSmall()
+        {
+            size -= 0.8f;
             setVerts(center);
         }
 
