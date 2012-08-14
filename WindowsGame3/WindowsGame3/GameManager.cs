@@ -20,12 +20,13 @@ class GameManager
     static GameState gamestate;
     Board.BoardState boardstate;
     HoleManager holeManager;
+    AcidManager acidManager;
     PlayerManager playerManager;
     PowerUpManager powerupManager;
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.start;
+    ScreenState screen = ScreenState.game;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;
@@ -38,8 +39,8 @@ class GameManager
     double levelScreenTime = 0;
     string win = "      EXCELLENT!!!\n you did it with: ";
     public static int level;
-    int endLevel = 3;
-    public static int folds;
+    int endLevel = 5;
+    static int folds;
     int first = 1;
     int score = 0;
     static bool changeScore = false;
@@ -49,17 +50,22 @@ class GameManager
     float countSec = 0;
     int firstfold = 0;
     static bool tookExtraTime = false;
+    static bool tookFolds = false;
+    static float timeForFoldsAndTime = 0;
+    float elapsed = 0;
+    static int levelTimeDisplay = 60;
 
     ///////////////////////////
     List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
 
 
-    public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, PlayerManager p, PowerUpManager pu,
+    public GameManager(SpriteFont f, SpriteFont sf, HoleManager h, AcidManager a, PlayerManager p, PowerUpManager pu,
         Board bo,Table tab, Texture2D st, Texture2D help, Texture2D ls)
     {
         font = f;
         scoreFont = sf;
         holeManager = h;
+        acidManager = a;
         playerManager = p;
         powerupManager = pu;
         board = bo;
@@ -80,8 +86,15 @@ class GameManager
     }
 
     public static void changeTime(){
-        time -= 30;
+        levelTimeDisplay += 30;
         tookExtraTime = true;
+        timeForFoldsAndTime = 3.0f;
+    }
+    public static void changeFolds()
+    {
+        folds = 0;
+        tookFolds = true;
+        timeForFoldsAndTime = 3.0f;
     }
 
     public void loadCurrLevel() 
@@ -92,6 +105,8 @@ class GameManager
         playerManager.initLevel(XMLReader.Get(level, "player"));
         holeManager.restartLevel();
         holeManager.initLevel(XMLReader.Get(level, "holes"));
+        acidManager.restartLevel();
+        acidManager.initLevel(XMLReader.Get(level, "acids"));
         powerupManager.restartLevel();
         powerupManager.initLevel(XMLReader.Get(level, "powerups"));
         //powerupManager.tomInitLevel();
@@ -100,7 +115,7 @@ class GameManager
         gamestate = GameState.normal;
         if (level == 0)
             gamestate = GameState.rotationAroundTheBoard;
-        if (level <= 3)
+        if (level <= 4)
         {
             Game1.camera.setPositionToTop();
             Game1.camera.stopMovment();
@@ -115,8 +130,8 @@ class GameManager
     #region Update
     public void Update(GameTime gameTime)
     {
-        float elapsed= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+        elapsed= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        #region Menu
         if (screen == ScreenState.start || screen == ScreenState.help|| screen==ScreenState.levels)
         {
             MouseState mouseState = Mouse.GetState();
@@ -127,6 +142,8 @@ class GameManager
                     if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(newGameBtn))
                     {
                         screen = ScreenState.game;
+                        level = 0;
+                        loadCurrLevel();
                     }
                     else if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(levelsBtn))
                     {
@@ -170,94 +187,99 @@ class GameManager
                 }
             }
         }
+        #endregion
         else
         {
-               
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                loadCurrLevel();
+            }   
             time += elapsed;
             if (showHoleMsg || showPuMsg)
             {
                 countSec += elapsed;
             }
 
-        if (time >= 60 && level != 0)
-        {
-            loseLevel();
-        }
-        if (gamestate != GameState.scored && gamestate != GameState.lose)
-        {
-            if (gamestate == GameState.rotationAroundTheBoard)
+            if (time >= 60 && level != 0)
             {
-                if (Game1.camera.CameraMoveAround()){
-                    gamestate = GameState.normal;
-                    time=0;
-                }
-                else
-                    return;
+                loseLevel();
             }
-            Game1.input.Update(gameTime);
-            playerManager.Update(gameTime, gamestate);
-            boardstate = board.update();
-            if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
+            if (gamestate != GameState.scored && gamestate != GameState.lose)
             {
-                gamestate = GameState.folding;                    
-            }
-            else if (gamestate != GameState.scored)
-                gamestate = GameState.normal;
-            if (boardstate == Board.BoardState.preFold)
-                prefold = true;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.R))
-            {
-                loadCurrLevel();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                screen = ScreenState.start;
-            }
-            if (gamestate == GameState.folding)
-            {
-                Vector3 v = board.getAxis();
-                Vector3 p = board.getAxisPoint();
-                float a = board.getAngle();
-                    
-                //Tom -  gets the folding points
-                Vector3 foldPoint1, foldPoint2;
-                board.getfoldPoints(out foldPoint1,out  foldPoint2);
-                    
-                if (prefold)
+                if (gamestate == GameState.rotationAroundTheBoard)
                 {
-                    powerupManager.preFoldData(foldPoint1, foldPoint2, v, board);
-                    holeManager.preFoldData(foldPoint1, foldPoint2, v, board);
-                    playerManager.preFoldData(foldPoint1, foldPoint2, v, board);
-                    prefold = false;
-                }
-
-                playerManager.foldData(a, board);
-
-                holeManager.foldData(a, board);
-             
-                powerupManager.foldData(a,board);
-              
-                    if (first == 1)
-                    {
-                        folds++;
-                        first = 0;
+                    if (Game1.camera.CameraMoveAround()){
+                        gamestate = GameState.normal;
+                        time=0;
                     }
+                    else
+                        return;
                 }
-                else
+               // Game1.input.Update(gameTime);
+                playerManager.Update(gameTime, gamestate);
+                boardstate = board.update();
+                if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
                 {
-                    first = 1;
-                    powerupManager.setDrawInFold();
-                    holeManager.setDrawInFold();
+                    gamestate = GameState.folding;                    
                 }
+                else if (gamestate != GameState.scored && gamestate != GameState.lose)
+                    gamestate = GameState.normal;
+                if (boardstate == Board.BoardState.preFold)
+                    prefold = true;
+                if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                {
+                    screen = ScreenState.start;
+                }
+                if (gamestate == GameState.folding)
+                {
+                    Vector3 v = board.getAxis();
+                    Vector3 p = board.getAxisPoint();
+                    float a = board.getAngle();
+                    
+                    //Tom -  gets the folding points
+                    Vector3 foldPoint1, foldPoint2;
+                    board.getfoldPoints(out foldPoint1,out  foldPoint2);
+                    
+                    if (prefold)
+                    {
+                        powerupManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        holeManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        acidManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        playerManager.preFoldData(foldPoint1, foldPoint2, v, board);
+                        prefold = false;
+                    }
 
-            }
-        if ((gamestate == GameState.scored) && (Mouse.GetState().LeftButton == ButtonState.Pressed))
+                    playerManager.foldData(a, board);
+
+                    holeManager.foldData(a, board);
+
+                    acidManager.foldData(a, board);
+             
+                    powerupManager.foldData(a,board);
+              
+                        if (first == 1)
+                        {
+                            folds++;
+                            first = 0;
+                        }
+                    }
+                    else
+                    {
+                        first = 1;
+                        powerupManager.setDrawInFold();
+                        holeManager.setDrawInFold();
+                        acidManager.setDrawInFold();
+                    }
+
+                }
+            if ((gamestate == GameState.scored) && Game1.input.MouseHandler.WasLeftButtonClicked())
             {
                 folds = 0;
                 level++;
                 if (level <= endLevel)
                     loadCurrLevel();
+                else screen = ScreenState.start;
+
             }
         }
         Game1.camera.UpdateCamera(gameTime);
@@ -340,9 +362,11 @@ class GameManager
             board.Draw();
             board.DrawfoldPart();
             holeManager.Draw();
+            acidManager.Draw();
             powerupManager.Draw();
             powerupManager.DrawInFold();
             holeManager.DrawInFold();
+            acidManager.DrawInFold();
             playerManager.Draw();
 
             #endregion
@@ -350,84 +374,110 @@ class GameManager
             spriteBatch.Begin(); //Tom
             spriteBatch.DrawString(scoreFont, "score: " + score, new Vector2(20, 0), Color.LightGray);
             spriteBatch.DrawString(scoreFont, "level: " + level, new Vector2(20, 40), Color.LightGray);
-            spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.LightGray);
+            if (tookFolds && timeForFoldsAndTime > 0)
+            {
+                spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.Red);
+                timeForFoldsAndTime -= elapsed;
+                if (timeForFoldsAndTime <= 0) { timeForFoldsAndTime = 0; tookFolds = false; }
+            }
+            else spriteBatch.DrawString(scoreFont, "folds: " + folds, new Vector2(20, 80), Color.LightGray);
             if (gamestate != GameState.lose && gamestate != GameState.scored && level != 0)
-            { spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(60 - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); }
+            {
+                if (tookExtraTime && timeForFoldsAndTime > 0)
+                {
+                    spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(levelTimeDisplay - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.Red);
+                    timeForFoldsAndTime -= elapsed;
+                    if (timeForFoldsAndTime <= 0) { timeForFoldsAndTime = 0; tookExtraTime = false; }
+                }
+                else spriteBatch.DrawString(scoreFont, "time: " + Convert.ToString(levelTimeDisplay - (int)time), new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); 
+            }
 
             #region Win/Lose
             if (gamestate == GameState.scored)
             {
+                time = -1000000;
                 if (!changeScore)
                 {
                     if (folds < 3) score += 100;
                     else if (folds < 5) score += 75;
                     else if (folds < 7) score += 50;
                     else if (folds < 9) score += 25;
+                    score *= level;
                     changeScore = true;
                 }
                 spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
-                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
                 spriteBatch.DrawString(scoreFont, "Press the mouse to continue", new Vector2(430, 10), Color.LightGray);
+            }
+            else if (gamestate == GameState.lose && time >=60)
+            {
+                spriteBatch.DrawString(font, "Ooooops! you ran out of time...\n     Press 'R' to try again", new Vector2(250, 250), Color.Black);
+                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
             }
             else if (gamestate == GameState.lose)
             {
-                spriteBatch.DrawString(font, "Ooooops! you ran out of time...", new Vector2(250, 250), Color.Black);
-                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
-                if (time > 65) { loadCurrLevel(); }
+                spriteBatch.DrawString(font, "Oh No! The acid killed your gum!\n       Press 'R' to try again", new Vector2(220, 250), Color.Black);
             }
             else if (playerManager.areAllStatic())
             {
-                spriteBatch.DrawString(font, "You are stuck...\n Press 'R' to try again", new Vector2(290, 250), Color.Black);
+                spriteBatch.DrawString(font, "      You are stuck...\n Press 'R' to try again", new Vector2(290, 250), Color.Black);
             }
 
 
             #endregion
 
-            if (level == 0 && gamestate != GameState.rotationAroundTheBoard)
+            #region LevelsPrints
+            if (gamestate != GameState.scored && gamestate != GameState.lose)
             {
-                showPopUps(spriteBatch);
-                if (folds == 1)
+                if (level == 0 && gamestate != GameState.rotationAroundTheBoard)
                 {
-                    spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.LightGray);
-                    firstfold = 1;
+                    showPopUps(spriteBatch);
+                    if (folds == 1)
+                    {
+                        spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.LightGray);
+                        firstfold = 1;
+                    }
+                    if (folds == 2 && gamestate != GameState.scored)
+                    {
+                        spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.LightGray);
+                        firstfold = 2;
+                        spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.LightGray);
+                    }
                 }
-                if (folds == 2 && gamestate != GameState.scored)
+                else if (level == 1 && time < 6)
+                    spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(530, 220), Color.Black);
+                else if (level == 1)
+                    Game1.camera.resumeMovment();
+                else if (level == 2 && time < 7)
                 {
-                    spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.LightGray);
-                    firstfold = 2;
-                    spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.LightGray);
+                    spriteBatch.DrawString(scoreFont, "<- This is a dry gum\n    it can't be moved...\n    try to make it sticky!", new Vector2(460, 420), Color.Black);
+                    spriteBatch.DrawString(scoreFont, "<- Watch out from the acid!", new Vector2(640, 310), Color.Black);
                 }
+                else if (level == 2)
+                    Game1.camera.resumeMovment();
+                else if (level == 3 && time < 8 && !tookExtraTime)
+                {
+                    spriteBatch.DrawString(scoreFont, "In this level you need to put both gums into the holes together!", new Vector2(200, 10), Color.LightGray);
+                    spriteBatch.DrawString(scoreFont, "<- This is a sticky gum\n it splits on its first fold!", new Vector2(530, 420), Color.Black);
+                }
+                else if (level == 3)
+                    Game1.camera.resumeMovment();
+                if (folds > 9 && folds < 13)
+                    spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
+                else if (folds > 13)
+                    spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
             }
-            else if (level == 1 && time < 6)
-                spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(530, 220), Color.Black);
-            else if (level == 1)
-                Game1.camera.resumeMovment();
-            else if (level == 2 && time < 6)
-                spriteBatch.DrawString(scoreFont, "<- This is a dry gum\nit can't be moved...\ntry to make it sticky!", new Vector2(460, 420), Color.Black);
-            else if (level == 2)
-                Game1.camera.resumeMovment();
-            else if (level == 3 && time < 8 && !tookExtraTime)
-            {
-                spriteBatch.DrawString(scoreFont, "In this level you need to put both gums into the holes together!", new Vector2(200, 10), Color.LightGray);
-                spriteBatch.DrawString(scoreFont, "<- This is a sticky gum\n it splits on its first fold!", new Vector2(530, 420), Color.Black);
-            }
-            else if(level == 3)
-                Game1.camera.resumeMovment();
-            if (folds > 9 && folds <13)
-                spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
-            else if (folds > 13)
-                spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
-
-            if (showHoleMsg && countSec>0)
+            if (showHoleMsg && countSec > 0)
             {
                 spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(470, 20), Color.LightGray);
-                if (countSec > 3 || gamestate==GameState.scored) { showHoleMsg = false;  countSec = 0; }
+                if (countSec > 3 || gamestate == GameState.scored) { showHoleMsg = false; countSec = 0; }
             }
-            else if (showPuMsg && countSec>0)
+            else if (showPuMsg && countSec > 0)
             {
                 spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(470, 20), Color.LightGray);
-                if (countSec > 3 || gamestate==GameState.scored) { showPuMsg = false; countSec = 0; }
+                if (countSec > 3 || gamestate == GameState.scored) { showPuMsg = false; countSec = 0; }
             }
+            
+            #endregion
         }
         spriteBatch.End(); //Tom 
     }

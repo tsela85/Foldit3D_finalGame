@@ -3,7 +3,7 @@
   <Asset Type="Graphics:NodeContent">
     <Name>RootNode</Name>
     <Identity>
-      <SourceFilename>C:\Users\Tzipi\Desktop\fold it - from dina\Foldit3D_finalGame\WindowsGame3\WindowsGame3Content\table.FBX</SourceFilename>
+      <SourceFilename>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3Content\table.FBX</SourceFilename>
       <SourceTool>FbxImporter</SourceTool>
     </Identity>
     <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
@@ -104,7 +104,7 @@
     <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
       <Name>TableTop</Name>
       <Identity>
-        <SourceFilename>C:\Users\Tzipi\Desktop\fold it - from dina\Foldit3D_finalGame\WindowsGame3\WindowsGame3Content\table.FBX</SourceFilename>
+        <SourceFilename>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3Content\table.FBX</SourceFilename>
         <SourceTool>FbxImporter</SourceTool>
       </Identity>
       <OpaqueData>

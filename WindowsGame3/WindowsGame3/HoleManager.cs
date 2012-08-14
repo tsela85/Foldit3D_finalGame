@@ -116,7 +116,7 @@ namespace Foldit3D
         {
             foreach (Hole h in holes)
             {
-                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size))
+                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size - 0.5))
                 {
                     return true;
                 }
@@ -138,7 +138,7 @@ namespace Foldit3D
         {
             foreach (Hole h in holes)
             {
-                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size))
+                if (Vector2.Distance(pCenter, h.center) < (pSize + h.size - 0.5))
                 {
                     GameManager.showHoleMsg = true;
                     if (GameManager.level != 3)
@@ -155,7 +155,16 @@ namespace Foldit3D
                 }
             }
             return false;
-           
+        }
+
+        public static bool collideWithHoles(Vector2 loc)
+        {
+            foreach (Hole h in HoleManager.holes)
+            {
+                if (Vector2.Distance(loc, h.center) < (h.size + h.size)) return true;
+            }
+
+            return false;
         }
         #endregion
 
@@ -169,16 +178,6 @@ namespace Foldit3D
         {
             int pos = new Random().Next(holes.Count);
             holes[pos].changeSize();
-        }
-
-        public static bool collideWithHoles(Vector2 loc)
-        {
-            foreach (Hole h in HoleManager.holes)
-            {
-                if (Vector2.Distance(loc, h.center) < (h.size + h.size)) return true;
-            }
-
-            return false;
         }
         #endregion
     }

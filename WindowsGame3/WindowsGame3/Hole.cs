@@ -122,7 +122,8 @@ namespace Foldit3D
         public void changePos()
         {
             Vector2 v = new Vector2(randX.Next(-25, 25), randY.Next(-22, 22));
-            while(v==Vector2.Zero || HoleManager.collideWithHoles(v)){
+            while (v == Vector2.Zero || HoleManager.collideWithHoles(v) || AcidManager.collideWithAcids(v))
+            {
                 v = new Vector2(randX.Next(-25, 25), randY.Next(-22, 22));
             }
             center = v;
