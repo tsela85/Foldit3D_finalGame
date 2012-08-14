@@ -504,12 +504,7 @@
       </playerObj>
     </player>
 
-    <exit>
-      <exitObj>
-        <x>100</x>
-        <y>100</y>
-      </exitObj>
-    </exit>
+
 
     <holes>
       <holeObj>
@@ -518,6 +513,9 @@
       </holeObj>
 
     </holes>
+
+    <acids>
+    </acids>
 
     <powerups>
 

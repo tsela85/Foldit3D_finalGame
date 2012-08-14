@@ -26,7 +26,7 @@ class GameManager
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.game;
+    ScreenState screen = ScreenState.start;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;

@@ -150,13 +150,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="levelsScreen.jpg">
-      <Name>levelsScreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="help.jpg">
       <Name>help</Name>
       <Importer>TextureImporter</Importer>
@@ -227,6 +220,13 @@
   <ItemGroup>
     <Compile Include="level5.jpg">
       <Name>level5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="acid.png">
+      <Name>acid</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
