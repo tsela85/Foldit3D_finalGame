@@ -227,7 +227,7 @@ namespace Foldit3D
                             ret = false;
                         } 
                         else
-                            if (tempArc > -40)
+                            if (tempArc > -20)
                             {
                                 tempArc -= 1f;
                                 ret = false;
