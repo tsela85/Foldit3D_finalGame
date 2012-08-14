@@ -25,7 +25,7 @@ class GameManager
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.start;
+    ScreenState screen = ScreenState.game;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;
@@ -38,7 +38,7 @@ class GameManager
     double levelScreenTime = 0;
     string win = "      EXCELLENT!!!\n you did it with: ";
     public static int level;
-    int endLevel = 3;
+    int endLevel = 4;
     public static int folds;
     int first = 1;
     int score = 0;
@@ -66,15 +66,15 @@ class GameManager
         table = tab;
         gamestate = GameState.normal;
         folds = 0;
-        level = 0;
+        level = 5;
 
         startScreen = st;
         helpScreen = help;
         levelScreen = ls;
-        for (int i = 1; i <= endLevel; i++)
+        for (int i = 0; i <= endLevel; i++)
         {
             levelsPics.Add(Game1.content.Load<Texture2D>("level" + i));
-            levelsPicsBtn.Add(new Rectangle(80 + ((levelsPics.ElementAt(i - 1).Width+30) * i), (i < 4) ? 220 : 400, levelsPics.ElementAt(i - 1).Width, levelsPics.ElementAt(i - 1).Height));
+            levelsPicsBtn.Add(new Rectangle(300 + ((levelsPics.ElementAt(i).Width+30) * ((i<3)? i : i-3)), (i < 3) ? 220 : 400, levelsPics.ElementAt(i).Width, levelsPics.ElementAt(i ).Height));
         }
             
     }
@@ -156,11 +156,11 @@ class GameManager
                     }
                     else
                     {
-                        for (int i = 0; i < endLevel; i++)
+                        for (int i = 0; i <= endLevel; i++)
                         {
                             if (new Rectangle(mouseState.X, mouseState.Y, 1, 1).Intersects(levelsPicsBtn.ElementAt(i)))
                             {
-                                level = i + 1;
+                                level = i;
                                 screen = ScreenState.game;
                                 loadCurrLevel();
                                 break;
@@ -314,12 +314,12 @@ class GameManager
         else if (screen == ScreenState.levels)
         {
             spriteBatch.Draw(levelScreen, new Rectangle(210, 60, levelScreen.Width, levelScreen.Height), Color.White);
-            for (int i = 1; i <= endLevel; i++)
+            for (int i = 0; i <= endLevel; i++)
             {
-                spriteBatch.Draw(levelsPics.ElementAt(i - 1),levelsPicsBtn.ElementAt(i-1), Color.White);
+                spriteBatch.Draw(levelsPics.ElementAt(i),levelsPicsBtn.ElementAt(i), Color.White);
                 var rect = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect.SetData(new[] { Color.Transparent });
-                spriteBatch.Draw(rect, levelsPicsBtn.ElementAt(i - 1), Color.White);
+                spriteBatch.Draw(rect, levelsPicsBtn.ElementAt(i ), Color.White);
                 spriteBatch.DrawString(font, "Back", new Vector2(helpBackBtn.X + 50, helpBackBtn.Y), Color.Black);
                 var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
                 rect3.SetData(new[] { Color.Transparent });
