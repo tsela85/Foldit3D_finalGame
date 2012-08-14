@@ -85,5 +85,8 @@ C:\Users\Tzipi\Desktop\fold it - from dina\Foldit3D_finalGame\WindowsGame3\Windo
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\dupGum.xnb
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level3.xnb
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\staticGum.xnb
-C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid.xnb
 C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid 2.xnb
+C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level0.xnb
+C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level4.xnb
+C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level5.xnb
+C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid.xnb

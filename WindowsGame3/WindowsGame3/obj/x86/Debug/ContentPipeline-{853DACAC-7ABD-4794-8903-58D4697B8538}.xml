@@ -125,7 +125,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level1.xnb</Output>
-      <Time>2012-07-24T21:52:49.9763829+03:00</Time>
+      <Time>2012-08-14T21:47:19.7155616+03:00</Time>
     </Item>
     <Item>
       <Source>level2.jpg</Source>
@@ -134,7 +134,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level2.xnb</Output>
-      <Time>2012-08-07T19:31:59.2500743+03:00</Time>
+      <Time>2012-08-14T21:47:19.7185618+03:00</Time>
     </Item>
     <Item>
       <Source>dupGum.png</Source>
@@ -152,7 +152,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level3.xnb</Output>
-      <Time>2012-08-14T17:58:51.4534939+03:00</Time>
+      <Time>2012-08-14T21:47:19.722562+03:00</Time>
     </Item>
     <Item>
       <Source>staticGum.png</Source>
@@ -200,7 +200,7 @@
       <Time>2012-08-07T19:31:59.2656743+03:00</Time>
       <Dependency>
         <Key>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\obj\x86\Debug\table_0.xml</Key>
-        <Value>2012-08-14T17:59:33.4698971+03:00</Value>
+        <Value>2012-08-14T21:46:59.266392+03:00</Value>
       </Dependency>
       <Request>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\wood_0.xnb</Request>
     </Item>
@@ -228,22 +228,49 @@
       <Time>2012-08-07T19:31:59.3124744+03:00</Time>
     </Item>
     <Item>
-      <Source>acid.png</Source>
-      <Name>acid</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid.xnb</Output>
-      <Time>2012-08-14T18:57:39+03:00</Time>
-    </Item>
-    <Item>
       <Source>acid 2.png</Source>
       <Name>acid 2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid 2.xnb</Output>
-      <Time>2012-08-14T19:23:51+03:00</Time>
+      <Time>2012-08-14T21:46:59.3093945+03:00</Time>
+    </Item>
+    <Item>
+      <Source>level0.jpg</Source>
+      <Name>level0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level0.xnb</Output>
+      <Time>2012-08-14T21:47:19.7125614+03:00</Time>
+    </Item>
+    <Item>
+      <Source>level4.jpg</Source>
+      <Name>level4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level4.xnb</Output>
+      <Time>2012-08-14T21:47:19.7255622+03:00</Time>
+    </Item>
+    <Item>
+      <Source>level5.jpg</Source>
+      <Name>level5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\level5.xnb</Output>
+      <Time>2012-08-14T21:47:19.7275623+03:00</Time>
+    </Item>
+    <Item>
+      <Source>acid.png</Source>
+      <Name>acid</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Tzipi\Desktop\FoldIt!\Foldit3D_finalGame\WindowsGame3\WindowsGame3\bin\x86\Debug\Content\acid.xnb</Output>
+      <Time>2012-08-14T21:46:59.3303957+03:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

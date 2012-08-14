@@ -72,7 +72,7 @@ class GameManager
         table = tab;
         gamestate = GameState.normal;
         folds = 0;
-        level = 0;
+        level = 3;
 
         startScreen = st;
         helpScreen = help;
@@ -101,6 +101,7 @@ class GameManager
     {
         folds = 0;
         time = 0;
+        levelTimeDisplay = 60;
         playerManager.restartLevel();
         playerManager.initLevel(XMLReader.Get(level, "player"));
         holeManager.restartLevel();
@@ -200,7 +201,7 @@ class GameManager
                 countSec += elapsed;
             }
 
-            if (time >= 60 && level != 0)
+            if (levelTimeDisplay-time <= 0 && level != 0)
             {
                 loseLevel();
             }
@@ -408,7 +409,7 @@ class GameManager
                 spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
                 spriteBatch.DrawString(scoreFont, "Press the mouse to continue", new Vector2(430, 10), Color.LightGray);
             }
-            else if (gamestate == GameState.lose && time >=60)
+            else if (gamestate == GameState.lose && levelTimeDisplay-time <=0)
             {
                 spriteBatch.DrawString(font, "Ooooops! you ran out of time...\n     Press 'R' to try again", new Vector2(250, 250), Color.Black);
                 spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
