@@ -124,6 +124,7 @@ namespace Foldit3D
             {
                 if (Vector2.Distance(pCenter, p.center) < (pSize + p.size))
                 {
+                    GameManager.showPuMsg = true;
                     p.doYourThing(player);
                     pToRemove = p;
                     break;
@@ -150,9 +151,11 @@ namespace Foldit3D
                 case 4:
                     return PowerUpType.SplitPlayer;
                 case 5:
-                    return PowerUpType.DryPlayer;
-                case 6:
                     return PowerUpType.NormalPlayer;
+                case 6:
+                    return PowerUpType.ChangeFolds;
+                case 7:
+                    return PowerUpType.ExtraTime;
                 default:
                     return PowerUpType.NormalPlayer;
             }

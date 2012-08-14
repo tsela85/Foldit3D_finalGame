@@ -36,7 +36,8 @@ namespace Foldit3D
         protected bool stuckOnPaper = false;
         protected int checkCollision = 0;
         // Tom -end
-
+        public bool isInHole = false;
+        private bool fromDup = false;
 
         #region Properties
 
@@ -73,7 +74,7 @@ namespace Foldit3D
 
         #endregion
 
-        public Player(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect)
+        public Player(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect,bool fromDup)
         {
             this.texture = texture;
             frameHeight = texture.Height;
@@ -83,6 +84,20 @@ namespace Foldit3D
             //setUpVertices(points);
             center = c;
             setVerts(c);
+            this.fromDup = fromDup;
+
+            if (fromDup)
+            {
+                PowerUpManager.checkCollision(this, center, size);
+                if ((isInHole = HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level != 3)
+                {
+                    playerManager.changePlayerType(this, "static", center, false);
+                }
+            }
+            else
+            {
+                isInHole = HoleManager.isStillInHole(this,center,size);
+            }
         }
 
         #region Update and Draw
@@ -104,30 +119,38 @@ namespace Foldit3D
                 worldMatrix = Matrix.Identity;
                 if (type.CompareTo("duplicate") == 0)
                 {
-                    playerManager.makeNewPlayer("normal", center);
-                    playerManager.changePlayerType(this, "normal", center);
+                    playerManager.changePlayerType(this, "normal", center,true);
                 }
                 checkCollision = 0;
-                PowerUpManager.checkCollision(this, center, size);
-                if (HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers()))
+                
+                if ((isInHole =  HoleManager.checkCollision(this, center, size,playerManager.getNumOfPlayers())) && GameManager.level!=3)
                 {
-                    playerManager.changePlayerType(this, "static", center);
+                    playerManager.changePlayerType(this, "static", center,false);
                 }
+                PowerUpManager.checkCollision(this, center, size);
             } else
                 if ((state != GameState.folding) && (checkCollision == 1)) // beforeFold
                 {
                     checkCollision = 0;
                     if (type.CompareTo("duplicate") == 0)
                     {
-                        playerManager.changePlayerType(this, "normal", center);
+                        playerManager.changePlayerType(this, "normal", center,true);
+                    }
+                    
+                    if ((isInHole =  HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers())) && GameManager.level!=3)
+                    {
+                        playerManager.changePlayerType(this, "static", center, false);
                     }
                     PowerUpManager.checkCollision(this, center, size);
-                    if (HoleManager.checkCollision(this, center, size, playerManager.getNumOfPlayers()))
-                    {
-                        playerManager.changePlayerType(this, "static", center);
-                    }
-
                 }
+
+            if (isInHole && GameManager.level!=3)
+            {
+                if (!(isInHole = HoleManager.isStillInHole(this,center,size)))
+                {
+                   playerManager.changePlayerType(this, "normal", center, false);
+                }
+            }
         }
 
         public void Draw()
@@ -186,7 +209,7 @@ namespace Foldit3D
 
         public void changePlayerType(String newType, Vector2 center)
         {
-            playerManager.changePlayerType(this, newType, center);
+            playerManager.changePlayerType(this, newType, center,false);
         }
 
         public void changeAllStatic()

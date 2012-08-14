@@ -9,10 +9,12 @@ using System.Diagnostics;
 namespace Foldit3D
 {
     class NormalPlayer : Player
-    {       
-            
+    {
 
-        public NormalPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect) : base(texture, c, pm, effect) {
+
+        public NormalPlayer(Texture2D texture, Vector2 c, PlayerManager pm, Effect effect, bool fromDup)
+            : base(texture, c, pm, effect, fromDup)
+        {
             type = "normal";
         }
 

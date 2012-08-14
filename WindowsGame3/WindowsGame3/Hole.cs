@@ -21,6 +21,8 @@ namespace Foldit3D
         Vector3 axis;
         Vector3 point;
         // Tom -end
+        Random randX = new Random();
+        Random randY = new Random();
 
 
         protected VertexPositionTexture[] vertices;
@@ -115,9 +117,14 @@ namespace Foldit3D
         #endregion
 
         #region Public Methods
+
+
         public void changePos()
         {
-            Vector2 v = new Vector2(new Random().Next(-22, 22), new Random().Next(-22, 22));
+            Vector2 v = new Vector2(randX.Next(-25, 25), randY.Next(-22, 22));
+            while(v==Vector2.Zero || HoleManager.collideWithHoles(v)){
+                v = new Vector2(randX.Next(-25, 25), randY.Next(-22, 22));
+            }
             center = v;
             setVerts(v);
         }

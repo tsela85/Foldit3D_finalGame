@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using WindowsGame3;
+using System.Diagnostics;
 
 namespace Foldit3D
 {
@@ -24,7 +25,7 @@ class GameManager
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.start;
+    ScreenState screen = ScreenState.game;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;
@@ -36,17 +37,18 @@ class GameManager
     List<Rectangle> levelsPicsBtn = new List<Rectangle>();
     double levelScreenTime = 0;
     string win = "      EXCELLENT!!!\n you did it with: ";
-    int level;
-    int endLevel = 2;
-    int folds;
+    public static int level;
+    int endLevel = 3;
+    public static int folds;
     int first = 1;
     int score = 0;
     static bool changeScore = false;
     public static bool showHoleMsg = false;
     public static bool showPuMsg = false;
-    float time;
+    static float time;
     float countSec = 0;
     int firstfold = 0;
+    static bool tookExtraTime = false;
 
     ///////////////////////////
     List<IDictionary<string, string>> levels = new List<IDictionary<string, string>>();
@@ -64,7 +66,7 @@ class GameManager
         table = tab;
         gamestate = GameState.normal;
         folds = 0;
-        level = 0;
+        level = 3;
 
         startScreen = st;
         helpScreen = help;
@@ -77,11 +79,15 @@ class GameManager
             
     }
 
+    public static void changeTime(){
+        time -= 30;
+        tookExtraTime = true;
+    }
+
     public void loadCurrLevel() 
     {
         folds = 0;
         time = 0;
-        gamestate = GameState.normal;
         playerManager.restartLevel();
         playerManager.initLevel(XMLReader.Get(level, "player"));
         holeManager.restartLevel();
@@ -93,7 +99,7 @@ class GameManager
         Game1.camera.Initialize();
         if (level == 0)
             gamestate = GameState.rotationAroundTheBoard;
-        if (level == 0 || level == 1)
+        if (level <= 3)
         {
             Game1.camera.setPositionToTop();
             Game1.camera.stopMovment();
@@ -103,6 +109,7 @@ class GameManager
             Game1.camera.resumeMovment();
             Game1.camera.setDefaultPosition();
         }
+        gamestate = GameState.normal;
     } 
 
     #region Update
@@ -203,6 +210,10 @@ class GameManager
             {
                 loadCurrLevel();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                screen = ScreenState.start;
+            }
             if (gamestate == GameState.folding)
             {
                 Vector3 v = board.getAxis();
@@ -241,9 +252,8 @@ class GameManager
                 }
 
             }
-            if ((gamestate == GameState.scored) && (Mouse.GetState().LeftButton == ButtonState.Pressed))
+        if ((gamestate == GameState.scored) && (Mouse.GetState().LeftButton == ButtonState.Pressed))
             {
-                gamestate = GameState.normal;
                 folds = 0;
                 level++;
                 if (level <= endLevel)
@@ -294,7 +304,7 @@ class GameManager
         {
             spriteBatch.Draw(helpScreen, new Rectangle(210, 60, helpScreen.Width, helpScreen.Height), Color.White);
             spriteBatch.DrawString(font, "Back", new Vector2(helpBackBtn.X + 50, helpBackBtn.Y), Color.Black);
-            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n R - restart \n Esc - exit to start screen \n X - zoom in , Z - zoom out", new Vector2(260, 170), Color.Black);
+            spriteBatch.DrawString(scoreFont, "Your goal is to free the gum stuck on paper by moving\n it to the hole. The only way to move the gum is by\n folding the paper and sticking it to the other side.\nCan you do it with minimum number of fold?\n\nKeys:\nFold the paper by clicking on 2 points on different edges.\nUse the arrows keys to rotate the papaer,\n R - restart \n Q - exit to start screen \n X - zoom in , Z - zoom out", new Vector2(260, 170), Color.Black);
             //back btn
             var rect3 = new Texture2D(graphics.GraphicsDevice, 1, 1);
             rect3.SetData(new[] { Color.Transparent });
@@ -356,7 +366,8 @@ class GameManager
                     changeScore = true;
                 }
                 spriteBatch.DrawString(font, win + folds.ToString() + " folds!", new Vector2(350, 250), Color.Black);
-                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray); 
+                spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "Press the mouse to continue", new Vector2(430, 10), Color.LightGray);
             }
             else if (gamestate == GameState.lose)
             {
@@ -364,6 +375,11 @@ class GameManager
                 spriteBatch.DrawString(scoreFont, "time: " + 0, new Vector2(20, graphics.PreferredBackBufferHeight - 50), Color.LightGray);
                 if (time > 65) { loadCurrLevel(); }
             }
+            else if (playerManager.areAllStatic())
+            {
+                spriteBatch.DrawString(font, "You are stuck...\n Press 'R' to try again", new Vector2(290, 250), Color.Black);
+            }
+
 
             #endregion
 
@@ -382,21 +398,35 @@ class GameManager
                     spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.LightGray);
                 }
             }
-            else if (level == 1 && time < 5)
+            else if (level == 1 && time < 6)
                 spriteBatch.DrawString(scoreFont, "<- Take me!\n     I'm a surprise!", new Vector2(530, 220), Color.Black);
+            else if (level == 1)
+                Game1.camera.resumeMovment();
+            else if (level == 2 && time < 6)
+                spriteBatch.DrawString(scoreFont, "<- This is a dry gum\nit can't be moved...\ntry to make it sticky!", new Vector2(460, 420), Color.Black);
+            else if (level == 2)
+                Game1.camera.resumeMovment();
+            else if (level == 3 && time < 8 && !tookExtraTime)
+            {
+                spriteBatch.DrawString(scoreFont, "In this level you need to put both gums into the holes together!", new Vector2(200, 10), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "<- This is a sticky gum\n it splits on its first fold!", new Vector2(530, 420), Color.Black);
+            }
+            else if(level == 3)
+                Game1.camera.resumeMovment();
             if (folds > 9 && folds <13)
                 spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
             else if (folds > 13)
                 spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
-            else if (showHoleMsg && countSec>0)
+
+            if (showHoleMsg && countSec>0)
             {
-                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(430, 20), Color.LightGray);
-                if (countSec < 4) { showHoleMsg = false;  countSec = 0; }
+                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(470, 20), Color.LightGray);
+                if (countSec > 3 || gamestate==GameState.scored) { showHoleMsg = false;  countSec = 0; }
             }
             else if (showPuMsg && countSec>0)
             {
-                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(430, 20), Color.LightGray);
-                if (countSec < 4) { showPuMsg = false; countSec = 0; }
+                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(470, 20), Color.LightGray);
+                if (countSec > 3 || gamestate==GameState.scored) { showPuMsg = false; countSec = 0; }
             }
         }
         spriteBatch.End(); //Tom 
@@ -430,12 +460,15 @@ class GameManager
             spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here too", new Vector2(500, 600), Color.LightGray);
             spriteBatch.DrawString(scoreFont, "           ^ \n Try to click here", new Vector2(450, 80), Color.Black);
         }
-        else if (firstfold==1)
+        else if (firstfold == 1)
         {
             spriteBatch.DrawString(scoreFont, "Click here   >", new Vector2(830, 350), Color.Black);
             spriteBatch.DrawString(scoreFont, "<   Click here", new Vector2(200, 270), Color.Black);
         }
-                
+        else
+        {
+            Game1.camera.resumeMovment();
+        }
                 
     }
     #endregion

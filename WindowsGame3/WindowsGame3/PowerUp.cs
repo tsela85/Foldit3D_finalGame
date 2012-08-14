@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Foldit3D
 {
-    enum PowerUpType { HoleSize, HolePos, PlayerSize, PlayerPos, SplitPlayer, DryPlayer, NormalPlayer };
+    enum PowerUpType { HoleSize, HolePos, PlayerSize, PlayerPos, SplitPlayer, NormalPlayer, ChangeFolds, ExtraTime };
 
     class PowerUp
     {
@@ -53,30 +53,30 @@ namespace Foldit3D
         {
             switch (type)
             {
-                // V
                 case PowerUpType.HoleSize:
                     HoleManager.cangeAllHolesSize();
                     break;
-                // V
                 case PowerUpType.HolePos:
                     HoleManager.changeAllHolesPlace();
                     break;
-                // V
                 case PowerUpType.PlayerSize:
                     player.changeSize();
                     break;
-                // V
                 case PowerUpType.PlayerPos:
                     player.changePos();
                     break;
                 case PowerUpType.SplitPlayer:
-                    player.changePlayerType("duplicate", center);
-                    break;
-                case PowerUpType.DryPlayer:
-                    player.changePlayerType("static", center);
+                    Vector3 temp = player.getCenter();
+                    player.changePlayerType("duplicate", new Vector2(temp.X,temp.Z));
                     break;
                 case PowerUpType.NormalPlayer:
                     player.changeAllStatic();
+                    break;
+                case PowerUpType.ChangeFolds:
+                    GameManager.folds = 0;
+                    break;
+                case PowerUpType.ExtraTime:
+                    GameManager.changeTime();
                     break;
             }
         }
