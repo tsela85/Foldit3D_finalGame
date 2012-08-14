@@ -29,6 +29,8 @@ namespace Foldit3D
         const float CameraDefaultDistance = 90f;
 
         private bool movment;
+        private float tempArc, tempRotation, tempDistance;
+        private float temp = 0;
 
 
         private Matrix projection;
@@ -117,6 +119,10 @@ namespace Foldit3D
                 ref cameraUpVector, out view);
 
             movment = true;
+            tempArc = cameraArc;
+            tempDistance = cameraDistance;
+            tempRotation = cameraRotation;
+            temp = 0;
         }
 
         /// <summary>
@@ -125,99 +131,134 @@ namespace Foldit3D
         public void UpdateCamera(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            //if (!movment)
-            //    return;
-
-            // should we reset the camera?
-            if (input.KeyboardHandler.IsKeyDown(Keys.R))
+            if (movment)
             {
-                cameraArc = CameraDefaultArc;
-                cameraDistance = CameraDefaultDistance;
-                cameraRotation = CameraDefaultRotation;
+                // should we reset the camera?
+                if (input.KeyboardHandler.IsKeyDown(Keys.R))
+                {
+                    cameraArc = CameraDefaultArc;
+                    cameraDistance = CameraDefaultDistance;
+                    cameraRotation = CameraDefaultRotation;
+                }
+
+                // Check for input to rotate the camera up and down around the model.
+                if (input.KeyboardHandler.IsKeyDown(Keys.Up) ||
+                    input.KeyboardHandler.IsKeyDown(Keys.W))
+                {
+                    cameraArc += time * CameraRotateSpeed;
+                }
+
+                if (input.KeyboardHandler.IsKeyDown(Keys.Down) ||
+                    input.KeyboardHandler.IsKeyDown(Keys.S))
+                {
+                    cameraArc -= time * CameraRotateSpeed;
+                }
+
+                //cameraArc += currentGamePadState.ThumbSticks.Right.Y * time *
+                //    CameraRotateSpeed;
+
+                // Limit the arc movement.
+                cameraArc = MathHelper.Clamp(cameraArc, -90.0f, 10.0f);
+
+                // Check for input to rotate the camera around the model.
+                if (input.KeyboardHandler.IsKeyDown(Keys.Right) ||
+                    input.KeyboardHandler.IsKeyDown(Keys.D))
+                {
+                    cameraRotation += time * CameraRotateSpeed;
+                }
+
+                if (input.KeyboardHandler.IsKeyDown(Keys.Left) ||
+                    input.KeyboardHandler.IsKeyDown(Keys.A))
+                {
+                    cameraRotation -= time * CameraRotateSpeed;
+                }
+
+                //cameraRotation += currentGamePadState.ThumbSticks.Right.X * time *
+                //    CameraRotateSpeed;
+
+                // Check for input to zoom camera in and out.
+                if (input.KeyboardHandler.IsKeyDown(Keys.Z))
+                    cameraDistance += time * CameraZoomSpeed;
+
+                if (input.KeyboardHandler.IsKeyDown(Keys.X))
+                    cameraDistance -= time * CameraZoomSpeed;
+
+                // clamp the camera distance so it doesn't get too close or too far away.
+                cameraDistance = MathHelper.Clamp(cameraDistance,
+                    CameraMinDistance, CameraMaxDistance);
             }
-
-            // Check for input to rotate the camera up and down around the model.
-            if (input.KeyboardHandler.IsKeyDown(Keys.Up) ||
-                input.KeyboardHandler.IsKeyDown(Keys.W))
-            {
-                cameraArc += time * CameraRotateSpeed;
-            }
-
-            if (input.KeyboardHandler.IsKeyDown(Keys.Down) ||
-                input.KeyboardHandler.IsKeyDown(Keys.S))
-            {
-                cameraArc -= time * CameraRotateSpeed;
-            }
-
-            //cameraArc += currentGamePadState.ThumbSticks.Right.Y * time *
-            //    CameraRotateSpeed;
-
-            // Limit the arc movement.
-            cameraArc = MathHelper.Clamp(cameraArc,-90.0f, 10.0f);
-
-            // Check for input to rotate the camera around the model.
-            if (input.KeyboardHandler.IsKeyDown(Keys.Right) ||
-                input.KeyboardHandler.IsKeyDown(Keys.D))
-            {
-                cameraRotation += time * CameraRotateSpeed;
-            }
-
-            if (input.KeyboardHandler.IsKeyDown(Keys.Left) ||
-                input.KeyboardHandler.IsKeyDown(Keys.A))
-            {
-                cameraRotation -= time * CameraRotateSpeed;
-            }
-
-            //cameraRotation += currentGamePadState.ThumbSticks.Right.X * time *
-            //    CameraRotateSpeed;
-
-            // Check for input to zoom camera in and out.
-            if (input.KeyboardHandler.IsKeyDown(Keys.Z))
-                cameraDistance += time * CameraZoomSpeed;
-
-            if (input.KeyboardHandler.IsKeyDown(Keys.X))
-                cameraDistance -= time * CameraZoomSpeed;
-
-            //cameraDistance += currentGamePadState.Triggers.Left * time
-            //    * CameraZoomSpeed;
-            //cameraDistance -= currentGamePadState.Triggers.Right * time
-            //    * CameraZoomSpeed;
-
-            // clamp the camera distance so it doesn't get too close or too far away.
-            cameraDistance = MathHelper.Clamp(cameraDistance,
-                CameraMinDistance, CameraMaxDistance);
-
             Matrix unrotatedView = Matrix.CreateLookAt(
                 new Vector3(0, 0, cameraDistance), Vector3.Zero, Vector3.Down);
 
             view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
                           Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
                           unrotatedView;
+            tempArc = cameraArc;
+            tempDistance = cameraDistance;
+            tempRotation = cameraRotation;            
         }
         /// <summary>
         /// Handles input for moving the camera.
         /// </summary>
-        public void CameraMoveAround()
-        {
-            //setPositionToTop();
-            //for (float i = cameraArc; cameraArc < 10; cameraArc += 0.001f)
-            //{
-            //    Matrix unrotatedView = Matrix.CreateLookAt(
-            //        new Vector3(0, 0, cameraDistance), Vector3.Zero, Vector3.Down);
-
-            //    view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
-            //                  Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
-            //                  unrotatedView;
-            //}
-            for (float i = cameraRotation; cameraRotation < i + 10; cameraRotation += 0.001f)
+        public bool CameraMoveAround()
+        {            
+            bool ret = true;
+            if (temp < 100)
             {
-                Matrix unrotatedView = Matrix.CreateLookAt(
-                    new Vector3(0, 0, cameraDistance), Vector3.Zero, Vector3.Down);
-
-                view = Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
-                              Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
-                              unrotatedView;                
+                temp += 1f;
+                ret = false;
             }
+            else
+                if ((tempDistance < CameraMaxDistance) && (tempRotation < cameraRotation + 360))
+                {
+                    tempDistance += 1f;
+                    ret = false;
+                }
+                else
+                    if ((tempArc < 10) && (tempRotation < cameraRotation + 180))
+                    {
+                        tempArc += 1f;
+                        ret = false;
+                    } 
+                    else
+                        if (tempRotation < cameraRotation + 180)
+                        {
+                            tempRotation += 2f;
+                            ret = false;
+                        } 
+                        else
+                            if (tempArc > -40)
+                            {
+                                tempArc -= 1f;
+                                ret = false;
+                            } 
+                            else
+                                if (tempRotation < cameraRotation + 360)
+                                {
+                                    tempRotation += 1f;
+                                    ret = false;
+                                } 
+                                else
+                                    if (tempArc > -90)
+                                    {
+                                        tempArc -= 1f;
+                                        ret = false;
+                                    }
+                                    else
+                                        if (tempDistance > CameraDefaultDistance - 10)
+                                        {
+                                            tempDistance -= 1f;
+                                            ret = false;
+                                        }
+
+            
+                Matrix unrotatedView = Matrix.CreateLookAt(
+                    new Vector3(0, 0, tempDistance), Vector3.Zero, Vector3.Down);
+
+                view = Matrix.CreateRotationY(MathHelper.ToRadians(tempRotation)) *
+                              Matrix.CreateRotationX(MathHelper.ToRadians(tempArc)) *
+                              unrotatedView;
+                return ret;
         }
     }
 }

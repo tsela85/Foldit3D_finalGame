@@ -10,7 +10,7 @@ using WindowsGame3;
 namespace Foldit3D
 {
 enum ScreenState { start, game, help, levels};
-enum GameState { normal, folding, scored , lose};
+enum GameState { normal, folding, scored , lose, rotationAroundTheBoard};
 
 class GameManager
 {
@@ -91,7 +91,8 @@ class GameManager
         //powerupManager.tomInitLevel();
         board.initLevel(XMLReader.Get(level, "board"));
         Game1.camera.Initialize();
-        // TOM - make dawin move
+        if (level == 0)
+            gamestate = GameState.rotationAroundTheBoard;
         if (level == 0 || level == 1)
         {
             Game1.camera.setPositionToTop();
@@ -107,7 +108,7 @@ class GameManager
     #region Update
     public void Update(GameTime gameTime)
     {
-        float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        float elapsed= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         if (screen == ScreenState.start || screen == ScreenState.help|| screen==ScreenState.levels)
         {
@@ -176,7 +177,17 @@ class GameManager
             loseLevel();
         }
         if (gamestate != GameState.scored && gamestate != GameState.lose)
-        {           
+        {
+            if (gamestate == GameState.rotationAroundTheBoard)
+            {
+                if (Game1.camera.CameraMoveAround()){
+                    gamestate = GameState.normal;
+                    time=0;
+                }
+                else
+                    return;
+            }
+            Game1.input.Update(gameTime);
             playerManager.Update(gameTime, gamestate);
             boardstate = board.update();
             if (boardstate == Board.BoardState.folding1 || boardstate == Board.BoardState.folding2)
@@ -187,16 +198,11 @@ class GameManager
                 gamestate = GameState.normal;
             if (boardstate == Board.BoardState.preFold)
                 prefold = true;
-            Game1.input.Update(gameTime);
-            Game1.camera.UpdateCamera(gameTime);
+
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
                 loadCurrLevel();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                Game1.camera.CameraMoveAround();
-            }            
             if (gamestate == GameState.folding)
             {
                 Vector3 v = board.getAxis();
@@ -244,6 +250,7 @@ class GameManager
                     loadCurrLevel();
             }
         }
+        Game1.camera.UpdateCamera(gameTime);
     }
     #endregion
 
@@ -360,7 +367,7 @@ class GameManager
 
             #endregion
 
-            if (level == 0)
+            if (level == 0 && gamestate != GameState.rotationAroundTheBoard)
             {
                 showPopUps(spriteBatch);
                 if (folds == 1)

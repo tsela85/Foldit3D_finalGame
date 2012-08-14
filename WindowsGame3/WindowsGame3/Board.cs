@@ -594,14 +594,6 @@ namespace Foldit3D
             lineList[1].Position = mouse;
             lineList[0].Color = Color.OrangeRed;
             lineList[1].Color = Color.OrangeRed;
-            ////Tom - running a test folding
-            //if (input.MouseHandler.WasLeftButtonClicked())
-            //{                
-            //    p[0].position = testp1 + new Vector3(0,0,0);
-            //    p[1].position = testp1 + new Vector3(0,0,0);
-            //    state = BoardState.preFold;
-            //}
-
             if ((state == BoardState.chooseEdge1) && (onEdge))
             {               
                     if (input.MouseHandler.WasLeftButtonClicked())
@@ -615,13 +607,7 @@ namespace Foldit3D
                 {
                     if (input.MouseHandler.WasLeftButtonClicked())
                     {                        
-                        lineList[0].Position = p[0].position;
-                        //lineList[0].Position = mouse;
-                        
-                        //lineIndices.Add((short)lineList.Count);
-                        //lineList.Add(linePoint);
-                        //lineIndices.Add((short)lineList.Count);
-                        //lineList.Add(linePoint);        
+                        lineList[0].Position = p[0].position;       
                         state = BoardState.chooseEdge2;
                     }
                 } else
@@ -631,11 +617,9 @@ namespace Foldit3D
             {
                 lineList[1].Position = mouse;
                 if (input.MouseHandler.WasLeftButtonClicked())
-                {                    
-                    state = BoardState.preFold;
-                }
-                else
-                    state = BoardState.onEdge2;
+                    state = BoardState.preFold;                
+                else                                          
+                    state = BoardState.onEdge2;               
             } else
             if ((state == BoardState.onEdge2))
             {
@@ -654,15 +638,11 @@ namespace Foldit3D
                 Divide(p[0], p[1], out one, out two);
                 //Tom -- array of all the old fold lines                
                 oldLineindices.Add((short)oldLineindices.Count);
-                oldLineList.Add(new VertexPositionNormalTexture(lineList[0].Position, new Vector3(0,0,0), new Vector2(0f, 0.5f)));
+                oldLineList.Add(new VertexPositionNormalTexture(p[0].position, new Vector3(0,0,0), new Vector2(0f, 0.5f)));
                 oldLineindices.Add((short)oldLineindices.Count);
-                oldLineList.Add(new VertexPositionNormalTexture(lineList[1].Position,new Vector3(0,0,0), new Vector2(1f, 0.5f))); 
+                oldLineList.Add(new VertexPositionNormalTexture(p[1].position,new Vector3(0,0,0), new Vector2(1f, 0.5f))); 
 
                 state = BoardState.folding1;
-                //if (PointInBeforeFold(new Vector3(-9, 0, -9)))
-                //    Trace.WriteLine("before fold");
-                //if (PointInAfterFold(new Vector3(-9, 0, -9)))
-                //    Trace.WriteLine("after fold");
             }
             if ((input.MouseHandler.WasRightButtonClicked()))
             {
