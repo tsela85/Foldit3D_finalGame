@@ -25,7 +25,7 @@ class GameManager
     Board board;
     Table table;
     bool prefold;
-    ScreenState screen = ScreenState.game;
+    ScreenState screen = ScreenState.start;
     Texture2D startScreen;
     Texture2D helpScreen;
     Texture2D levelScreen;
@@ -66,7 +66,7 @@ class GameManager
         table = tab;
         gamestate = GameState.normal;
         folds = 0;
-        level = 3;
+        level = 0;
 
         startScreen = st;
         helpScreen = help;
@@ -97,6 +97,7 @@ class GameManager
         //powerupManager.tomInitLevel();
         board.initLevel(XMLReader.Get(level, "board"));
         Game1.camera.Initialize();
+        gamestate = GameState.normal;
         if (level == 0)
             gamestate = GameState.rotationAroundTheBoard;
         if (level <= 3)
@@ -108,8 +109,7 @@ class GameManager
         {
             Game1.camera.resumeMovment();
             Game1.camera.setDefaultPosition();
-        }
-        gamestate = GameState.normal;
+        }        
     } 
 
     #region Update
