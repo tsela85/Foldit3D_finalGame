@@ -515,6 +515,26 @@
     </holes>
 
     <acids>
+      <acidObj>
+        <x>0</x>
+        <y>-20</y>
+      </acidObj>
+      <acidObj>
+        <x>0</x>
+        <y>-10</y>
+      </acidObj>
+      <acidObj>
+        <x>0</x>
+        <y>0</y>
+      </acidObj>
+      <acidObj>
+        <x>0</x>
+        <y>10</y>
+      </acidObj>
+      <acidObj>
+        <x>0</x>
+        <y>20</y>
+      </acidObj>
     </acids>
 
     <powerups>

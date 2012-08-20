@@ -9,7 +9,6 @@ Content\hole1.xnb
 Content\hole2.xnb
 Content\gum.xnb
 Content\help.xnb
-Content\levelsScreen.xnb
 Content\startScreen.xnb
 Content\level1.xnb
 Content\level2.xnb
@@ -21,6 +20,7 @@ Content\acid 2.xnb
 Content\level4.xnb
 Content\level5.xnb
 Content\acid.xnb
+Content\levelsScreen.xnb
 Content\font.xnb
 Content\scoreFont.xnb
 Content\effects.xnb

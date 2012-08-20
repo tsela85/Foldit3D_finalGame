@@ -101,6 +101,7 @@ class GameManager
     {
         folds = 0;
         time = 0;
+        levelTimeDisplay = 60;
         playerManager.restartLevel();
         playerManager.initLevel(XMLReader.Get(level, "player"));
         holeManager.restartLevel();
@@ -193,6 +194,11 @@ class GameManager
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
                 loadCurrLevel();
+            }
+            //time cheat
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                changeTime();
             }   
             time += elapsed;
             if (showHoleMsg || showPuMsg)
@@ -433,14 +439,14 @@ class GameManager
                     showPopUps(spriteBatch);
                     if (folds == 1)
                     {
-                        spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 20), Color.LightGray);
+                        spriteBatch.DrawString(scoreFont, "Great! You made your first fold!", new Vector2(400, 10), Color.LightGray);
                         firstfold = 1;
                     }
                     if (folds == 2 && gamestate != GameState.scored)
                     {
                         spriteBatch.DrawString(scoreFont, "Amazing! You made your second fold!", new Vector2(330, 10), Color.LightGray);
                         firstfold = 2;
-                        spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 45), Color.LightGray);
+                        spriteBatch.DrawString(scoreFont, "Go on! click on the paper frame and get out from the hole!", new Vector2(230, 10), Color.LightGray);
                     }
                 }
                 else if (level == 1 && time < 6)
@@ -462,18 +468,18 @@ class GameManager
                 else if (level == 3)
                     Game1.camera.resumeMovment();
                 if (folds > 9 && folds < 13)
-                    spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 20), Color.LightGray);
+                    spriteBatch.DrawString(scoreFont, "Don't give up! You can do it!", new Vector2(400, 10), Color.LightGray);
                 else if (folds > 13)
-                    spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 20), Color.LightGray);
+                    spriteBatch.DrawString(scoreFont, "You can press 'R' to restart...", new Vector2(400, 10), Color.LightGray);
             }
             if (showHoleMsg && countSec > 0)
             {
-                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(470, 20), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "In the hole!", new Vector2(470, 40), Color.LightGray);
                 if (countSec > 3 || gamestate == GameState.scored) { showHoleMsg = false; countSec = 0; }
             }
             else if (showPuMsg && countSec > 0)
             {
-                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(470, 20), Color.LightGray);
+                spriteBatch.DrawString(scoreFont, "Power up taken!", new Vector2(470, 40), Color.LightGray);
                 if (countSec > 3 || gamestate == GameState.scored) { showPuMsg = false; countSec = 0; }
             }
             
